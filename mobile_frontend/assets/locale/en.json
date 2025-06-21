@@ -1,0 +1,20 @@
+{
+  "noConnection": "Can't connect to internet, please try again",
+  "somethingWrong": "Internet connection problem. Please check your network connection and try again.",
+  "canceledRequest": "Canceled request",
+  "cancel": "Cancel",
+  "updated": "Updated successfully",
+  "pleaseUpdate": "There is a newer version of app available please update it now.",
+  "warning": "Warning!",
+  "accountDelete": "Do you want to delete account?",
+  "deletedAccount": "Account has deleted",
+  "logoutWarning": "Do you want to exit the app?",
+  "logout": "Logout",
+  "userName": "Username",
+  "password": "Password",
+  "enter": "Enter",
+  "analytics": "Analytics",
+  "live": "LIVE",
+  "control": "Control",
+  "profile": "Profile"
+}
