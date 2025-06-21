@@ -9,15 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from database import get_session
-from models import User
+from models.users import User
 import services.auth_service as auth_service
 from schemas.user import UserCreate, UserRead
 from schemas.auth import (
     TokenBase,
     NewRefreshRequest,
-    NewRefreshResponse,
-    LoginRequest,
-    LoginResponse,
     PasswordResetTOTP,
     TOTPSetupOut,
     TOTPCodeIn,

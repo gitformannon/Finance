@@ -13,7 +13,7 @@ import config
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  # используется в get_current_user
 
-from models import User
+from models.users import User
 from schemas.auth import TokenBase, NewRefreshRequest
 
 pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
