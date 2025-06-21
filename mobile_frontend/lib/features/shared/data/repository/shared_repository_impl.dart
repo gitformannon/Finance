@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/features/shared/domain/repository/shared_repository.dart';
+import 'package:features/shared/domain/repository/shared_repository.dart';
 
 import '../../../../core/storage/local_data_source.dart';
 
