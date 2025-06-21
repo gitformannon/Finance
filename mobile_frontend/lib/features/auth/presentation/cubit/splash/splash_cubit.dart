@@ -1,5 +1,5 @@
-import 'package:agro_card_delivery/core/constants/time_delay.dart';
-import 'package:agro_card_delivery/features/shared/domain/repository/shared_repository.dart';
+import 'package:Finance/core/constants/time_delay.dart';
+import 'package:Finance/features/shared/domain/repository/shared_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '/core/helpers/enums_helpers.dart';

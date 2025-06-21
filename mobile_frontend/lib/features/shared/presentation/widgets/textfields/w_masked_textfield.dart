@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/core/constants/app_sizes.dart';
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
