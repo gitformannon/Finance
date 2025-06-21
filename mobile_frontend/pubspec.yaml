@@ -14,7 +14,7 @@ dependencies:
   go_router: ^14.2.8
   get_it: ^8.0.0
   easy_localization: ^3.0.7
-  Finance:
+  repo_generation:
     git:
       url: https://github.com/gitformannon/Finance.git
       path: mobile_frontend
@@ -44,7 +44,7 @@ dev_dependencies:
   retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
   build_runner: ^2.4.9
   json_serializable: ^6.8.0
-  mobile_frontend:
+  repo_generation:
     git:
       url: https://github.com/gitformannon/Finance.git
       path: mobile_frontend
