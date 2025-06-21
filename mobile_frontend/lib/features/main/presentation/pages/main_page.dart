@@ -1,5 +1,5 @@
-import 'package:agro_card_delivery/core/constants/time_delay.dart';
-import 'package:agro_card_delivery/features/main/cubits/main/main_cubit.dart';
+import 'package:Finance/core/constants/time_delay.dart';
+import 'package:Finance/features/main/cubits/main/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

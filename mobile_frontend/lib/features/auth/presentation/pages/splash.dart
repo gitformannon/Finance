@@ -1,6 +1,6 @@
-import 'package:agro_card_delivery/core/constants/app_images.dart';
-import 'package:agro_card_delivery/core/helpers/enums_helpers.dart';
-import 'package:agro_card_delivery/features/shared/presentation/cubits/navigate/navigate_cubit.dart';
+import 'package:Finance/core/constants/app_images.dart';
+import 'package:Finance/core/helpers/enums_helpers.dart';
+import 'package:Finance/features/shared/presentation/cubits/navigate/navigate_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/get_it.dart';

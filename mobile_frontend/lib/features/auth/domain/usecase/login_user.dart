@@ -1,5 +1,5 @@
-import 'package:agro_card_delivery/features/auth/data/model/response/login_user_response.dart';
-import 'package:agro_card_delivery/features/auth/domain/repository/login_repository.dart';
+import 'package:Finance/features/auth/data/model/response/login_user_response.dart';
+import 'package:Finance/features/auth/domain/repository/login_repository.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/failure.dart';

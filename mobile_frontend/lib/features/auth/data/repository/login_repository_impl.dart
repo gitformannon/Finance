@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/core/network/failure.dart';
+import 'package:Finance/core/network/failure.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/storage/local_data_source.dart';
 import '../../domain/data_source/login_data_source.dart';

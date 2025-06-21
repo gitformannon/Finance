@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/core/constants/time_delay.dart';
+import 'package:Finance/core/constants/time_delay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

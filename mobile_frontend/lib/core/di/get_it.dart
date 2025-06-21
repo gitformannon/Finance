@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/core/di/repositories_init.dart';
+import 'package:Finance/core/di/repositories_init.dart';
 import 'package:get_it/get_it.dart';
 import 'cubits_init.dart';
 

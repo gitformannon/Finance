@@ -1,4 +1,4 @@
-import 'package:agro_card_delivery/core/constants/app_sizes.dart';
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

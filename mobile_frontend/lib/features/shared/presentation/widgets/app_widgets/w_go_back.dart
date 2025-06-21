@@ -1,6 +1,6 @@
-import 'package:agro_card_delivery/core/constants/app_colors.dart';
-import 'package:agro_card_delivery/core/constants/app_colors.dart';
-import 'package:agro_card_delivery/core/themes/app_text_styles.dart';
+import 'package:Finance/core/constants/app_colors.dart';
+import 'package:Finance/core/constants/app_colors.dart';
+import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

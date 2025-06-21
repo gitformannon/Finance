@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:agro_card_delivery/core/constants/app_colors.dart';
-import 'package:agro_card_delivery/core/constants/app_sizes.dart';
+import 'package:Finance/core/constants/app_colors.dart';
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
