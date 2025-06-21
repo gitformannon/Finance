@@ -17,6 +17,7 @@ dependencies:
   repo_annotation:
     git:
       url: https://github.com/gitformannon/Finance.git
+      path: mobile_frontend
   retrofit: ^4.4.1
   logger: ^2.4.0  # for logging purpose
   json_annotation: ^4.9.0
@@ -46,6 +47,7 @@ dev_dependencies:
   repo_generation:
     git:
       url: https://github.com/gitformannon/Finance.git
+      path: mobile_frontend
   freezed: ^2.5.2
 flutter:
   uses-material-design: true
@@ -76,18 +78,18 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/png/icon_logo.png"
+  image_path: "assets/png/logo_launchpad.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter_native_splash:
   color: "#ffffff"
   #  color_dark: "#111111"
   color_dark: "#ffffff"
-  image: assets/png/logo.jpg
-  image_dark: assets/png/logo.jpg
+  image: assets/png/logo_launchpad.png
+  image_dark: assets/png/logo_launchpad.png
   fullscreen: true
   android_12:
-    image: assets/png/logo.jpg
-    image_dark: assets/png/logo.jpg
+    image: logo_launchpad.png
+    image_dark: logo_launchpad.png
     icon_background_color: "#ffffff"
 
