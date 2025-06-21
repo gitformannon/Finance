@@ -13,7 +13,4 @@ part 'login_data_source.g.dart';
 mixin LoginDataSource {
   Future<ResponseHandler<LoginUserResponse>> loginUser(
       {required LoginUserRequest request});
-
-
-
 }

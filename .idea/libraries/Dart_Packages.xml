@@ -723,6 +723,13 @@
             </list>
           </value>
         </entry>
+        <entry key="repo_annotation">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/git/repo_annotation-48b12aeb7bba34d8982073b3d591a6d9bf632211//lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="retrofit">
           <value>
             <list>
@@ -1048,6 +1055,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file://$USER_HOME$/.pub-cache/git/repo_annotation-48b12aeb7bba34d8982073b3d591a6d9bf632211//lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-82.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/analyzer-7.4.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/ansicolor-2.0.3/lib" />
