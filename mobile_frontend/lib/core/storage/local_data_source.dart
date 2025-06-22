@@ -1,7 +1,11 @@
 mixin LocalDataSource {
   String getToken();
 
+  String getTokenType();
+
   Future<void> setUserToken(String token);
+
+  Future<void> setTokenType(String tokenType);
 
   Future<void> setRole(String role);
 

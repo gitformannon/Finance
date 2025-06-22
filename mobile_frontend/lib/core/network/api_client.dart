@@ -47,9 +47,10 @@ abstract class ApiClient {
     dio.interceptors.addAll([
       InterceptorsWrapper(onRequest: (options, handler) async {
         String token = dataSource.getToken();
+        String tokenType = dataSource.getTokenType();
         AppLoggerUtils.i(token);
         if (token.isNotEmpty) {
-          options.headers['Authorization'] = "Bearer $token";
+          options.headers['Authorization'] = "$tokenType $token";
         }
         return handler.next(options);
       }),
