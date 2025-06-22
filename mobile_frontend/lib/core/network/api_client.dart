@@ -6,6 +6,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../features/auth/data/model/request/login_user_request.dart';
 import '../../features/auth/data/model/response/login_user_response.dart';
+import '../../features/profile/data/model/profile_response.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
 import '../helpers/logger_helpers.dart';
@@ -64,6 +65,12 @@ abstract class ApiClient {
 
   @POST(AppApi.login)
   Future<LoginUserResponse> loginUser(@Body() LoginUserRequest request);
+
+  @GET(AppApi.me)
+  Future<ProfileResponse> getProfile();
+
+  @POST(AppApi.logout)
+  Future<void> logout();
 
 
 }

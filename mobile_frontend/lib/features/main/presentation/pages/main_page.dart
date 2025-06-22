@@ -2,6 +2,7 @@ import 'package:Finance/core/constants/time_delay.dart';
 import 'package:Finance/features/main/cubits/main/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
@@ -46,7 +47,11 @@ class _MainPageState extends State<MainPage> {
             },
             child: PageView(
               controller: pageController,
-              children: [Container(), Container()],
+              children: [
+                Container(),
+                Container(),
+                const ProfilePage(),
+              ],
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -59,6 +64,10 @@ class _MainPageState extends State<MainPage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.add),
                 label: "Mijozlar",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: "Profile",
               ),
             ],
             currentIndex: state.currentIndex,
