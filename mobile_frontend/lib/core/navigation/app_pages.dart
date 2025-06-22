@@ -6,6 +6,8 @@ import '../../features/auth/presentation/pages/splash.dart';
 import '../../features/auth/presentation/pages/login.dart';
 import '../../features/main/cubits/main/main_cubit.dart';
 import '../../features/auth/presentation/cubit/login/login_cubit.dart';
+import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/cubit/profile_cubit.dart';
 import '../constants/app_routes.dart';
 import '../di/get_it.dart';
 
@@ -39,6 +41,14 @@ class AppPages {
               );
             },
           ),
+
+          GoRoute(
+            path: AppRoutes.profile,
+            builder: (context, state) => BlocProvider(
+              create: (context) => getItInstance<ProfileCubit>(),
+              child: const ProfilePage(),
+            ),
+          ),
         ],
       );
-}
+  }
