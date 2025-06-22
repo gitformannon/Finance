@@ -80,6 +80,23 @@ class _LoginPageState extends State<LoginPage> {
                   isLoading: state.status == RequestStatus.loading,
                   text: LocaleKeys.enter.tr(),
                 ),
+                SizedBox(height: AppSizes.spaceM16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () =>
+                          context.read<NavigateCubit>().goToRegisterPage(),
+                      child: const Text('Register'),
+                    ),
+                    TextButton(
+                      onPressed: () => context
+                          .read<NavigateCubit>()
+                          .goToForgotPasswordPage(),
+                      child: const Text('Forgot password?'),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

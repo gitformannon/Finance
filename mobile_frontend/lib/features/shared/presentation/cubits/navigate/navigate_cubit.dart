@@ -20,4 +20,12 @@ class NavigateCubit extends Cubit<NavigateState> {
   void goToLoginPage() {
     _navigationService.navigateTo(AppRoutes.login);
   }
+
+  void goToRegisterPage() {
+    _navigationService.navigateTo(AppRoutes.register);
+  }
+
+  void goToForgotPasswordPage() {
+    _navigationService.navigateTo(AppRoutes.forgotPassword);
+  }
 }
