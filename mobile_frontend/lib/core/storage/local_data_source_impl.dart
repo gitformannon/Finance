@@ -13,9 +13,21 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  String getTokenType() {
+    final box = Hive.box(LocalStorageKeys.box);
+    return box.get(LocalStorageKeys.tokenType, defaultValue: "Bearer");
+  }
+
+  @override
   Future<void> setUserToken(String token) async {
     final box = Hive.box(LocalStorageKeys.box);
     return box.put(LocalStorageKeys.token, token);
+  }
+
+  @override
+  Future<void> setTokenType(String tokenType) async {
+    final box = Hive.box(LocalStorageKeys.box);
+    await box.put(LocalStorageKeys.tokenType, tokenType);
   }
 
   @override

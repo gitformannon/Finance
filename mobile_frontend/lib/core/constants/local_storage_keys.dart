@@ -1,6 +1,7 @@
 class LocalStorageKeys {
   static const String box = "box";
   static const String token = "token";
+  static const String tokenType = "tokenType";
   static const String language = "language";
   static const String verified = "verified";
   static const String role = "role";
