@@ -3,6 +3,8 @@ import 'package:Finance/features/main/cubits/main/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
@@ -16,7 +18,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  PageController pageController = PageController(initialPage: 0);
+  late final PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initialPage);
+  }
 
   _animateToPage(int index) {
     pageController.animateToPage(
@@ -50,7 +58,10 @@ class _MainPageState extends State<MainPage> {
               children: [
                 Container(),
                 Container(),
-                const ProfilePage(),
+                BlocProvider(
+                  create: (context) => getItInstance<ProfileCubit>(),
+                  child: const ProfilePage(),
+                ),
               ],
             ),
           ),
