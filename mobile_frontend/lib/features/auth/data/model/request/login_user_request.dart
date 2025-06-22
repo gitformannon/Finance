@@ -1,16 +1,17 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+/// Data required for logging in using OAuth2 password flow.
+class LoginUserRequest {
+  final String username;
+  final String password;
 
-part 'login_user_request.freezed.dart';
+  const LoginUserRequest({
+    required this.username,
+    required this.password,
+  });
 
-part 'login_user_request.g.dart';
-
-@freezed
-class LoginUserRequest with _$LoginUserRequest {
-  const factory LoginUserRequest({
-    final String? phone,
-    final  String? password,
-  }) = _LoginUserRequest;
-
-  factory LoginUserRequest.fromJson(Map<String, dynamic> json) =>
-      _$LoginUserRequestFromJson(json);
+  /// Returns data encoded for an `application/x-www-form-urlencoded` request.
+  Map<String, dynamic> toMap() => {
+        'username': username,
+        'password': password,
+        'grant_type': 'password',
+      };
 }

@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() {
     context.read<LoginCubit>().login(
-          phone: _phoneController.text,
+          username: _phoneController.text,
           password: _passwordController.text,
         );
   }
