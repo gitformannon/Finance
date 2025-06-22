@@ -42,7 +42,6 @@ abstract class $LoginStateCopyWith<$Res> {
       bool phoneError,
       bool passwordError});
 
-  $LoginUserResponseCopyWith<$Res>? get data;
 }
 
 /// @nodoc
@@ -92,17 +91,6 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $LoginUserResponseCopyWith<$Res>? get data {
-    if (_value.data == null) {
-      return null;
-    }
-
-    return $LoginUserResponseCopyWith<$Res>(_value.data!, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -121,7 +109,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
       bool passwordError});
 
   @override
-  $LoginUserResponseCopyWith<$Res>? get data;
+  dynamic get data;
 }
 
 /// @nodoc
