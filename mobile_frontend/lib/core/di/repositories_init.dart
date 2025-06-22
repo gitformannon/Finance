@@ -32,7 +32,7 @@ Future<void> repositoriesInit() async {
   );
 
   getItInstance.registerLazySingleton<LoginDataSource>(
-    () => LoginDataSourceImpl(getItInstance<ApiClient>()),
+    () => LoginDataSourceImpl(),
   );
   getItInstance.registerLazySingleton<LoginRepository>(
     () => LoginRepositoryImpl(

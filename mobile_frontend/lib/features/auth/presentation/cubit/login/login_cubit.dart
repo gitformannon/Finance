@@ -15,9 +15,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   LoginCubit(this.loginUserUseCase) : super(const LoginState());
 
-  Future<void> login({String phone = "", String password = ""}) async {
+  Future<void> login({String username = "", String password = ""}) async {
     emit(state.copyWith(status: RequestStatus.loading));
-    final request = LoginUserRequest(phone: phone, password: password);
+    final request = LoginUserRequest(username: username, password: password);
     final result = await loginUserUseCase(request);
     result.fold(
       (failure) => emit(

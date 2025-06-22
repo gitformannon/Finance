@@ -19,8 +19,14 @@ class LoginRepositoryImpl with LoginRepository {
     try {
       final response = await _loginDataSource.loginUser(request: request);
       if (response.data != null) {
-        final data = response.data ?? LoginUserResponse();
-        final token = data.data?.accessToken ?? '';
+        final data = response.data ??
+            const LoginUserResponse(
+              accessToken: '',
+              refreshToken: '',
+              tokenType: '',
+              userId: '',
+            );
+        final token = data.accessToken;
         if (token.isNotEmpty) {
           await _localDataSource.setUserToken(token);
         }
