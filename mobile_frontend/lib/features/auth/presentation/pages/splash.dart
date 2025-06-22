@@ -1,3 +1,4 @@
+import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_images.dart';
 import 'package:Finance/core/helpers/enums_helpers.dart';
 import 'package:Finance/features/shared/presentation/cubits/navigate/navigate_cubit.dart';
@@ -27,7 +28,7 @@ class SplashScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.primary,
             body: SafeArea(
               child: Align(
                 alignment: Alignment.center,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import  'package:flutter/material.dart';
 import 'dart:convert';
 import '../services/api_service.dart';
 import '../models/transaction.dart';
@@ -116,6 +116,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         }
         final tx = _transactions[index];
         return ListTile(
+          key: ValueKey(tx.id),
           title: Text('${tx.amount} – ${tx.category}'),
           subtitle: Text('${tx.date} • ${tx.account}'),
         );
