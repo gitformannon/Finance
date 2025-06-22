@@ -81,7 +81,7 @@ class WMaskedTextField extends StatelessWidget {
       child: SizedBox(
         height: height.h,
         child: TextField(
-          maxLines: maxLines,
+          maxLines: isPassword ? 1 : maxLines,
           autofocus: autofocus,
           style: style ?? AppTextStyles.bodyRegular,
           controller: controller,
