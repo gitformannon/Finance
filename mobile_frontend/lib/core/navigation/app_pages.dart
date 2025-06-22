@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/splash.dart';
+import '../../features/auth/presentation/pages/login.dart';
 import '../../features/main/cubits/main/main_cubit.dart';
+import '../../features/auth/presentation/cubit/login/login_cubit.dart';
 import '../constants/app_routes.dart';
 import '../di/get_it.dart';
 
@@ -17,6 +19,14 @@ class AppPages {
           GoRoute(
             path: AppRoutes.splashScreen,
             builder: (context, state) => const SplashScreen(),
+          ),
+
+          GoRoute(
+            path: AppRoutes.login,
+            builder: (context, state) => BlocProvider(
+              create: (context) => getItInstance<LoginCubit>(),
+              child: const LoginPage(),
+            ),
           ),
 
           GoRoute(

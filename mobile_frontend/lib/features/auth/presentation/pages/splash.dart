@@ -4,6 +4,7 @@ import 'package:Finance/features/shared/presentation/cubits/navigate/navigate_cu
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/get_it.dart';
+import '../../../shared/domain/repository/shared_repository.dart';
 import '../cubit/splash/splash_cubit.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -16,7 +17,12 @@ class SplashScreen extends StatelessWidget {
       child: BlocConsumer<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state.status == RequestStatus.loaded) {
-            context.read<NavigateCubit>().goToMainPage();
+            final token = getItInstance<SharedRepository>().getToken();
+            if (token.isNotEmpty) {
+              context.read<NavigateCubit>().goToMainPage();
+            } else {
+              context.read<NavigateCubit>().goToLoginPage();
+            }
           }
         },
         builder: (context, state) {
