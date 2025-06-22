@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/splash.dart';
 import '../../features/auth/presentation/pages/login.dart';
+import '../../features/auth/presentation/pages/register.dart';
+import '../../features/auth/presentation/pages/forgot_password.dart';
 import '../../features/main/cubits/main/main_cubit.dart';
 import '../../features/auth/presentation/cubit/login/login_cubit.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
@@ -29,6 +31,16 @@ class AppPages {
               create: (context) => getItInstance<LoginCubit>(),
               child: const LoginPage(),
             ),
+          ),
+
+          GoRoute(
+            path: AppRoutes.register,
+            builder: (context, state) => const RegisterPage(),
+          ),
+
+          GoRoute(
+            path: AppRoutes.forgotPassword,
+            builder: (context, state) => const ForgotPasswordPage(),
           ),
 
           GoRoute(
