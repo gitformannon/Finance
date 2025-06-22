@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/failure.dart';
 import '../../../../core/storage/local_data_source.dart';
+import '../model/logout_request.dart';
 import '../../domain/repository/profile_repository.dart';
 import '../model/profile_response.dart';
 
@@ -24,9 +25,11 @@ class ProfileRepositoryImpl with ProfileRepository {
   @override
   Future<Either<Failure, void>> logout() async {
     try {
-      await _client.logout();
+      final refresh = _localDataSource.getRefreshToken();
+      await _client.logout(LogoutRequest(refresh: refresh));
     } catch (_) {}
     await _localDataSource.setUserToken('');
+    await _localDataSource.setRefreshToken('');
     return const Right(null);
   }
 }

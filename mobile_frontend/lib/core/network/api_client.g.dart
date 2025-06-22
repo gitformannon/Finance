@@ -87,11 +87,11 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> logout() async {
+  Future<void> logout(LogoutRequest request) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = request.toJson();
     final _options = _setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,

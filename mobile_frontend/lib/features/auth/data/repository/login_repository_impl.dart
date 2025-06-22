@@ -29,6 +29,7 @@ class LoginRepositoryImpl with LoginRepository {
         final token = data.accessToken;
         if (token.isNotEmpty) {
           await _localDataSource.setUserToken(token);
+          await _localDataSource.setRefreshToken(data.refreshToken);
           await _localDataSource.setTokenType(data.tokenType);
         }
         return Right(data);

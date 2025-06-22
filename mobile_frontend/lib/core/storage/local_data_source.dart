@@ -1,9 +1,13 @@
 mixin LocalDataSource {
   String getToken();
 
+  String getRefreshToken();
+
   String getTokenType();
 
   Future<void> setUserToken(String token);
+
+  Future<void> setRefreshToken(String token);
 
   Future<void> setTokenType(String tokenType);
 

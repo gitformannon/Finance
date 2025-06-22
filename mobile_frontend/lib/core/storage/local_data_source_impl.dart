@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hive/hive.dart';
 
 import '../constants/local_storage_keys.dart';
@@ -13,6 +11,12 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  String getRefreshToken() {
+    final box = Hive.box(LocalStorageKeys.box);
+    return box.get(LocalStorageKeys.refreshToken, defaultValue: "");
+  }
+
+  @override
   String getTokenType() {
     final box = Hive.box(LocalStorageKeys.box);
     return box.get(LocalStorageKeys.tokenType, defaultValue: "Bearer");
@@ -22,6 +26,12 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<void> setUserToken(String token) async {
     final box = Hive.box(LocalStorageKeys.box);
     return box.put(LocalStorageKeys.token, token);
+  }
+
+  @override
+  Future<void> setRefreshToken(String token) async {
+    final box = Hive.box(LocalStorageKeys.box);
+    await box.put(LocalStorageKeys.refreshToken, token);
   }
 
   @override
