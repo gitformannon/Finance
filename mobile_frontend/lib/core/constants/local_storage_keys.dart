@@ -10,4 +10,5 @@ class LocalStorageKeys {
   static const String userId = "userId";
   static const String phone = "phone";
   static const String email = "email";
+  static const String encryptionKey = "encKey";
 }
