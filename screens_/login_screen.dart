@@ -3,6 +3,7 @@ import 'package:frontend/theme.dart';
 import '../services/auth_service.dart';
 import 'register_screen.dart';
 import 'reset_password_screen.dart';
+import '../mobile_frontend/lib/features/shared/widgets/app_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
 
   bool _isLoading = false;
-  bool _obscurePassword = true;
   String? _errorMessage;
 
   @override
@@ -76,9 +76,18 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('Username', _loginController),
+            AppTextField(
+              label: 'Username',
+              controller: _loginController,
+              enabled: !_isLoading,
+            ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('Password', _passController, isPassword: true),
+            AppTextField(
+              label: 'Password',
+              controller: _passController,
+              isPassword: true,
+              enabled: !_isLoading,
+            ),
             if (_errorMessage != null)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -169,74 +178,5 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller,
-      {bool isPassword = false}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        controller: controller,
-        enabled: !_isLoading,
-        obscureText: isPassword ? _obscurePassword : false,
-        style: const TextStyle(color: AppColors.textPrimary),
-        decoration: InputDecoration(
-          label: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          filled: true,
-          fillColor: AppColors.background,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          suffixIcon: isPassword
-              ? Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        bottomRight: Radius.circular(12)),
-                    splashColor: AppColors.primary,
-                    highlightColor: AppColors.primary,
-                    onTap: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        _obscurePassword
-                            ? 'Assets/Icons/Icon - pwd_hide.png'
-                            : 'Assets/Icons/Icon - pwd_show.png',
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
-                  ),
-                )
-              : null,
-        ),
-      ),
-    );
-  }
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/theme.dart';
 import '../services/auth_service.dart';
 import 'login_screen.dart';
+import '../mobile_frontend/lib/features/shared/widgets/app_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -21,8 +22,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _verifyPassController = TextEditingController();
 
   bool _isLoading = false;
-  bool _obscurePassword = true;
-  bool _obscureVerifyPassword = true;
   String? _errorMessage;
 
   @override
@@ -93,14 +92,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.surface),
             ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('Username', _loginController),
+            AppTextField(
+              label: 'Username',
+              controller: _loginController,
+              enabled: !_isLoading,
+            ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('E-mail', _emailController),
+            AppTextField(
+              label: 'E-mail',
+              controller: _emailController,
+              enabled: !_isLoading,
+            ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('Password', _passController, isPassword: true),
+            AppTextField(
+              label: 'Password',
+              controller: _passController,
+              isPassword: true,
+              enabled: !_isLoading,
+            ),
             const SizedBox(height: _spacingHeight),
-            _buildTextField('Verify password', _verifyPassController,
-                isPassword: true, isVerify: true),
+            AppTextField(
+              label: 'Verify password',
+              controller: _verifyPassController,
+              isPassword: true,
+              enabled: !_isLoading,
+            ),
             if (_errorMessage != null)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
@@ -152,79 +168,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller,
-      {bool isPassword = false, bool isVerify = false}) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        controller: controller,
-        enabled: !_isLoading,
-        obscureText:
-            isPassword ? (isVerify ? _obscureVerifyPassword : _obscurePassword) : false,
-        style: const TextStyle(color: AppColors.textPrimary),
-        decoration: InputDecoration(
-          label: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-          ),
-          floatingLabelBehavior: FloatingLabelBehavior.auto,
-          filled: true,
-          fillColor: AppColors.background,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          suffixIcon: isPassword
-              ? Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        bottomRight: Radius.circular(12)),
-                    splashColor: AppColors.primary,
-                    highlightColor: AppColors.primary,
-                    onTap: () {
-                      setState(() {
-                        if (isVerify) {
-                          _obscureVerifyPassword = !_obscureVerifyPassword;
-                        } else {
-                          _obscurePassword = !_obscurePassword;
-                        }
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        (isVerify ? _obscureVerifyPassword : _obscurePassword)
-                            ? 'Assets/Icons/Icon - pwd_hide.png'
-                            : 'Assets/Icons/Icon - pwd_show.png',
-                        width: 20,
-                        height: 20,
-                      ),
-                    ),
-                  ),
-                )
-              : null,
-        ),
-      ),
-    );
-  }
 }
 
