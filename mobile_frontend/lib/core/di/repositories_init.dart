@@ -4,6 +4,7 @@ import '../../features/auth/data/repository/login_repository_impl.dart';
 import '../../features/auth/domain/data_source/login_data_source.dart';
 import '../../features/auth/domain/repository/login_repository.dart';
 import '../../features/auth/domain/usecase/login_user.dart';
+import '../../features/auth/domain/usecase/refresh_token.dart';
 import '../../features/profile/data/repository/profile_repository_impl.dart';
 import '../../features/profile/domain/repository/profile_repository.dart';
 import '../../features/profile/domain/usecase/get_profile.dart';
@@ -51,6 +52,10 @@ Future<void> repositoriesInit() async {
 
   getItInstance.registerLazySingleton<LoginUser>(
     () => LoginUser(getItInstance<LoginRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<RefreshToken>(
+    () => RefreshToken(getItInstance<LoginRepository>()),
   );
 
   getItInstance.registerLazySingleton<ProfileRepository>(
