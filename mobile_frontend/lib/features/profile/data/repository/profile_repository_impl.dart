@@ -30,6 +30,7 @@ class ProfileRepositoryImpl with ProfileRepository {
     } catch (_) {}
     await _localDataSource.setUserToken('');
     await _localDataSource.setRefreshToken('');
+    await _localDataSource.setTokenType('');
     return const Right(null);
   }
 }

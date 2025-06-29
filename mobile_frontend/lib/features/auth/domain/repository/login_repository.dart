@@ -7,4 +7,6 @@ mixin LoginRepository {
   Future<Either<Failure,LoginUserResponse>> loginUser({
     required LoginUserRequest request,
   });
+
+  Future<Either<Failure, LoginUserResponse>> refreshToken();
 }
