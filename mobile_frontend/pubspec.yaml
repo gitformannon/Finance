@@ -27,6 +27,7 @@ dependencies:
   shimmer: ^3.0.0
   flash: ^3.1.1
   hive: ^2.2.3
+  flutter_secure_storage: ^9.0.0
   cached_network_image: ^3.4.0
   flutter_native_splash: ^2.4.0
   path_provider: ^2.1.4
