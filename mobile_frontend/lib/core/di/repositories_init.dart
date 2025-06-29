@@ -16,17 +16,20 @@ import '../storage/local_data_source_impl.dart';
 import 'get_it.dart';
 
 Future<void> repositoriesInit() async {
+
   getItInstance.registerLazySingleton<ApiClient>(
     () => ApiClient(
       getItInstance<NavigationService>(),
       getItInstance<LocalDataSource>(),
     ),
   );
+
   getItInstance.registerLazySingleton<LocalDataSource>(
     () => LocalDataSourceImpl(),
   );
 
   getItInstance.registerLazySingleton<AppPages>(() => AppPages());
+
   getItInstance.registerLazySingleton<NavigationService>(
     () => NavigationService(getItInstance<AppPages>().router),
   );
@@ -38,12 +41,14 @@ Future<void> repositoriesInit() async {
   getItInstance.registerLazySingleton<LoginDataSource>(
     () => LoginDataSourceImpl(),
   );
+
   getItInstance.registerLazySingleton<LoginRepository>(
     () => LoginRepositoryImpl(
       getItInstance<LocalDataSource>(),
       getItInstance<LoginDataSource>(),
     ),
   );
+
   getItInstance.registerLazySingleton<LoginUser>(
     () => LoginUser(getItInstance<LoginRepository>()),
   );
@@ -54,9 +59,11 @@ Future<void> repositoriesInit() async {
       getItInstance<LocalDataSource>(),
     ),
   );
+
   getItInstance.registerLazySingleton<GetProfile>(
     () => GetProfile(getItInstance<ProfileRepository>()),
   );
+
   getItInstance.registerLazySingleton<LogoutUser>(
     () => LogoutUser(getItInstance<ProfileRepository>()),
   );
