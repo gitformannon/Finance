@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/app_sizes.dart';
 
 class AppTextField extends StatefulWidget {
   final String label;
@@ -42,8 +43,8 @@ class _AppTextFieldState extends State<AppTextField> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
       ),
       child: TextField(
         controller: widget.controller,
@@ -55,7 +56,7 @@ class _AppTextFieldState extends State<AppTextField> {
           label: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
@@ -69,11 +70,20 @@ class _AppTextFieldState extends State<AppTextField> {
           ),
           floatingLabelBehavior: FloatingLabelBehavior.auto,
           filled: true,
-          fillColor: AppColors.background,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          fillColor: AppColors.surface,
+          contentPadding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.paddingM16, vertical: 12),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderSide: const BorderSide(color: AppColors.box),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderSide: const BorderSide(color: AppColors.box),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
           ),
           suffixIcon: widget.isPassword
               ? Material(

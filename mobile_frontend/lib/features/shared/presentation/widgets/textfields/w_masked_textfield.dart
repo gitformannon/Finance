@@ -115,39 +115,40 @@ class WMaskedTextField extends StatelessWidget {
             //         fit: BoxFit.scaleDown,
             //       )
             //     : suffixIcon,
-            fillColor: backgroundColor ?? AppColors.box,
+            fillColor: backgroundColor ?? AppColors.surface,
             filled: true,
-            contentPadding: contentPadding ?? EdgeInsets.zero,
+            contentPadding: contentPadding ??
+                const EdgeInsets.symmetric(horizontal: AppSizes.paddingM16, vertical: 12),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSizes.borderLarge20),
-              borderSide: BorderSide(color: AppColors.box, width: 1.w),
+              borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+              borderSide: const BorderSide(color: AppColors.box),
             ),
             disabledBorder:
                 isError ?? false
                     ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderLarge20),
-                      borderSide: BorderSide(
-                        color: AppColors.error,
-                        width: 1.w,
-                      ),
-                    )
+                        borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+                        borderSide: BorderSide(
+                          color: AppColors.error,
+                          width: 1.w,
+                        ),
+                      )
                     : OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderLarge20),
-                      borderSide: BorderSide(
-                        color: AppColors.box,
-                        width: 1.w,
+                        borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+                        borderSide: BorderSide(
+                          color: AppColors.box,
+                          width: 1.w,
+                        ),
                       ),
-                    ),
             focusedBorder:
                 focusBorder ??
                 OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.borderLarge20),
-                  borderSide: BorderSide(color: AppColors.primary, width: 1.w),
+                  borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+                  borderSide: const BorderSide(color: AppColors.primary, width: 2),
                 ),
             enabledBorder:
                 isError ?? false
                     ? OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.borderLarge20),
+                      borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
                       borderSide: BorderSide(
                         color: AppColors.error,
                         width: 1.w,
@@ -155,12 +156,10 @@ class WMaskedTextField extends StatelessWidget {
                     )
                     : enabledBorder ??
                         OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            AppSizes.borderLarge20,
-                          ),
-                          borderSide: BorderSide(
+                          borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+                          borderSide: const BorderSide(
                             color: AppColors.box,
-                            width: 1.w,
+                            width: 1,
                           ),
                         ),
           ),
