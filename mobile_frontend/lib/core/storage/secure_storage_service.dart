@@ -13,7 +13,7 @@ class SecureStorageService {
     String? encodedKey =
         await _storage.read(key: LocalStorageKeys.encryptionKey);
     if (encodedKey == null) {
-      final Uint8List key = Hive.generateSecureKey();
+      final Uint8List key = Uint8List.fromList(Hive.generateSecureKey());
       encodedKey = base64UrlEncode(key);
       await _storage.write(key: LocalStorageKeys.encryptionKey, value: encodedKey);
       return key;
