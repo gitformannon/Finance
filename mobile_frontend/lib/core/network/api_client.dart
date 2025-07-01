@@ -11,6 +11,7 @@ import '../../features/profile/data/model/logout_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
+import '../constants/app_routes.dart';
 import '../helpers/logger_helpers.dart';
 import '../navigation/navigation_service.dart';
 import '../storage/local_data_source.dart';
@@ -47,15 +48,51 @@ abstract class ApiClient {
         });
 
     dio.interceptors.addAll([
-      InterceptorsWrapper(onRequest: (options, handler) async {
-        String token = dataSource.getToken();
-        String tokenType = dataSource.getTokenType();
-        AppLoggerUtils.i(token);
-        if (token.isNotEmpty) {
-          options.headers['Authorization'] = "$tokenType $token";
-        }
-        return handler.next(options);
-      }),
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          String token = dataSource.getToken();
+          String tokenType = dataSource.getTokenType();
+          if (token.isNotEmpty) {
+            options.headers['Authorization'] = "$tokenType $token";
+          }
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          final statusCode = error.response?.statusCode;
+          final reqPath = error.requestOptions.path;
+          if (statusCode == 401 &&
+              reqPath != AppApi.r_token &&
+              reqPath != AppApi.login) {
+            final refresh = dataSource.getRefreshToken();
+            if (refresh.isNotEmpty) {
+              try {
+                final refreshDio = Dio(BaseOptions(baseUrl: AppApi.baseUrlProd));
+                final resp = await refreshDio.post(
+                  AppApi.r_token,
+                  data: RefreshTokenRequest(refreshToken: refresh).toJson(),
+                );
+                final newData = LoginUserResponse.fromJson(
+                    resp.data as Map<String, dynamic>);
+                if (newData.accessToken.isNotEmpty) {
+                  await dataSource.setUserToken(newData.accessToken);
+                  await dataSource.setRefreshToken(newData.refreshToken);
+                  await dataSource.setTokenType(newData.tokenType);
+                  error.requestOptions.headers['Authorization'] =
+                      '${newData.tokenType} ${newData.accessToken}';
+                  final clonedRequest = await dio.fetch(error.requestOptions);
+                  return handler.resolve(clonedRequest);
+                }
+              } catch (_) {
+                navigation.navigateTo(AppRoutes.login);
+                await dataSource.setUserToken('');
+                await dataSource.setRefreshToken('');
+                await dataSource.setTokenType('');
+              }
+            }
+          }
+          return handler.next(error);
+        },
+      ),
     ]);
 
     return _ApiClient(
