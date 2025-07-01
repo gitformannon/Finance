@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
@@ -112,18 +113,32 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: AppSizes.spaceM16.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextButton(
-                          onPressed: () =>
-                              context.read<NavigateCubit>().goToRegisterPage(),
-                          child: const Text('Register'),
+                        Expanded(
+                          child: WButton(
+                            onTap: () =>
+                                context.read<NavigateCubit>().goToRegisterPage(),
+                            text: 'Register',
+                            hasNextIcon: true,
+                            nextIcon: SvgPicture.asset(
+                              'assets/svg/ic_arrow_right.svg',
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
                         ),
-                        TextButton(
-                          onPressed: () => context
-                              .read<NavigateCubit>()
-                              .goToForgotPasswordPage(),
-                          child: const Text('Forgot password?'),
+                        SizedBox(width: AppSizes.spaceS12.w),
+                        Expanded(
+                          child: WButton(
+                            onTap: () => context
+                                .read<NavigateCubit>()
+                                .goToForgotPasswordPage(),
+                            text: 'Forgot password?',
+                            hasNextIcon: true,
+                            nextIcon: SvgPicture.asset(
+                              'assets/svg/ic_arrow_right.svg',
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
                         ),
                       ],
                     ),
