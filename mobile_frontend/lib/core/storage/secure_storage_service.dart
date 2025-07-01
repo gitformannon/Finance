@@ -18,6 +18,6 @@ class SecureStorageService {
       await _storage.write(key: LocalStorageKeys.encryptionKey, value: encodedKey);
       return key;
     }
-    return base64Url.decode(encodedKey);
+    return Uint8List.fromList(base64Url.decode(encodedKey));
   }
 }
