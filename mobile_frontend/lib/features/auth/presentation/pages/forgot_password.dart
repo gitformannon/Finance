@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/constants/locale_keys.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
@@ -31,21 +32,49 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Forgot password')),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.paddingM16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            WMaskedTextField(
-              controller: _usernameController,
-              hintText: LocaleKeys.userName.tr(),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSizes.paddingM16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Image.asset(
+                    AppImages.logo,
+                    height: AppSizes.logoSmall60.h,
+                  ),
+                ),
+                SizedBox(height: AppSizes.spaceXL24.h),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.borderLarge20),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(AppSizes.paddingM16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        WMaskedTextField(
+                          controller: _usernameController,
+                          hintText: LocaleKeys.userName.tr(),
+                        ),
+                        SizedBox(height: AppSizes.spaceM16.h),
+                        WButton(
+                          onTap: _send,
+                          text: 'Send',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: AppSizes.spaceM16.h),
-            WButton(
-              onTap: _send,
-              text: 'Send',
-            ),
-          ],
+          ),
         ),
       ),
     );
