@@ -6,8 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/constants/locale_keys.dart';
-import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
-import '../../../shared/presentation/widgets/textfields/w_masked_textfield.dart';
+import '../widgets/auth_widgets.dart';
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -66,37 +65,37 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        WMaskedTextField(
+                        AuthWidgets.textField(
                           controller: _usernameController,
-                          hintText: LocaleKeys.userName.tr(),
+                          hint: LocaleKeys.userName.tr(),
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        WMaskedTextField(
+                        AuthWidgets.textField(
                           controller: _passwordController,
-                          hintText: LocaleKeys.password.tr(),
+                          hint: LocaleKeys.password.tr(),
                           isPassword: true,
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        WMaskedTextField(
+                        AuthWidgets.textField(
                           controller: _confirmPasswordController,
-                          hintText: 'Confirm password',
+                          hint: 'Confirm password',
                           isPassword: true,
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        WButton(
+                        AuthWidgets.actionButton(
                           onTap: _register,
                           text: 'Register',
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        WButton(
+                        AuthWidgets.navigationButton(
                           onTap: () =>
                               context.read<NavigateCubit>().goToLoginPage(),
                           text: 'Back to login',
-                          hasPreviousIcon: true,
-                          prevIcon: SvgPicture.asset(
+                          icon: SvgPicture.asset(
                             'assets/svg/ic_arrow_left.svg',
                             fit: BoxFit.scaleDown,
                           ),
+                          forward: false,
                         ),
                       ],
                     ),
