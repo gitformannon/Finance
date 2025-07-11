@@ -6,8 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
-import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
-import '../../../shared/presentation/widgets/textfields/w_masked_textfield.dart';
+import '../widgets/auth_widgets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -80,14 +79,14 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            WMaskedTextField(
+                            AuthWidgets.textField(
                               controller: _phoneController,
-                              hintText: LocaleKeys.userName.tr(),
+                              hint: LocaleKeys.userName.tr(),
                             ),
                             SizedBox(height: AppSizes.spaceM16.h),
-                            WMaskedTextField(
+                            AuthWidgets.textField(
                               controller: _passwordController,
-                              hintText: LocaleKeys.password.tr(),
+                              hint: LocaleKeys.password.tr(),
                               isPassword: true,
                             ),
                             if (state.status == RequestStatus.error)
@@ -101,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                             SizedBox(height: AppSizes.spaceM16.h),
-                            WButton(
+                            AuthWidgets.actionButton(
                               onTap: _login,
                               isLoading:
                                   state.status == RequestStatus.loading,
@@ -115,12 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: WButton(
+                          child: AuthWidgets.navigationButton(
                             onTap: () =>
                                 context.read<NavigateCubit>().goToRegisterPage(),
                             text: 'Register',
-                            hasNextIcon: true,
-                            nextIcon: SvgPicture.asset(
+                            icon: SvgPicture.asset(
                               'assets/svg/ic_arrow_right.svg',
                               fit: BoxFit.scaleDown,
                             ),
@@ -128,13 +126,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(width: AppSizes.spaceS12.w),
                         Expanded(
-                          child: WButton(
+                          child: AuthWidgets.navigationButton(
                             onTap: () => context
                                 .read<NavigateCubit>()
                                 .goToForgotPasswordPage(),
                             text: 'Forgot password?',
-                            hasNextIcon: true,
-                            nextIcon: SvgPicture.asset(
+                            icon: SvgPicture.asset(
                               'assets/svg/ic_arrow_right.svg',
                               fit: BoxFit.scaleDown,
                             ),
