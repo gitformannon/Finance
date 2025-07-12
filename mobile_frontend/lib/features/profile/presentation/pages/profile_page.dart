@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/themes/app_text_styles.dart';
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
+import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 
@@ -44,15 +46,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text('Username: ${p.username}'),
                 ],
                 const Spacer(),
-                SizedBox(
+                WButton(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => context.read<ProfileCubit>().logout(),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.surface,
-                    ),
-                    child: const Text('Logout'),
+                  onTap: () => context.read<ProfileCubit>().logout(),
+                  text: 'Logout',
+                  backgroundColor: AppColors.primary,
+                  textStyle: AppTextStyles.bodyRegular.copyWith(
+                    color: AppColors.surface,
                   ),
                 ),
               ],
