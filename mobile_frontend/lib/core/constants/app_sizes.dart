@@ -9,6 +9,7 @@ class AppSizes {
   static const double logoLarge120 = 120.0;
   static const double logoSmall60 = 60.0;
   static const double avatarSize48 = 48.0;
+  static const double navbarIcon = 40.0;
 
   // Button sizes
   static const double buttonHeight = 60.0;
@@ -31,7 +32,7 @@ class AppSizes {
   static const double borderSmall = 6.0;
   static const double borderMedium = 36.0;
   static const double borderLarge = 48.0;
-  static const double borderPageBottom = 64.0;
+  static const double borderPageBottom = 58.0;
   static const double borderCircle = 100.0;
 
   // Spacing

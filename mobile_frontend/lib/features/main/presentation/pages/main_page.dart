@@ -34,7 +34,7 @@ class _MainPageState extends State<MainPage> {
     pageController.animateToPage(
       index,
       duration: TimeDelays.medium,
-      curve: Curves.easeInOutBack,
+      curve: Curves.fastEaseInToSlowEaseOut,
     );
   }
 
@@ -81,7 +81,6 @@ class _MainPageState extends State<MainPage> {
                 ),
                 child: BottomNavigationBar(
                   backgroundColor: AppColors.textSecondary,
-                  elevation: 4,
                   items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
@@ -94,13 +93,12 @@ class _MainPageState extends State<MainPage> {
                   ],
                   currentIndex: state.currentIndex,
                   selectedItemColor: AppColors.primary,
-                  unselectedItemColor: Colors.grey,
+                  unselectedItemColor: AppColors.def,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
                   onTap: setPageIndex,
                   type: BottomNavigationBarType.fixed,
-                  selectedFontSize: 12,
-                  unselectedFontSize: 12,
+                  iconSize: AppSizes.navbarIcon
                 ),
               ),
             ),
