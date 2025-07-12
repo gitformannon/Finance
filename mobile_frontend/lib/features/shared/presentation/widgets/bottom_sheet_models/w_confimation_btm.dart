@@ -32,7 +32,7 @@ class ConfirmationBottomModal extends StatelessWidget {
         Text(label ?? "", style: AppTextStyles.bodyRegular, maxLines: 2),
         WButton(
           backgroundColor: AppColors.box,
-          borderRadius: AppSizes.borderMedium12,
+          borderRadius: AppSizes.borderMedium,
           textStyle: AppTextStyles.bodyRegular,
           onTap: () {
             if (cancelFunc != null) {
@@ -46,7 +46,7 @@ class ConfirmationBottomModal extends StatelessWidget {
         ),
         WButton(
           textStyle: AppTextStyles.bodyRegular,
-          borderRadius: AppSizes.borderMedium12,
+          borderRadius: AppSizes.borderMedium,
           onTap: () {
             if (acceptFunc != null) {
               acceptFunc!();

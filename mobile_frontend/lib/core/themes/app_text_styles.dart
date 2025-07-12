@@ -38,11 +38,18 @@ class AppTextStyles {
   );
 
   /// 🧾 BODY TEXT
-  static final TextStyle bodyRegular = custom(fontSize: AppSizes.textSize16);
+  static final TextStyle bodyRegular = custom(
+    fontSize: AppSizes.textSize16,
+  );
 
   static final TextStyle bodyMedium = custom(
     fontSize: AppSizes.textSize16,
     fontWeight: FontWeights.medium,
+  );
+
+  static final TextStyle bodyLarge = custom(
+    fontSize: AppSizes.textSize18,
+    fontWeight: FontWeights.regular,
   );
 
   static final TextStyle bodySemiBold = custom(

@@ -25,7 +25,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+      ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           if (state.status.isLoading()) {

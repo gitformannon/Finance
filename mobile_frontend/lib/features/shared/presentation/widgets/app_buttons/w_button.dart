@@ -34,14 +34,14 @@ class WButton extends StatelessWidget {
     required this.onTap,
     this.text = '',
     this.textColor,
-    this.borderRadius = 10,
+    this.borderRadius = AppSizes.borderLarge,
     this.isDisabled = false,
     this.isLoading = false,
     this.hasError = false,
     this.hasNextIcon = false,
     this.hasPreviousIcon = false,
-    this.width,
-    this.height,
+    this.width = double.infinity,
+    this.height = AppSizes.buttonHeight,
     this.margin,
     this.padding,
     this.textStyle,
@@ -66,17 +66,17 @@ class WButton extends StatelessWidget {
       isDisabled: isDisabled,
       child: Container(
         width: width,
-        height: height ?? AppSizes.buttonHeight48,
+        height: height ?? AppSizes.buttonHeight,
         margin: margin,
         padding: padding ?? EdgeInsets.zero,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color:
-              isDisabled
-                  ? AppColors.box
-                  : (backgroundColor ?? Theme.of(context).colorScheme.primary),
+            isDisabled
+              ? AppColors.box
+              : (backgroundColor ?? Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(borderRadius),
-          border: hasError ? Border.all(color: Colors.red) : border,
+          border: hasError ? Border.all(color: AppColors.error) : border,
           boxShadow: shadow,
         ),
         child:
@@ -95,7 +95,7 @@ class WButton extends StatelessWidget {
                         child ??
                             Text(
                               text,
-                              style: textStyle ?? AppTextStyles.bodyRegular,
+                              style: textStyle ?? AppTextStyles.bodyLarge,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,

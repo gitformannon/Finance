@@ -50,97 +50,55 @@ class _LoginPageState extends State<LoginPage> {
       },
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: AppColors.background,
           appBar: AppBar(
-            title: Text(LocaleKeys.enter.tr()),
+            elevation: 0,
+            backgroundColor: AppColors.background,
           ),
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(AppSizes.paddingM16),
+                padding: const EdgeInsets.all(AppSizes.paddingXS),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Center(
-                      child: Image.asset(
-                        AppImages.logo,
-                        height: AppSizes.logoSmall60.h,
-                      ),
-                    ),
-                    SizedBox(height: AppSizes.spaceXL24.h),
-                    Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSizes.borderLarge20),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.all(AppSizes.paddingM16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            WMaskedTextField(
-                              controller: _phoneController,
-                              hintText: LocaleKeys.userName.tr(),
-                            ),
-                            SizedBox(height: AppSizes.spaceM16.h),
-                            WMaskedTextField(
-                              controller: _passwordController,
-                              hintText: LocaleKeys.password.tr(),
-                              isPassword: true,
-                            ),
-                            if (state.status == RequestStatus.error)
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(top: AppSizes.spaceS12.h),
-                                child: Text(
-                                  state.errorMessage ?? '',
-                                  style:
-                                      const TextStyle(color: AppColors.error),
-                                ),
+                    Padding(
+                      padding:
+                        const EdgeInsets.all(AppSizes.paddingS),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          WMaskedTextField(
+                            controller: _phoneController,
+                            hintText: LocaleKeys.userName.tr(),
+                          ),
+                          SizedBox(height: AppSizes.spaceXXS5.h),
+                          WMaskedTextField(
+                            controller: _passwordController,
+                            hintText: LocaleKeys.password.tr(),
+                            isPassword: true,
+                          ),
+                          if (state.status == RequestStatus.error)
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(top: AppSizes.spaceS12.h),
+                              child: Text(
+                                state.errorMessage ?? '',
+                                style:
+                                    const TextStyle(color: AppColors.error),
                               ),
-                            SizedBox(height: AppSizes.spaceM16.h),
-                            WButton(
-                              onTap: _login,
-                              isLoading:
-                                  state.status == RequestStatus.loading,
-                              text: LocaleKeys.enter.tr(),
                             ),
-                          ],
-                        ),
+                          SizedBox(height: AppSizes.spaceL20.h),
+                          WButton(
+                            onTap: _login,
+                            isLoading:
+                                state.status == RequestStatus.loading,
+                            text: LocaleKeys.enter,
+                          ),
+                          SizedBox(height: AppSizes.spaceL20.h),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: AppSizes.spaceM16.h),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: WButton(
-                            onTap: () =>
-                                context.read<NavigateCubit>().goToRegisterPage(),
-                            text: 'Register',
-                            hasNextIcon: true,
-                            nextIcon: SvgPicture.asset(
-                              'assets/svg/ic_arrow_right.svg',
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: AppSizes.spaceS12.w),
-                        Expanded(
-                          child: WButton(
-                            onTap: () => context
-                                .read<NavigateCubit>()
-                                .goToForgotPasswordPage(),
-                            text: 'Forgot password?',
-                            hasNextIcon: true,
-                            nextIcon: SvgPicture.asset(
-                              'assets/svg/ic_arrow_right.svg',
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),

@@ -143,7 +143,7 @@ class AppWidgets {
     required double width,
     required double height,
     EdgeInsets? margin,
-    double borderRadius = AppSizes.borderSmall6,
+    double borderRadius = AppSizes.borderSmall,
   }) {
     return Shimmer.fromColors(
       baseColor: AppColors.primary,

@@ -16,7 +16,7 @@ class WBottomSheetDivider extends StatelessWidget {
       height: 5.h,
       width: 30.w,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
           color: AppColors.box),
     );
   }

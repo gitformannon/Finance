@@ -16,8 +16,8 @@ ThemeData lightThemeData = ThemeData(
   ),
 
   appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.surface,
-    elevation: 4.0,
+    backgroundColor:  AppColors.background,
+    elevation: 0.0,
     iconTheme: IconThemeData(color: Colors.black),
     titleTextStyle: TextStyle(
       color: Colors.black,
@@ -52,8 +52,8 @@ ThemeData darkThemeData = ThemeData(
   ),
 
   appBarTheme: AppBarTheme(
-    backgroundColor:  Color(0xFF121212), // masalan: Color(0xFF121212)
-    elevation: 4.0,
+    backgroundColor:  AppColors.background, // masalan: Color(0xFF121212)
+    elevation: 0.0,
     iconTheme: const IconThemeData(color: Colors.white),
     titleTextStyle: const TextStyle(
       color: Colors.white,

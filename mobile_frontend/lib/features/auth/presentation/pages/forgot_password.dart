@@ -40,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(AppSizes.paddingM16),
+            padding: const EdgeInsets.all(AppSizes.paddingM),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,11 +56,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   elevation: 4,
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(AppSizes.borderLarge20),
+                        BorderRadius.circular(AppSizes.borderLarge),
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsets.all(AppSizes.paddingM16),
+                        const EdgeInsets.all(AppSizes.paddingM),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [

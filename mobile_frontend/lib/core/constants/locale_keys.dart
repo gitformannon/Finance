@@ -12,7 +12,7 @@
   static const logout = 'logout';
   static const userName = 'userName';
   static const password = 'password';
-  static const enter = 'enter';
+  static const enter = 'Login';
   static const analytics = 'analytics';
   static const serverError="serverError";
 }

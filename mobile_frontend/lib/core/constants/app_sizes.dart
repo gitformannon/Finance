@@ -11,7 +11,7 @@ class AppSizes {
   static const double avatarSize48 = 48.0;
 
   // Button sizes
-  static const double buttonHeight48 = 48.0;
+  static const double buttonHeight = 60.0;
   static const double buttonMinWidth120 = 120.0;
 
   // Card sizes
@@ -22,18 +22,19 @@ class AppSizes {
   static const double appBarHeight56 = 56.0;
 
   // Padding
-  static const double paddingXS4 = 4.0;
-  static const double paddingS8 = 8.0;
-  static const double paddingM16 = 16.0;
+  static const double paddingXS = 1.0;
+  static const double paddingS = 5.0;
+  static const double paddingM = 12.0;
+  static const double paddingL = 24.0;
 
   // Radius
-  static const double borderSmall6 = 6.0;
-  static const double borderMedium12 = 12.0;
-  static const double borderLarge20 = 20.0;
-  static const double borderCircle100 = 100.0;
+  static const double borderSmall = 6.0;
+  static const double borderMedium = 36.0;
+  static const double borderLarge = 48.0;
+  static const double borderCircle = 100.0;
 
   // Spacing
-  static const double spaceXXS4 = 4.0;
+  static const double spaceXXS5 = 5.0;
   static const double spaceXS8 = 8.0;
   static const double spaceS12 = 12.0;
   static const double spaceM16 = 16.0;
@@ -53,5 +54,5 @@ class AppSizes {
   static const double textSize30 = 30.0;
 
   // Textfield sizes
-  static const double textFieldHeight60 = 60.0;
+  static const double textFieldHeight = 87.0;
 }

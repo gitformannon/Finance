@@ -44,14 +44,14 @@ class _AppTextFieldState extends State<AppTextField> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+        borderRadius: BorderRadius.circular(AppSizes.borderMedium),
       ),
       child: TextField(
         controller: widget.controller,
         enabled: widget.enabled,
         keyboardType: _keyboardType(),
         obscureText: widget.isPassword ? _obscure : false,
-        style: const TextStyle(color: AppColors.textPrimary),
+        style: const TextStyle(color: AppColors.surface),
         decoration: InputDecoration(
           label: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -72,17 +72,17 @@ class _AppTextFieldState extends State<AppTextField> {
           filled: true,
           fillColor: AppColors.surface,
           contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.paddingM16, vertical: 12),
+              horizontal: AppSizes.paddingM, vertical: 12),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium),
             borderSide: const BorderSide(color: AppColors.box),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium),
             borderSide: const BorderSide(color: AppColors.box),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppSizes.borderMedium12),
+            borderRadius: BorderRadius.circular(AppSizes.borderMedium),
             borderSide: const BorderSide(color: AppColors.primary, width: 2),
           ),
           suffixIcon: widget.isPassword
