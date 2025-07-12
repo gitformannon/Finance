@@ -27,6 +27,7 @@ class AppSizes {
   static const double paddingS = 5.0;
   static const double paddingM = 12.0;
   static const double paddingL = 24.0;
+  static const double paddingNavBar = 20.0;
 
   // Radius
   static const double borderSmall = 6.0;

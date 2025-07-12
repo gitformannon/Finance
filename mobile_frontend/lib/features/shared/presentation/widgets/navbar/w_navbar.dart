@@ -21,37 +21,34 @@ class WNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.paddingS,
-        vertical: AppSizes.paddingS,
+      padding: const EdgeInsets.only(
+        left: AppSizes.paddingS,
+        right: AppSizes.paddingS,
+        top: AppSizes.paddingS,
+        bottom: AppSizes.paddingNavBar
       ),
       child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          bottom: Radius.circular(AppSizes.borderPageBottom),
-          top: Radius.circular(AppSizes.borderMedium),
+        borderRadius: const BorderRadius.all(Radius.circular(AppSizes.borderMedium),
         ),
         child: Theme(
           data: Theme.of(context).copyWith(
             splashColor: AppColors.primary.withOpacity(0.2),
             highlightColor: AppColors.primary.withOpacity(0.1),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: AppSizes.paddingM),
-            child: SizedBox(
-              height: 72,
-              child: BottomNavigationBar(
-                backgroundColor: AppColors.textSecondary,
-                items: items,
-                currentIndex: currentIndex,
-                selectedItemColor: AppColors.primary,
-                unselectedItemColor: AppColors.def,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                onTap: onTap,
-                type: BottomNavigationBarType.fixed,
-                iconSize: AppSizes.navbarIcon,
-                enableFeedback: false,
-              ),
+          child: Container(
+            height: 87,
+            child: BottomNavigationBar(
+              backgroundColor: AppColors.textSecondary,
+              items: items,
+              currentIndex: currentIndex,
+              selectedItemColor: AppColors.primary,
+              unselectedItemColor: AppColors.def,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              onTap: onTap,
+              type: BottomNavigationBarType.fixed,
+              iconSize: AppSizes.navbarIcon,
+              enableFeedback: false,
             ),
           ),
         ),
