@@ -33,8 +33,8 @@ class _MainPageState extends State<MainPage> {
   _animateToPage(int index) {
     pageController.animateToPage(
       index,
-      duration: TimeDelays.short,
-      curve: Curves.easeInOut,
+      duration: TimeDelays.medium,
+      curve: Curves.easeInOutBack,
     );
   }
 
@@ -82,20 +82,21 @@ class _MainPageState extends State<MainPage> {
                 child: BottomNavigationBar(
                   backgroundColor: AppColors.textSecondary,
                   elevation: 4,
-                  items: <BottomNavigationBarItem>[
+                  items: const <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: const Icon(Icons.home),
-                      label: LocaleKeys.home.tr(),
+                      icon: Icon(Icons.home),
+                      label: '',
                     ),
                     BottomNavigationBarItem(
-                      icon: const Icon(Icons.person),
-                      label: LocaleKeys.profile.tr(),
+                      icon: Icon(Icons.person),
+                      label: '',
                     ),
                   ],
                   currentIndex: state.currentIndex,
                   selectedItemColor: AppColors.primary,
                   unselectedItemColor: Colors.grey,
-                  showUnselectedLabels: true,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
                   onTap: setPageIndex,
                   type: BottomNavigationBarType.fixed,
                   selectedFontSize: 12,
