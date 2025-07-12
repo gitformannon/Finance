@@ -9,7 +9,8 @@ import '../../../../../../core/constants/app_sizes.dart';
 class WNavbar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final List<NavigationBar> destinations;
+  /// List of navigation destinations displayed inside the [NavigationBar].
+  final List<NavigationDestination> destinations;
 
   const WNavbar({
     super.key,
