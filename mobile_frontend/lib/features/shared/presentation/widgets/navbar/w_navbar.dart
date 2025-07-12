@@ -36,7 +36,7 @@ class WNavbar extends StatelessWidget {
             highlightColor: AppColors.primary.withOpacity(0.1),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: AppSizes.paddingM),
             child: SizedBox(
               height: 72,
               child: BottomNavigationBar(
