@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
+import '../../../home/presentation/pages/home_page.dart';
 import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_sizes.dart';
 
 class MainPage extends StatefulWidget {
   final int initialPage;
@@ -57,7 +59,7 @@ class _MainPageState extends State<MainPage> {
             child: PageView(
               controller: pageController,
               children: [
-                Container(),
+                const HomePage(),
                 Container(),
                 BlocProvider(
                   create: (context) => getItInstance<ProfileCubit>(),
@@ -66,22 +68,38 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: AppColors.surface,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: LocaleKeys.profile.tr(),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(AppSizes.spaceS12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  splashColor: AppColors.primary.withOpacity(0.2),
+                  highlightColor: AppColors.primary.withOpacity(0.1),
+                ),
+                child: BottomNavigationBar(
+                  backgroundColor: AppColors.surface,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: const Icon(Icons.home),
+                      label: LocaleKeys.home.tr(),
+                    ),
+                    const BottomNavigationBarItem(
+                      icon: Icon(Icons.person),
+                      label: LocaleKeys.profile.tr(),
+                    ),
+                  ],
+                  currentIndex: state.currentIndex,
+                  selectedItemColor: AppColors.primary,
+                  unselectedItemColor: Colors.grey,
+                  showUnselectedLabels: true,
+                  onTap: setPageIndex,
+                  type: BottomNavigationBarType.fixed,
+                  selectedFontSize: 12,
+                  unselectedFontSize: 12,
+                ),
               ),
-            ],
-            currentIndex: state.currentIndex,
-            selectedItemColor: Colors.purple,
-            unselectedItemColor: Colors.grey,
-            showUnselectedLabels: true,
-            onTap: setPageIndex,
-            type: BottomNavigationBarType.fixed,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
+            ),
           ),
         );
       },

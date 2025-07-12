@@ -26,4 +26,5 @@
   static const resetPassword = 'resetPassword';
   static const signUpText = 'signUpText';
   static const signUp = 'signUp';
+  static const home = 'home';
 }
