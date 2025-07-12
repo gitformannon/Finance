@@ -79,26 +79,39 @@ class _MainPageState extends State<MainPage> {
                   splashColor: AppColors.primary.withOpacity(0.2),
                   highlightColor: AppColors.primary.withOpacity(0.1),
                 ),
-                child: BottomNavigationBar(
-                  backgroundColor: AppColors.textSecondary,
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: '',
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Container(
+                    height: 72,
+                    child: BottomNavigationBar(
+                      backgroundColor: AppColors.textSecondary,
+                      items: const <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Icon(Icons.home)
+                          ),
+                          label: ''
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Icon(Icons.person)
+                          ),
+                          label: ''
+                        ),
+                      ],
+                      currentIndex: state.currentIndex,
+                      selectedItemColor: AppColors.primary,
+                      unselectedItemColor: AppColors.def,
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      onTap: setPageIndex,
+                      type: BottomNavigationBarType.fixed,
+                      iconSize: AppSizes.navbarIcon,
+                      enableFeedback: false,
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person),
-                      label: '',
-                    ),
-                  ],
-                  currentIndex: state.currentIndex,
-                  selectedItemColor: AppColors.primary,
-                  unselectedItemColor: AppColors.def,
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  onTap: setPageIndex,
-                  type: BottomNavigationBarType.fixed,
-                  iconSize: AppSizes.navbarIcon
+                  ),
                 ),
               ),
             ),
