@@ -104,14 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                                 child: WTextButton(
                                   onTap: () =>
                                       context.read<NavigateCubit>().goToRegisterPage(),
-                                  text: 'Register',
+                                  text: LocaleKeys.signup,
                                 ),
                               ),
                               Expanded(
                                 child: WTextButton(
                                   onTap: () =>
                                       context.read<NavigateCubit>().goToForgotPasswordPage(),
-                                  text: 'Forgot password?',
+                                  text: LocaleKeys.resetpass,
                                 ),
                               ),
                             ],

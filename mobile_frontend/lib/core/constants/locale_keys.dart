@@ -12,7 +12,9 @@
   static const logout = 'logout';
   static const userName = 'userName';
   static const password = 'password';
-  static const enter = 'Login';
+  static const enter = 'login';
   static const analytics = 'analytics';
   static const serverError="serverError";
+  static const signup = 'signup';
+  static const resetpass = 'Forgot password?';
 }
