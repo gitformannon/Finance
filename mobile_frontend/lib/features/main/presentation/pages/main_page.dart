@@ -1,3 +1,4 @@
+import 'package:Finance/core/constants/locale_keys.dart';
 import 'package:Finance/core/constants/time_delay.dart';
 import 'package:Finance/features/main/cubits/main/main_cubit.dart';
 import 'package:flutter/material.dart';
@@ -69,16 +70,8 @@ class _MainPageState extends State<MainPage> {
             backgroundColor: AppColors.surface,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: "Mijozlar",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: "Mijozlar",
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: "Profile",
+                label: LocaleKeys.profile.tr(),
               ),
             ],
             currentIndex: state.currentIndex,
