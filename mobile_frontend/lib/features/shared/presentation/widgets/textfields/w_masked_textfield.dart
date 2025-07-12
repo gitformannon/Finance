@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/themes/app_text_styles.dart';
 
-class WMaskedTextField extends StatelessWidget {
+class WMaskedTextField extends StatefulWidget {
   final String? hintText;
   final Function? onTap;
   final SvgPicture? prefixIcon;
@@ -71,96 +71,120 @@ class WMaskedTextField extends StatelessWidget {
   });
 
   @override
+  State<WMaskedTextField> createState() => _WMaskedTextFieldState();
+}
+
+class _WMaskedTextFieldState extends State<WMaskedTextField> {
+  late bool _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.isPassword;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (onTap != null) {
-          onTap!();
+        if (widget.onTap != null) {
+          widget.onTap!();
         }
       },
       child: SizedBox(
         child: TextField(
-          maxLines: isPassword ? 1 : maxLines,
-          autofocus: autofocus,
-          style: style ?? AppTextStyles.bodyRegular.copyWith(color: AppColors.textSecondary),
-          controller: controller,
-          enabled: enable,
-          onChanged: onChanged,
-          keyboardType: keyboardType,
-          obscureText: isPassword,
-          focusNode: focusNode,
-          textInputAction: textInputAction,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
+          autofocus: widget.autofocus,
+          style: widget.style ??
+              AppTextStyles.bodyRegular.copyWith(color: AppColors.textSecondary),
+          controller: widget.controller,
+          enabled: widget.enable,
+          onChanged: widget.onChanged,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.isPassword ? _obscure : false,
+          focusNode: widget.focusNode,
+          textInputAction: widget.textInputAction,
           onSubmitted: (val) {
-            if (onSubmit != null) {
-              onSubmit!(val);
+            if (widget.onSubmit != null) {
+              widget.onSubmit!(val);
             }
           },
-          inputFormatters: formater,
+          inputFormatters: widget.formater,
           decoration: InputDecoration(
-            hintText: hintText,
-            hintStyle:
-              hintTextStyle ??
-              AppTextStyles.bodyRegular.copyWith(
-                color: AppColors.def,
-              ),
-            prefixIcon: prefixIcon,
-            prefixText: prefixText,
-            prefixStyle: prefixStyle,
-            suffixText: suffixText,
-            suffixStyle: suffixStyle,
-            // suffixIcon: isError ?? false
-            //     ? SvgPicture.asset(
-            //         AppSvgs.isCircleError,
-            //         fit: BoxFit.scaleDown,
-            //       )
-            //     : suffixIcon,
-            fillColor: backgroundColor ?? AppColors.surface,
+            hintText: widget.hintText,
+            hintStyle: widget.hintTextStyle ??
+                AppTextStyles.bodyRegular.copyWith(
+                  color: AppColors.def,
+                ),
+            prefixIcon: widget.prefixIcon,
+            prefixText: widget.prefixText,
+            prefixStyle: widget.prefixStyle,
+            suffixText: widget.suffixText,
+            suffixStyle: widget.suffixStyle,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    icon: Icon(
+                      _obscure
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: AppColors.def,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscure = !_obscure;
+                      });
+                    },
+                  )
+                : widget.suffixIcon,
+            fillColor: widget.backgroundColor ?? AppColors.surface,
             filled: true,
-            contentPadding: contentPadding ??
-                const EdgeInsets.symmetric(horizontal: AppSizes.paddingL, vertical: 17),
+            contentPadding: widget.contentPadding ??
+                const EdgeInsets.symmetric(
+                    horizontal: AppSizes.paddingL, vertical: 17),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.borderMedium),
               borderSide: const BorderSide(color: AppColors.background),
             ),
-            disabledBorder:
-              isError ?? false
+            disabledBorder: widget.isError ?? false
                 ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                  borderSide: BorderSide(
-                    color: AppColors.error,
-                    width: 1.w,
-                  ),
-                )
-              : OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                borderSide: BorderSide(
-                  color: AppColors.surface,
-                  width: 1.w,
-                ),
-                  ),
-            focusedBorder:
-              focusBorder ??
-              OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                borderSide: const BorderSide(color: AppColors.primary, width: 2),
-              ),
-            enabledBorder:
-              isError ?? false
-                ? OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                  borderSide: BorderSide(
-                    color: AppColors.error,
-                    width: 1.w,
-                  ),
-                )
-                : enabledBorder ??
-                  OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                    borderSide: const BorderSide(
-                      color: AppColors.background,
-                      width: 1,
+                    borderSide: BorderSide(
+                      color: AppColors.error,
+                      width: 1.w,
+                    ),
+                  )
+                : OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.borderMedium),
+                    borderSide: BorderSide(
+                      color: AppColors.surface,
+                      width: 1.w,
                     ),
                   ),
+            focusedBorder: widget.focusBorder ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+                  borderSide:
+                      const BorderSide(color: AppColors.primary, width: 2),
+                ),
+            enabledBorder: widget.isError ?? false
+                ? OutlineInputBorder(
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.borderMedium),
+                    borderSide: BorderSide(
+                      color: AppColors.error,
+                      width: 1.w,
+                    ),
+                  )
+                : widget.enabledBorder ??
+                    OutlineInputBorder(
+                      borderRadius:
+                          BorderRadius.circular(AppSizes.borderMedium),
+                      borderSide: const BorderSide(
+                        color: AppColors.background,
+                        width: 1,
+                      ),
+                    ),
           ),
         ),
       ),
