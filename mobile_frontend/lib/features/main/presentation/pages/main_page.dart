@@ -76,17 +76,11 @@ class _MainPageState extends State<MainPage> {
             onTap: setPageIndex,
             destinations: const [
               NavigationDestination(
-                icon: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Icon(Icons.home),
-                ),
+                icon: Icon(Icons.home),
                 label: '',
               ),
               NavigationDestination(
-                icon: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Icon(Icons.person),
-                ),
+                icon: Icon(Icons.person),
                 label: '',
               ),
             ],

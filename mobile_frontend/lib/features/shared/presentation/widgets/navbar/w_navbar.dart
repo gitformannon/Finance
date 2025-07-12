@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/constants/app_colors.dart';
-/// A reusable navigation bar styled according to the design used on
-/// [MainPage]. It accepts a list of [NavigationDestination]s and notifies
-/// about index changes via [onTap].
+import '../../../../../../core/constants/app_sizes.dart';
+
+/// A reusable navigation bar styled according to the
+/// design used on [MainPage]. It accepts a list of navigation
+/// items and notifies about index changes via [onTap].
 class WNavbar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final List<NavigationDestination> destinations;
+  final List<NavigationBar> destinations;
 
   const WNavbar({
     super.key,
@@ -18,11 +20,32 @@ class WNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      onDestinationSelected: onTap,
-      indicatorColor: AppColors.primary.withOpacity(0.2),
-      destinations: destinations,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: AppSizes.paddingS,
+        right: AppSizes.paddingS,
+        top: AppSizes.paddingS,
+        bottom: AppSizes.paddingNavBar
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(AppSizes.borderMedium),
+        ),
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: AppColors.primary.withOpacity(0.2),
+            highlightColor: AppColors.primary.withOpacity(0.1),
+          ),
+          child: Container(
+            height: 87,
+            child: NavigationBar(
+              selectedIndex: currentIndex,
+              onDestinationSelected: onTap,
+              indicatorColor: AppColors.primary.withOpacity(0.2),
+              destinations: destinations,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
