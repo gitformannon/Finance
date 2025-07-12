@@ -17,6 +17,7 @@
   "analytics": "Analytics",
   "live": "LIVE",
   "control": "Control",
+  "home": "Home",
   "profile": "Profile",
   "serverError": "Server Unavaliable",
   "resetPassword": "Forgot password?",
