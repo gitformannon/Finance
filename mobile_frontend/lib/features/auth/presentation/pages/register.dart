@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/constants/locale_keys.dart';
+import '../../../../core/themes/app_text_styles.dart';
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
@@ -72,23 +73,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       WMaskedTextField(
                         controller: _emailController,
-                        hintText: 'Email',
+                        hintText: LocaleKeys.email.tr(),
                       ),
                       SizedBox(height: AppSizes.spaceXXS5.h),
                       WMaskedTextField(
                         controller: _codeController,
-                        hintText: 'Code',
+                        hintText: LocaleKeys.totp.tr(),
                       ),
                       SizedBox(height: AppSizes.spaceXXS5.h),
                       WMaskedTextField(
                         controller: _newPasswordController,
-                        hintText: 'New password',
+                        hintText: LocaleKeys.newPass.tr(),
                         isPassword: true,
                       ),
                       SizedBox(height: AppSizes.spaceXXS5.h),
                       WMaskedTextField(
                         controller: _confirmPasswordController,
-                        hintText: 'Confirm password',
+                        hintText: LocaleKeys.confirmNewPass.tr(),
                         isPassword: true,
                       ),
                       if (_errorMessage != null)
@@ -103,13 +104,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(height: AppSizes.spaceL20.h),
                       WButton(
                         onTap: _register,
-                        text: 'Register',
+                        text: LocaleKeys.signUp.tr(),
                       ),
                       SizedBox(height: AppSizes.spaceL20.h),
-                      WTextButton(
-                        onTap:
-                            () => context.read<NavigateCubit>().goToLoginPage(),
-                        text: 'Back to login',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(LocaleKeys.enterText.tr(),
+                              style: AppTextStyles.bodyMedium
+                          ),
+                          SizedBox(width: AppSizes.spaceS12.w,),
+                          WTextButton(
+                            onTap:
+                                () => context.read<NavigateCubit>().goToLoginPage(),
+                            text: LocaleKeys.enter.tr(),
+                          ),
+                        ],
                       ),
                     ],
                   ),

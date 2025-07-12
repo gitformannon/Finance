@@ -12,11 +12,18 @@
   "logout": "Logout",
   "userName": "Username",
   "password": "Password",
+  "email": "Email",
+  "totp": "Code",
+  "newPass": "New password",
+  "confirmNewPass": "Confirm password",
   "enter": "Login",
+  "enterText": "Already have an account?",
   "analytics": "Analytics",
   "live": "LIVE",
   "control": "Control",
   "profile": "Profile",
   "serverError": "Server Unavaliable",
-  "resetPass": "Forgot password?"
+  "resetPassword": "Forgot password?",
+  "signUpText": "Don't have an account?",
+  "signUp": "Register"
 }

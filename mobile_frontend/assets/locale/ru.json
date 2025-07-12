@@ -13,10 +13,13 @@
   "userName": "Username",
   "password": "Password",
   "enter": "Login",
+  "enterText": "Already have an account?",
   "analytics": "Analytics",
   "live": "LIVE",
   "control": "Control",
   "profile": "Profile",
   "serverError": "Server Unavaliable",
-  "resetPass": "Forgot password?"
+  "resetPassword": "Forgot password?",
+  "signUpText": "Don't have an account?",
+  "signUp": "Register"
 }

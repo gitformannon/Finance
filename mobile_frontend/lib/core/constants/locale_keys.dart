@@ -12,11 +12,18 @@
   static const logout = 'logout';
   static const userName = 'userName';
   static const password = 'password';
+  static const email = 'email';
+  static const totp = 'totp';
+  static const newPass = 'newPass';
+  static const confirmNewPass = 'confirmNewPass';
   static const enter = 'enter';
+  static const enterText = 'enterText';
   static const analytics = 'analytics';
   static const live = 'live';
   static const control = 'control';
   static const profile = 'profile';
   static const serverError = 'serverError';
-  static const resetPass = 'resetPass';
+  static const resetPassword = 'resetPassword';
+  static const signUpText = 'signUpText';
+  static const signUp = 'signUp';
 }

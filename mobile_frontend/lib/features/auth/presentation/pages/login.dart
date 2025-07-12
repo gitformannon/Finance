@@ -1,3 +1,4 @@
+import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,23 +97,29 @@ class _LoginPageState extends State<LoginPage> {
                                 state.status == RequestStatus.loading,
                             text: LocaleKeys.enter.tr(),
                           ),
-                          SizedBox(height: AppSizes.spaceL20.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          SizedBox(height: AppSizes.spaceS12.h),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: WTextButton(
-                                  onTap: () =>
-                                      context.read<NavigateCubit>().goToRegisterPage(),
-                                  text: LocaleKeys.enter.tr(),
-                                ),
+                              WTextButton(
+                                onTap: () =>
+                                  context.read<NavigateCubit>().goToForgotPasswordPage(),
+                                text: LocaleKeys.resetPassword.tr(),
                               ),
-                              Expanded(
-                                child: WTextButton(
-                                  onTap: () =>
-                                      context.read<NavigateCubit>().goToForgotPasswordPage(),
-                                  text: LocaleKeys.resetPass.tr(),
-                                ),
+                              SizedBox(height: AppSizes.spaceXL24.h),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(LocaleKeys.signUpText.tr(),
+                                    style: AppTextStyles.bodyMedium
+                                  ),
+                                  SizedBox(width: AppSizes.spaceS12.w,),
+                                  WTextButton(
+                                    onTap: () =>
+                                      context.read<NavigateCubit>().goToRegisterPage(),
+                                    text: LocaleKeys.signUp.tr(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
