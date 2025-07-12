@@ -74,15 +74,15 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: WNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
-            items: const [
-              BottomNavigationBarItem(
+            destinations: const [
+              NavigationDestination(
                 icon: Align(
                   alignment: Alignment.bottomCenter,
                   child: Icon(Icons.home),
                 ),
                 label: '',
               ),
-              BottomNavigationBarItem(
+              NavigationDestination(
                 icon: Align(
                   alignment: Alignment.bottomCenter,
                   child: Icon(Icons.person),
