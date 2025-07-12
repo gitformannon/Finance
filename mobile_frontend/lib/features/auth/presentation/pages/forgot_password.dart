@@ -65,24 +65,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       children: [
                         WMaskedTextField(
                           controller: _usernameController,
-                          hint: LocaleKeys.userName.tr(),
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        AuthWidgets.actionButton(
+                        WButton(
                           onTap: _send,
                           text: 'Send',
                         ),
                         SizedBox(height: AppSizes.spaceM16.h),
-                        AuthWidgets.navigationButton(
+                        WButton(
                           onTap: () =>
                               context.read<NavigateCubit>().goToLoginPage(),
                           text: 'Back to login',
-                          icon: SvgPicture.asset(
-                            'assets/svg/ic_arrow_left.svg',
-                            fit: BoxFit.scaleDown,
                           ),
-                          forward: false,
-                        ),
                       ],
                     ),
                   ),
