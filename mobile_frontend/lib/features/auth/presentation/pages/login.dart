@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                             onTap: _login,
                             isLoading:
                                 state.status == RequestStatus.loading,
-                            text: LocaleKeys.enter,
+                            text: LocaleKeys.enter.tr(),
                           ),
                           SizedBox(height: AppSizes.spaceL20.h),
                           Row(
@@ -104,14 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                                 child: WTextButton(
                                   onTap: () =>
                                       context.read<NavigateCubit>().goToRegisterPage(),
-                                  text: LocaleKeys.signup,
+                                  text: LocaleKeys.enter.tr(),
                                 ),
                               ),
                               Expanded(
                                 child: WTextButton(
                                   onTap: () =>
                                       context.read<NavigateCubit>().goToForgotPasswordPage(),
-                                  text: LocaleKeys.resetpass,
+                                  text: LocaleKeys.resetPass.tr(),
                                 ),
                               ),
                             ],

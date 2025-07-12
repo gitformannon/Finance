@@ -7,14 +7,16 @@
   "pleaseUpdate": "There is a newer version of app available please update it now.",
   "warning": "Warning!",
   "accountDelete": "Do you want to delete account?",
-  "deletedAccount": "Account has deleted",
+  "deletedAccount": "Account was deleted",
   "logoutWarning": "Do you want to exit the app?",
   "logout": "Logout",
   "userName": "Username",
   "password": "Password",
-  "enter": "Enter",
+  "enter": "Login",
   "analytics": "Analytics",
   "live": "LIVE",
   "control": "Control",
-  "profile": "Profile"
+  "profile": "Profile",
+  "serverError": "Server Unavaliable",
+  "resetPass": "Forgot password?"
 }
