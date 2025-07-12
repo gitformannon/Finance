@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
+import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
 import '../../../shared/presentation/widgets/textfields/w_masked_textfield.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_images.dart';
@@ -95,6 +95,26 @@ class _LoginPageState extends State<LoginPage> {
                             isLoading:
                                 state.status == RequestStatus.loading,
                             text: LocaleKeys.enter,
+                          ),
+                          SizedBox(height: AppSizes.spaceL20.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: WTextButton(
+                                  onTap: () =>
+                                      context.read<NavigateCubit>().goToRegisterPage(),
+                                  text: 'Register',
+                                ),
+                              ),
+                              Expanded(
+                                child: WTextButton(
+                                  onTap: () =>
+                                      context.read<NavigateCubit>().goToForgotPasswordPage(),
+                                  text: 'Forgot password?',
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: AppSizes.spaceL20.h),
                         ],
