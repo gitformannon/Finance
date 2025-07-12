@@ -11,6 +11,7 @@ import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
+import '../../../shared/presentation/widgets/navbar/w_navbar.dart';
 
 class MainPage extends StatefulWidget {
   final int initialPage;
@@ -70,51 +71,25 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingS, vertical: AppSizes.paddingS),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(AppSizes.borderPageBottom), top: Radius.circular(AppSizes.borderMedium)),
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  splashColor: AppColors.primary.withOpacity(0.2),
-                  highlightColor: AppColors.primary.withOpacity(0.1),
+          bottomNavigationBar: WNavbar(
+            currentIndex: state.currentIndex,
+            onTap: setPageIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Icon(Icons.home),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Container(
-                    height: 72,
-                    child: BottomNavigationBar(
-                      backgroundColor: AppColors.textSecondary,
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Icon(Icons.home)
-                          ),
-                          label: ''
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Icon(Icons.person)
-                          ),
-                          label: ''
-                        ),
-                      ],
-                      currentIndex: state.currentIndex,
-                      selectedItemColor: AppColors.primary,
-                      unselectedItemColor: AppColors.def,
-                      showSelectedLabels: false,
-                      showUnselectedLabels: false,
-                      onTap: setPageIndex,
-                      type: BottomNavigationBarType.fixed,
-                      iconSize: AppSizes.navbarIcon,
-                      enableFeedback: false,
-                    ),
-                  ),
-                ),
+                label: '',
               ),
-            ),
+              BottomNavigationBarItem(
+                icon: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Icon(Icons.person),
+                ),
+                label: '',
+              ),
+            ],
           ),
         );
       },
