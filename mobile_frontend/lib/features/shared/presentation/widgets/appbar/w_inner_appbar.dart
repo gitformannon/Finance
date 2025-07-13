@@ -32,7 +32,9 @@ class SubpageAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: preferredSize.height,
       decoration: BoxDecoration(
         gradient: gradient ?? const LinearGradient(
-          colors: [AppColors.primary, AppColors.secondary],
+          colors: [AppColors.primary, AppColors.background],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
         color: backgroundColor,
       ),

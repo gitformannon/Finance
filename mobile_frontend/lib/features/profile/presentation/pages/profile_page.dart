@@ -65,25 +65,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
                 const Spacer(),
                 WButton(
-                  width: double.infinity,
                   onTap: () => context.read<ProfileCubit>().logout(),
                   text: 'Logout',
-                  backgroundColor: AppColors.primary,
-                  textStyle: AppTextStyles.bodyRegular.copyWith(
-                    color: AppColors.surface,
-                  ),
                 ),
                 const SizedBox(height: 8),
                 WButton(
-                  width: double.infinity,
                   onTap: () => context
                       .read<ProfileCubit>()
                       .updateName(_firstNameController.text, _lastNameController.text),
                   text: 'Save',
-                  backgroundColor: AppColors.primary,
-                  textStyle: AppTextStyles.bodyRegular.copyWith(
-                    color: AppColors.surface,
-                  ),
                 ),
               ],
             ),
