@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
             firstName: profile?.firstName ?? 'User',
             lastName: profile?.lastName ?? '',
             username: profile?.username ?? '',
-            profileImage: const AssetImage(AppImages.logo),
+            profileImage: const AssetImage(AppImages.profileDefault),
             onProfileTap: () =>
                 context.read<NavigateCubit>().goToProfilePage(),
             onNotificationTap: () {},
