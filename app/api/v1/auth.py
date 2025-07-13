@@ -191,6 +191,18 @@ async def upload_profile_image(
     import uuid, os
     from pathlib import Path
 
+    # Remove old profile image if it exists and isn't the default
+    if user.profile_image and user.profile_image != config.DEFAULT_PROFILE_IMAGE:
+        old = user.profile_image.lstrip("/")
+        if old.startswith("assets/"):
+            old = old[len("assets/") :]
+        old_path = config.BASE_DIR / "mobile_frontend" / "assets" / old
+        try:
+            if old_path.is_file():
+                old_path.unlink()
+        except OSError:
+            pass
+
     filename = f"{uuid.uuid4()}_{file.filename}"
     os.makedirs(config.PROFILE_IMAGES_PATH, exist_ok=True)
     file_path = config.PROFILE_IMAGES_PATH / filename
