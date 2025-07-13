@@ -13,4 +13,5 @@ static const Color textSecondary = Color(0xFF343434);
 static const Color error = Color(0xFFEF5B5B);
 static const Color box = Color(0xF1F1F1F1);
 static const Color def = Color(0xFF999999);
+static const Color transparent = Color(0x00000000);
 }

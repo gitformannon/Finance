@@ -74,14 +74,14 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: WNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
-            destinations: const [
-              NavigationDestination(
+            items: const [
+              BottomNavigationBarItem(
                 icon: Icon(Icons.home, size: AppSizes.navbarIcon),
-                label: '',
+                label: 'Home',
               ),
-              NavigationDestination(
-                icon: Icon(Icons.person, size: AppSizes.navbarIcon, ),
-                label: '',
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person, size: AppSizes.navbarIcon),
+                label: 'Profile',
               ),
             ],
           ),
