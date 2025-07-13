@@ -130,12 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                 ],
-                const Spacer(),
-                WButton(
-                  onTap: () => context.read<ProfileCubit>().logout(),
-                  text: 'Logout',
-                ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 WButton(
                   onTap: () => context.read<NavigateCubit>().goToEditNamePage(),
                   text: 'Edit name',
@@ -144,6 +139,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 WButton(
                   onTap: () => context.read<NavigateCubit>().goToTotpPage(),
                   text: 'Two-factor auth',
+                ),
+                const Spacer(),
+                WButton(
+                  onTap: () => context.read<ProfileCubit>().logout(),
+                  text: 'Logout',
                 ),
               ],
             ),
