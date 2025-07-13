@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+from fastapi.staticfiles import StaticFiles
+
+import config
 
 from api.v1.auth import router as auth_router
 
@@ -8,6 +11,13 @@ app = FastAPI(
     title="Personal Budget API",
     description="API для приложения личного бюджета (FastAPI, PostgreSQL, Redis)",
     version="1.0.0"
+)
+
+# Serve static files such as uploaded profile images
+app.mount(
+    "/assets",
+    StaticFiles(directory=config.BASE_DIR / "mobile_frontend" / "assets"),
+    name="assets",
 )
 
 def custom_openapi():
