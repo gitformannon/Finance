@@ -78,9 +78,7 @@ class _MainPageState extends State<MainPage> {
             onTap: setPageIndex,
             icons: const [
               Icons.home,
-              Icons.bar_chart,
-              Icons.favorite,
-              Icons.settings,
+              Icons.person,
             ],
           ),
         );

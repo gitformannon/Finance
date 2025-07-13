@@ -1,4 +1,7 @@
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../core/constants/app_colors.dart';
 
 class CurvedBottomNavbar extends StatelessWidget {
   /// Index of the currently selected item.
@@ -19,6 +22,9 @@ class CurvedBottomNavbar extends StatelessWidget {
   /// Background color of the navbar container.
   final Color backgroundColor;
 
+  /// Icon background color of the navbar container.
+  final Color backgroundColorIcon;
+
   /// Size of the icons.
   final double iconSize;
 
@@ -27,10 +33,11 @@ class CurvedBottomNavbar extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
     required this.icons,
-    this.selectedGradient = const [Colors.yellow, Colors.greenAccent],
-    this.inactiveColor = Colors.white,
-    this.backgroundColor = Colors.black,
-    this.iconSize = 28,
+    this.selectedGradient = const [AppColors.primary, AppColors.primary],
+    this.inactiveColor = AppColors.def,
+    this.backgroundColor = AppColors.textPrimary,
+    this.backgroundColorIcon = AppColors.textSecondary,
+    this.iconSize = AppSizes.navbarIcon,
   });
 
   @override
@@ -38,14 +45,14 @@ class CurvedBottomNavbar extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 24),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        margin: const EdgeInsets.only(bottom: AppSizes.paddingL),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingS, vertical: AppSizes.paddingM),
         decoration: BoxDecoration(
-          color: backgroundColor.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(100),
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(AppSizes.borderCircle),
           boxShadow: [
             BoxShadow(
-              color: backgroundColor.withOpacity(0.6),
+              color: AppColors.primary.withOpacity(0.2),
               blurRadius: 20,
               offset: const Offset(0, 6),
             )
@@ -58,19 +65,19 @@ class CurvedBottomNavbar extends StatelessWidget {
             return GestureDetector(
               onTap: () => onTap(index),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                width: 60,
-                height: 60,
+                margin: const EdgeInsets.symmetric(horizontal: AppSizes.paddingS),
+                width: AppSizes.navbarButtonHeight,
+                height: AppSizes.navbarButtonHeight,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: isSelected
                       ? LinearGradient(colors: selectedGradient)
                       : null,
-                  color: isSelected ? null : Colors.grey.shade900,
+                  color: isSelected ? null : AppColors.def.withOpacity(0.2),
                 ),
                 child: Icon(
                   icons[index],
-                  color: isSelected ? Colors.black : inactiveColor,
+                  color: isSelected ? AppColors.textPrimary : inactiveColor,
                   size: iconSize,
                 ),
               ),

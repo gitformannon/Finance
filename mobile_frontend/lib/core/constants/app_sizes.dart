@@ -13,6 +13,7 @@ class AppSizes {
 
   // Button sizes
   static const double buttonHeight = 60.0;
+  static const double navbarButtonHeight = 60.0;
   static const double buttonMinWidth120 = 120.0;
 
   // Card sizes
