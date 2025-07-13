@@ -80,7 +80,7 @@ class _MainPageState extends State<MainPage> {
                 label: '',
               ),
               NavigationDestination(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.person, size: AppSizes.navbarIcon, ),
                 label: '',
               ),
             ],

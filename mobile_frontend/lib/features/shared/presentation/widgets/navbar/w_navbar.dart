@@ -35,18 +35,18 @@ class WNavbar extends StatelessWidget {
           data: Theme.of(context).copyWith(
             splashColor: AppColors.primary.withOpacity(0.2),
             highlightColor: AppColors.primary.withOpacity(0.1),
-          ),
-          child: Container(
-            height: 87,
-            child: NavigationBar(
-              selectedIndex: currentIndex,
-              onDestinationSelected: onTap,
-              indicatorColor: AppColors.textSecondary,
-              destinations: destinations,
-              backgroundColor: AppColors.textPrimary,
-              elevation: 4.0,
+            navigationBarTheme: const NavigationBarThemeData(
+              height: 48,
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-            ),
+            )
+          ),
+          child: NavigationBar(
+            selectedIndex: currentIndex,
+            onDestinationSelected: onTap,
+            indicatorColor: AppColors.textSecondary,
+            destinations: destinations,
+            backgroundColor: AppColors.textPrimary,
+            elevation: 4.0,
           ),
         ),
       ),
