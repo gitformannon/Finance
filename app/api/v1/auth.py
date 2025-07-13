@@ -11,7 +11,7 @@ from sqlalchemy.future import select
 from database import get_session
 from models.users import User
 import services.auth_service as auth_service
-from schemas.user import UserCreate, UserRead
+from schemas.user import UserCreate, UserRead, UserUpdate
 from schemas.auth import (
     TokenBase,
     NewRefreshRequest,
@@ -39,7 +39,10 @@ async def register(data: UserCreate, session: AsyncSession = Depends(get_session
     user = User(
         username=data.username,
         email=data.email,
-        hashed_password=auth_service.hash_password(data.password)
+        hashed_password=auth_service.hash_password(data.password),
+        first_name=data.first_name,
+        last_name=data.last_name,
+        profile_image="static/default_profile.png",
     )
     session.add(user)
     await session.commit()
@@ -134,6 +137,22 @@ async def read_current_user(
     user: User = Depends(auth_service.get_current_user)
 ):
     """Return information about the currently authenticated user."""
+    return user
+
+
+@router.put("/me", response_model=UserRead)
+async def update_current_user(
+    data: UserUpdate,
+    user: User = Depends(auth_service.get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    if data.first_name is not None:
+        user.first_name = data.first_name
+    if data.last_name is not None:
+        user.last_name = data.last_name
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
     return user
 
 

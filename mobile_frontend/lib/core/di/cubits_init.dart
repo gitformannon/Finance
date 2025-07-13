@@ -7,6 +7,7 @@ import '../../features/auth/presentation/cubit/login/login_cubit.dart';
 import '../../features/auth/domain/usecase/login_user.dart';
 import '../../features/profile/domain/usecase/get_profile.dart';
 import '../../features/profile/domain/usecase/logout_user.dart';
+import '../../features/profile/domain/usecase/update_profile.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
 import 'get_it.dart';
 
@@ -27,6 +28,7 @@ Future<void> cubitsInit() async {
     () => ProfileCubit(
       getItInstance<GetProfile>(),
       getItInstance<LogoutUser>(),
+      getItInstance<UpdateProfile>(),
       getItInstance<NavigateCubit>(),
     ),
   );

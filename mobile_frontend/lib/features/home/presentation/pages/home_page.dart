@@ -18,8 +18,8 @@ class HomePage extends StatelessWidget {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: MainAppBar(
-            firstName: profile?.username ?? '',
-            lastName: '',
+            firstName: profile?.firstName ?? 'User',
+            lastName: profile?.lastName ?? '',
             username: profile?.username ?? '',
             profileImage: const AssetImage(AppImages.logo),
             onProfileTap: () {},

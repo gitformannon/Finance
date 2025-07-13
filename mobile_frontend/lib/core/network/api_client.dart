@@ -8,6 +8,7 @@ import '../../features/auth/data/model/request/login_user_request.dart';
 import '../../features/auth/data/model/response/login_user_response.dart';
 import '../../features/profile/data/model/profile_response.dart';
 import '../../features/profile/data/model/logout_request.dart';
+import '../../features/profile/data/model/update_profile_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
@@ -113,6 +114,9 @@ abstract class ApiClient {
 
   @GET(AppApi.me)
   Future<ProfileResponse> getProfile();
+
+  @PUT(AppApi.me)
+  Future<ProfileResponse> updateProfile(@Body() UpdateProfileRequest request);
 
   @POST(AppApi.logout)
   Future<void> logout(@Body() LogoutRequest request);
