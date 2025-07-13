@@ -47,8 +47,14 @@ class AppPages {
             path: AppRoutes.home,
             builder: (context, state) {
               int page = state.extra != null ? state.extra as int : 0;
-              return BlocProvider(
-                create: (context) => getItInstance<MainCubit>(),
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => getItInstance<MainCubit>()),
+                  BlocProvider(
+                    create: (context) =>
+                        getItInstance<ProfileCubit>()..loadProfile(),
+                  ),
+                ],
                 child: MainPage(initialPage: page),
               );
             },

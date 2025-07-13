@@ -25,24 +25,25 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainAppBar(
-        title: 'Profile',
-        subtitle: 'Your account',
-        profileImage: AssetImage(AppImages.logo),
-        onTap: () {},
-        onNotificationTap: () {},
-      ),
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          if (state.status.isLoading()) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state.status.isError()) {
-            return Center(child: Text(state.errorMessage));
-          }
-          final p = state.profile;
-          return Padding(
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (context, state) {
+        if (state.status.isLoading()) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state.status.isError()) {
+          return Center(child: Text(state.errorMessage));
+        }
+        final p = state.profile;
+        return Scaffold(
+          appBar: MainAppBar(
+            firstName: p?.username ?? '',
+            lastName: '',
+            username: p?.username ?? '',
+            profileImage: const AssetImage(AppImages.logo),
+            onProfileTap: () {},
+            onNotificationTap: () {},
+          ),
+          body: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,9 +65,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

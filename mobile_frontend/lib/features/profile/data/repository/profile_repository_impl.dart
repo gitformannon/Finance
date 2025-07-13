@@ -16,8 +16,21 @@ class ProfileRepositoryImpl with ProfileRepository {
   Future<Either<Failure, ProfileResponse>> getProfile() async {
     try {
       final resp = await _client.getProfile();
+      await _localDataSource.setUserId(resp.id);
+      await _localDataSource.setUsername(resp.username);
+      await _localDataSource.setEmail(resp.email);
       return Right(resp);
     } catch (e) {
+      try {
+        final cached = ProfileResponse(
+          id: _localDataSource.getUserId(),
+          username: _localDataSource.getUsername(),
+          email: _localDataSource.getEmail(),
+        );
+        if (cached.id.isNotEmpty) {
+          return Right(cached);
+        }
+      } catch (_) {}
       return Left(Failure(errorMessage: e.toString()));
     }
   }

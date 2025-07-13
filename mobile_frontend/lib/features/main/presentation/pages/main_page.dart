@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../home/presentation/pages/home_page.dart';
-import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -62,10 +61,13 @@ class _MainPageState extends State<MainPage> {
           body: IndexedStack(
             index: state.currentIndex,
             children: [
-              const HomePage(),
+              BlocProvider.value(
+                value: context.read<ProfileCubit>(),
+                child: const HomePage(),
+              ),
               Container(), // Replace with real screen
-              BlocProvider(
-                create: (context) => getItInstance<ProfileCubit>(),
+              BlocProvider.value(
+                value: context.read<ProfileCubit>(),
                 child: const ProfilePage(),
               ),
             ],
