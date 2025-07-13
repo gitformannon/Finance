@@ -41,8 +41,10 @@ class WNavbar extends StatelessWidget {
             child: NavigationBar(
               selectedIndex: currentIndex,
               onDestinationSelected: onTap,
-              indicatorColor: AppColors.primary.withOpacity(0.2),
+              indicatorColor: AppColors.textSecondary,
               destinations: destinations,
+              backgroundColor: AppColors.textPrimary,
+              elevation: 4.0,
             ),
           ),
         ),

@@ -76,7 +76,7 @@ class _MainPageState extends State<MainPage> {
             onTap: setPageIndex,
             destinations: const [
               NavigationDestination(
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.home, size: AppSizes.navbarIcon),
                 label: '',
               ),
               NavigationDestination(
