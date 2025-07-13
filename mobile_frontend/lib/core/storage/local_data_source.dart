@@ -31,6 +31,18 @@ mixin LocalDataSource {
 
   String getFullName();
 
+  Future<void> setFirstName(String firstName);
+
+  String getFirstName();
+
+  Future<void> setLastName(String lastName);
+
+  String getLastName();
+
+  Future<void> setProfileImagePath(String path);
+
+  String getProfileImagePath();
+
   Future<void> setUsername(String username);
 
   String getUsername();

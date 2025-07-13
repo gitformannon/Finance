@@ -89,6 +89,42 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> setFirstName(String firstName) async {
+    final box = Hive.box(LocalStorageKeys.box);
+    await box.put(LocalStorageKeys.firstName, firstName);
+  }
+
+  @override
+  String getFirstName() {
+    final box = Hive.box(LocalStorageKeys.box);
+    return box.get(LocalStorageKeys.firstName, defaultValue: "User");
+  }
+
+  @override
+  Future<void> setLastName(String lastName) async {
+    final box = Hive.box(LocalStorageKeys.box);
+    await box.put(LocalStorageKeys.lastName, lastName);
+  }
+
+  @override
+  String getLastName() {
+    final box = Hive.box(LocalStorageKeys.box);
+    return box.get(LocalStorageKeys.lastName, defaultValue: "");
+  }
+
+  @override
+  Future<void> setProfileImagePath(String path) async {
+    final box = Hive.box(LocalStorageKeys.box);
+    await box.put(LocalStorageKeys.profileImage, path);
+  }
+
+  @override
+  String getProfileImagePath() {
+    final box = Hive.box(LocalStorageKeys.box);
+    return box.get(LocalStorageKeys.profileImage, defaultValue: "");
+  }
+
+  @override
   Future<void> setUsername(String username) async {
     final box = Hive.box(LocalStorageKeys.box);
     await box.put(LocalStorageKeys.username, username);

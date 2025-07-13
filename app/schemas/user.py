@@ -4,6 +4,8 @@ from pydantic import BaseModel, EmailStr
 
 class UserBase(BaseModel):
     username: str
+    first_name: str = "User"
+    last_name: str | None = None
 
 class UserCreate(UserBase):
     password: str
@@ -12,6 +14,7 @@ class UserCreate(UserBase):
 class UserRead(UserBase):
     id: uuid.UUID
     email: EmailStr
+    profile_image: str | None = None
     status: int
     created_at: datetime
     updated_at: datetime
@@ -19,3 +22,8 @@ class UserRead(UserBase):
     model_config = {
         "from_attributes": True
     }
+
+
+class UserUpdate(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None

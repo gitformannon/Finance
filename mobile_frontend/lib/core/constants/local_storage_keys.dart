@@ -12,4 +12,7 @@ class LocalStorageKeys {
   static const String email = "email";
   static const String username = "username";
   static const String encryptionKey = "encKey";
+  static const String firstName = "firstName";
+  static const String lastName = "lastName";
+  static const String profileImage = "profileImage";
 }
