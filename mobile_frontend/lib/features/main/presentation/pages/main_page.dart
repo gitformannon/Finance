@@ -12,7 +12,7 @@ import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
-import '../../../shared/presentation/widgets/navbar/w_navbar.dart';
+import '../../../shared/presentation/widgets/navbar/w_bottom_app_bar.dart';
 
 class MainPage extends StatefulWidget {
   final int initialPage;
@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          bottomNavigationBar: WNavbar(
+          bottomNavigationBar: WBottomAppBar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
             items: [
