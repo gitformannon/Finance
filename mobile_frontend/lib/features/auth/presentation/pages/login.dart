@@ -1,6 +1,5 @@
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +8,8 @@ import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
 import '../../../shared/presentation/widgets/textfields/w_masked_textfield.dart';
+import '../../../shared/presentation/widgets/appbar/w_inner_appbar.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/constants/locale_keys.dart';
 import '../../../../core/helpers/enums_helpers.dart';
@@ -52,9 +51,9 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.background,
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: AppColors.background,
+          appBar: SubpageAppBar(
+            title: LocaleKeys.enter.tr(),
+            onBackTap: () => Navigator.of(context).pop(),
           ),
           body: SafeArea(
             child: Center(

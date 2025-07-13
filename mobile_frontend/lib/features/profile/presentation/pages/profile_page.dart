@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/themes/app_text_styles.dart';
-import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
+import '../../../shared/presentation/widgets/appbar/w_main_appbar.dart';
+import '../../../../core/constants/app_images.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 
@@ -25,9 +26,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
+      appBar: MainAppBar(
+        title: 'Profile',
+        subtitle: 'Your account',
+        profileImage: const AssetImage(AppImages.logo),
+        onProfileTap: () {},
+        onNotificationTap: () {},
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {

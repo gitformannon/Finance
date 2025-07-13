@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../../../shared/presentation/widgets/appbar/w_main_appbar.dart';
+import '../../../../core/constants/app_images.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,10 +9,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        title: const Text('Home'),
+      appBar: MainAppBar(
+        title: 'Home',
+        subtitle: 'Welcome back',
+        profileImage: const AssetImage(AppImages.logo),
+        onProfileTap: () {},
+        onNotificationTap: () {},
       ),
       body: const Center(
         child: Text('Home Page'),

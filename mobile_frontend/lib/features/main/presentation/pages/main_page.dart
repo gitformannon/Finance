@@ -31,6 +31,9 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: widget.initialPage);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateState(widget.initialPage);
+    });
   }
 
   _animateToPage(int index) {
@@ -63,6 +66,7 @@ class _MainPageState extends State<MainPage> {
             },
             child: PageView(
               controller: pageController,
+              onPageChanged: _updateState,
               children: [
                 const HomePage(),
                 Container(),
