@@ -65,6 +65,7 @@ class _MainPageState extends State<MainPage> {
               controller: pageController,
               children: [
                 const HomePage(),
+                Container(),
                 BlocProvider(
                   create: (context) => getItInstance<ProfileCubit>(),
                   child: const ProfilePage(),
@@ -79,6 +80,11 @@ class _MainPageState extends State<MainPage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined),
                 activeIcon: Icon(Icons.home),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.insert_chart_outlined),
+                activeIcon: Icon(Icons.insert_chart),
                 label: '',
               ),
               BottomNavigationBarItem(

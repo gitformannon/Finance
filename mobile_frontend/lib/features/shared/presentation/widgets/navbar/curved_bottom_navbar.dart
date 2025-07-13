@@ -40,6 +40,7 @@ class CurvedBottomNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
+      heightFactor: 1.0,
       child: Container(
         margin: const EdgeInsets.only(bottom: AppSizes.paddingL),
         padding: const EdgeInsets.symmetric(
@@ -53,7 +54,7 @@ class CurvedBottomNavbar extends StatelessWidget {
             BoxShadow(
               color: AppColors.primary.withOpacity(0.2),
               blurRadius: 20,
-              offset: const Offset(0, 6),
+              offset: const Offset(0, 20),
             )
           ],
         ),
