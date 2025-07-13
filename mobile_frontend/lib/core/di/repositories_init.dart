@@ -11,6 +11,12 @@ import '../../features/profile/domain/usecase/get_profile.dart';
 import '../../features/profile/domain/usecase/logout_user.dart';
 import '../../features/profile/domain/usecase/update_profile.dart';
 import '../../features/profile/domain/usecase/upload_profile_image.dart';
+import '../../features/profile/domain/usecase/totp/get_totp_status.dart';
+import '../../features/profile/domain/usecase/totp/enable_totp.dart';
+import '../../features/profile/domain/usecase/totp/confirm_totp.dart';
+import '../../features/profile/domain/usecase/totp/disable_totp.dart';
+import '../../features/profile/domain/repository/totp_repository.dart';
+import '../../features/profile/data/repository/totp_repository_impl.dart';
 import '../navigation/app_pages.dart';
 import '../navigation/navigation_service.dart';
 import '../network/api_client.dart';
@@ -81,5 +87,25 @@ Future<void> repositoriesInit() async {
 
   getItInstance.registerLazySingleton<UploadProfileImage>(
     () => UploadProfileImage(getItInstance<ProfileRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<TotpRepository>(
+    () => TotpRepositoryImpl(getItInstance<ApiClient>()),
+  );
+
+  getItInstance.registerLazySingleton<GetTotpStatus>(
+    () => GetTotpStatus(getItInstance<TotpRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<EnableTotp>(
+    () => EnableTotp(getItInstance<TotpRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<ConfirmTotp>(
+    () => ConfirmTotp(getItInstance<TotpRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<DisableTotp>(
+    () => DisableTotp(getItInstance<TotpRepository>()),
   );
 }

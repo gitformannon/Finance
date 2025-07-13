@@ -9,6 +9,9 @@ import '../../features/auth/data/model/response/login_user_response.dart';
 import '../../features/profile/data/model/profile_response.dart';
 import '../../features/profile/data/model/logout_request.dart';
 import '../../features/profile/data/model/update_profile_request.dart';
+import '../../features/profile/data/model/totp_setup_response.dart';
+import '../../features/profile/data/model/totp_status_response.dart';
+import '../../features/profile/data/model/totp_code_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
@@ -126,6 +129,18 @@ abstract class ApiClient {
 
   @POST(AppApi.logout)
   Future<void> logout(@Body() LogoutRequest request);
+
+  @GET(AppApi.totp_status)
+  Future<TotpStatusResponse> totpStatus();
+
+  @POST(AppApi.totp_enable)
+  Future<TotpSetupResponse> enableTotp();
+
+  @POST(AppApi.totp_confirm)
+  Future<void> confirmTotp(@Body() TotpCodeRequest request);
+
+  @POST(AppApi.totp_disable)
+  Future<void> disableTotp(@Body() TotpCodeRequest request);
 
 
 }
