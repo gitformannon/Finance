@@ -28,4 +28,8 @@ class NavigateCubit extends Cubit<NavigateState> {
   void goToForgotPasswordPage() {
     _navigationService.navigateTo(AppRoutes.forgotPassword);
   }
+
+  void goToProfilePage() {
+    _navigationService.navigateTo(AppRoutes.profile);
+  }
 }

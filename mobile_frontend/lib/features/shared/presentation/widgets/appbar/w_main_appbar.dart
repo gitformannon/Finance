@@ -53,7 +53,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             GestureDetector(
               onTap: onProfileTap,
               child: CircleAvatar(
-                radius: 24,
+                radius: 30,
                 backgroundImage: profileImage,
               ),
             ),
