@@ -11,6 +11,7 @@ class AppApi{
   static const totp_status = "/auth/totp-status";
   static const me = "/auth/me";
   static const r_token = "/auth/refresh";
+  static const profileImage = "/auth/profile-image";
 
   // static const orderStatus = "/order-status";
   // static const regions = "/regions";

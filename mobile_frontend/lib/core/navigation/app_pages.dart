@@ -62,9 +62,24 @@ class AppPages {
 
           GoRoute(
             path: AppRoutes.profile,
-            builder: (context, state) => BlocProvider(
-              create: (context) => getItInstance<ProfileCubit>(),
-              child: const ProfilePage(),
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider(
+                create: (context) => getItInstance<ProfileCubit>(),
+                child: const ProfilePage(),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(-1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end).chain(
+                  CurveTween(curve: Curves.easeInOut),
+                );
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
             ),
           ),
         ],

@@ -10,6 +10,7 @@ import '../../features/profile/domain/repository/profile_repository.dart';
 import '../../features/profile/domain/usecase/get_profile.dart';
 import '../../features/profile/domain/usecase/logout_user.dart';
 import '../../features/profile/domain/usecase/update_profile.dart';
+import '../../features/profile/domain/usecase/upload_profile_image.dart';
 import '../navigation/app_pages.dart';
 import '../navigation/navigation_service.dart';
 import '../network/api_client.dart';
@@ -76,5 +77,9 @@ Future<void> repositoriesInit() async {
 
   getItInstance.registerLazySingleton<UpdateProfile>(
     () => UpdateProfile(getItInstance<ProfileRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<UploadProfileImage>(
+    () => UploadProfileImage(getItInstance<ProfileRepository>()),
   );
 }

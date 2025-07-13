@@ -118,6 +118,12 @@ abstract class ApiClient {
   @PUT(AppApi.me)
   Future<ProfileResponse> updateProfile(@Body() UpdateProfileRequest request);
 
+  @MultiPart()
+  @POST(AppApi.profileImage)
+  Future<ProfileResponse> uploadProfileImage(
+      @Part(name: 'file') MultipartFile file,
+  );
+
   @POST(AppApi.logout)
   Future<void> logout(@Body() LogoutRequest request);
 
