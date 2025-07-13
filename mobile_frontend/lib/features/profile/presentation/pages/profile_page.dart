@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/themes/app_text_styles.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
-import '../../../shared/presentation/widgets/appbar/w_main_appbar.dart';
-import '../../../../core/constants/app_images.dart';
+import '../../../shared/presentation/widgets/appbar/w_inner_appbar.dart';
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
@@ -42,14 +41,10 @@ class _ProfilePageState extends State<ProfilePage> {
           _lastNameController.text = p.lastName;
         }
         return Scaffold(
-          appBar: MainAppBar(
-            firstName: p?.firstName ?? 'User',
-            lastName: p?.lastName ?? '',
-            username: p?.username ?? '',
-            profileImage: const AssetImage(AppImages.logo),
-            onProfileTap: () =>
-                context.read<NavigateCubit>().goToProfilePage(),
-            onNotificationTap: () {},
+          appBar: SubpageAppBar(
+            title: 'Profile',
+            onBackTap: () =>
+                context.read<NavigateCubit>().goToMainPage(),
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),
