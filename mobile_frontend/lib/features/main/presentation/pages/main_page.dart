@@ -65,7 +65,6 @@ class _MainPageState extends State<MainPage> {
               controller: pageController,
               children: [
                 const HomePage(),
-                Container(),
                 BlocProvider(
                   create: (context) => getItInstance<ProfileCubit>(),
                   child: const ProfilePage(),
