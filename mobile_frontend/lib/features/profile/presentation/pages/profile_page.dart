@@ -6,6 +6,7 @@ import '../../../../core/themes/app_text_styles.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../../../shared/presentation/widgets/appbar/w_main_appbar.dart';
 import '../../../../core/constants/app_images.dart';
+import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 
@@ -46,7 +47,8 @@ class _ProfilePageState extends State<ProfilePage> {
             lastName: p?.lastName ?? '',
             username: p?.username ?? '',
             profileImage: const AssetImage(AppImages.logo),
-            onProfileTap: () {},
+            onProfileTap: () =>
+                context.read<NavigateCubit>().goToProfilePage(),
             onNotificationTap: () {},
           ),
           body: Padding(

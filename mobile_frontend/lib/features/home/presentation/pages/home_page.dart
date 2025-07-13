@@ -6,6 +6,7 @@ import '../../../shared/presentation/widgets/appbar/w_main_appbar.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../profile/presentation/cubit/profile_state.dart';
+import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,7 +23,8 @@ class HomePage extends StatelessWidget {
             lastName: profile?.lastName ?? '',
             username: profile?.username ?? '',
             profileImage: const AssetImage(AppImages.logo),
-            onProfileTap: () {},
+            onProfileTap: () =>
+                context.read<NavigateCubit>().goToProfilePage(),
             onNotificationTap: () {},
           ),
           body: const Center(
