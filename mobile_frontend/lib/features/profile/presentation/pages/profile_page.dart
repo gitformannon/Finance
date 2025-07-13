@@ -41,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _lastNameController.text = p.lastName;
         }
         return Scaffold(
+          backgroundColor: AppColors.background,
           appBar: SubpageAppBar(
             title: 'Profile',
             onBackTap: () =>
