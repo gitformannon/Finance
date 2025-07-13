@@ -62,8 +62,8 @@ class CurvedBottomNavbar extends StatelessWidget {
           children: List.generate(items.length, (index) {
             final isSelected = index == currentIndex;
             final item = items[index];
-            final icon = isSelected && item.activeIcon != null
-                ? item.activeIcon
+            final icon = isSelected
+                ? (item.activeIcon ?? item.icon)
                 : item.icon;
             return GestureDetector(
               onTap: () => onTap(index),
