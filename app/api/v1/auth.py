@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 from fastapi import (
-    APIRouter, Depends, HTTPException, status, Body, Response, UploadFile
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+    Body,
+    Response,
+    UploadFile,
+    Request,
 )
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -23,6 +30,17 @@ from schemas.auth import (
 )
 import services.mfa_service as mfa_service
 
+
+def _build_user_read(user: User, request: Request) -> UserRead:
+    """Return UserRead with an absolute profile image URL."""
+    data = UserRead.from_orm(user)
+    if user.profile_image:
+        path = user.profile_image.lstrip("/")
+        if path.startswith("assets/"):
+            path = path[len("assets/") :]
+        data.profile_image = str(request.url_for("assets", path=path))
+    return data
+
 # ─────────── Router setup ───────────
 router = APIRouter(prefix="/auth", tags=["Auth"])
 # ─────────────────────────────────────
@@ -30,7 +48,11 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 # ─────────── Endpoints ───────────
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-async def register(data: UserCreate, session: AsyncSession = Depends(get_session)):
+async def register(
+    data: UserCreate,
+    request: Request,
+    session: AsyncSession = Depends(get_session),
+):
     # uniqueness checks
     if await session.scalar(select(User).where(User.username == data.username)):
         raise HTTPException(400, "Username already in use")
@@ -48,7 +70,7 @@ async def register(data: UserCreate, session: AsyncSession = Depends(get_session
     session.add(user)
     await session.commit()
     await session.refresh(user)
-    return user
+    return _build_user_read(user, request)
 
 
 @router.post("/login", response_model=TokenBase)
@@ -135,15 +157,17 @@ async def totp_status(
 
 @router.get("/me", response_model=UserRead)
 async def read_current_user(
-    user: User = Depends(auth_service.get_current_user)
+    request: Request,
+    user: User = Depends(auth_service.get_current_user),
 ):
     """Return information about the currently authenticated user."""
-    return user
+    return _build_user_read(user, request)
 
 
 @router.put("/me", response_model=UserRead)
 async def update_current_user(
     data: UserUpdate,
+    request: Request,
     user: User = Depends(auth_service.get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
@@ -154,12 +178,13 @@ async def update_current_user(
     session.add(user)
     await session.commit()
     await session.refresh(user)
-    return user
+    return _build_user_read(user, request)
 
 
 @router.post("/profile-image", response_model=UserRead)
 async def upload_profile_image(
     file: UploadFile,
+    request: Request,
     user: User = Depends(auth_service.get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
@@ -175,7 +200,7 @@ async def upload_profile_image(
     session.add(user)
     await session.commit()
     await session.refresh(user)
-    return user
+    return _build_user_read(user, request)
 
 
 
