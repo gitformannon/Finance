@@ -32,4 +32,12 @@ class NavigateCubit extends Cubit<NavigateState> {
   void goToProfilePage() {
     _navigationService.navigateTo(AppRoutes.profile);
   }
+
+  void goToTotpPage() {
+    _navigationService.pushTo(AppRoutes.totp);
+  }
+
+  void goToEditNamePage() {
+    _navigationService.pushTo(AppRoutes.editName);
+  }
 }

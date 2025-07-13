@@ -10,6 +10,11 @@ import '../../features/profile/domain/usecase/logout_user.dart';
 import '../../features/profile/domain/usecase/update_profile.dart';
 import '../../features/profile/domain/usecase/upload_profile_image.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
+import '../../features/profile/presentation/cubit/totp_cubit.dart';
+import '../../features/profile/domain/usecase/totp/get_totp_status.dart';
+import '../../features/profile/domain/usecase/totp/enable_totp.dart';
+import '../../features/profile/domain/usecase/totp/confirm_totp.dart';
+import '../../features/profile/domain/usecase/totp/disable_totp.dart';
 import 'get_it.dart';
 
 Future<void> cubitsInit() async {
@@ -32,6 +37,15 @@ Future<void> cubitsInit() async {
       getItInstance<UpdateProfile>(),
       getItInstance<UploadProfileImage>(),
       getItInstance<NavigateCubit>(),
+    ),
+  );
+
+  getItInstance.registerFactory<TotpCubit>(
+    () => TotpCubit(
+      getItInstance<GetTotpStatus>(),
+      getItInstance<EnableTotp>(),
+      getItInstance<ConfirmTotp>(),
+      getItInstance<DisableTotp>(),
     ),
   );
 }

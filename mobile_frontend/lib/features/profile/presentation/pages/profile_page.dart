@@ -21,8 +21,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
   final _picker = ImagePicker();
   @override
   void initState() {
@@ -41,10 +39,6 @@ class _ProfilePageState extends State<ProfilePage> {
           return Center(child: Text(state.errorMessage));
         }
         final p = state.profile;
-        if (p != null) {
-          _firstNameController.text = p.firstName;
-          _lastNameController.text = p.lastName;
-        }
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: SubpageAppBar(
@@ -135,15 +129,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(labelText: 'First Name'),
-                  ),
-                  TextField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(labelText: 'Last Name'),
-                  ),
                 ],
                 const Spacer(),
                 WButton(
@@ -152,10 +137,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 8),
                 WButton(
-                  onTap: () => context
-                      .read<ProfileCubit>()
-                      .updateName(_firstNameController.text, _lastNameController.text),
-                  text: 'Save',
+                  onTap: () => context.read<NavigateCubit>().goToEditNamePage(),
+                  text: 'Edit name',
+                ),
+                const SizedBox(height: 8),
+                WButton(
+                  onTap: () => context.read<NavigateCubit>().goToTotpPage(),
+                  text: 'Two-factor auth',
                 ),
               ],
             ),

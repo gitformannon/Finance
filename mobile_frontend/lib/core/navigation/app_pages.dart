@@ -13,6 +13,9 @@ import '../../features/main/cubits/main/main_cubit.dart';
 import '../../features/auth/presentation/cubit/login/login_cubit.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
+import '../../features/profile/presentation/cubit/totp_cubit.dart';
+import '../../features/profile/presentation/pages/totp_page.dart';
+import '../../features/profile/presentation/pages/edit_name_page.dart';
 import '../constants/app_routes.dart';
 import '../di/get_it.dart';
 
@@ -74,6 +77,52 @@ class AppPages {
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 const begin = Offset(-1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end).chain(
+                  CurveTween(curve: Curves.easeInOut),
+                );
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          ),
+
+          GoRoute(
+            path: AppRoutes.totp,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider(
+                create: (context) => getItInstance<TotpCubit>(),
+                child: const TotpPage(),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                final tween = Tween(begin: begin, end: end).chain(
+                  CurveTween(curve: Curves.easeInOut),
+                );
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          ),
+
+          GoRoute(
+            path: AppRoutes.editName,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider(
+                create: (context) => getItInstance<ProfileCubit>(),
+                child: const EditNamePage(),
+              ),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
                 const end = Offset.zero;
                 final tween = Tween(begin: begin, end: end).chain(
                   CurveTween(curve: Curves.easeInOut),
