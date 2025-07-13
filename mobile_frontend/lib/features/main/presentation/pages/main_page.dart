@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../home/presentation/pages/home_page.dart';
 
@@ -66,10 +65,6 @@ class _MainPageState extends State<MainPage> {
                 child: const HomePage(),
               ),
               Container(), // Replace with real screen
-              BlocProvider.value(
-                value: context.read<ProfileCubit>(),
-                child: const ProfilePage(),
-              ),
             ],
           ),
           bottomNavigationBar: CurvedBottomNavbar(
@@ -84,11 +79,6 @@ class _MainPageState extends State<MainPage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.insert_chart_outlined),
                 activeIcon: Icon(Icons.insert_chart),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person_outlined),
-                activeIcon: Icon(Icons.person),
                 label: '',
               ),
             ],
