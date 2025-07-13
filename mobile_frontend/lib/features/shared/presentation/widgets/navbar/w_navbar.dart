@@ -18,9 +18,14 @@ class WNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16), // отступ от краёв экрана
+      padding: const EdgeInsets.only(
+        top: AppSizes.paddingS,
+        left: AppSizes.paddingS,
+        right: AppSizes.paddingS,
+        bottom: AppSizes.paddingNavBar
+      ), // отступ от краёв экрана
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(30), // ← полностью округлённые края
+        borderRadius: BorderRadius.circular(AppSizes.borderMedium), // ← полностью округлённые края
         child: Theme(
           data: Theme.of(context).copyWith(
             splashColor: AppColors.transparent,
@@ -36,7 +41,6 @@ class WNavbar extends StatelessWidget {
             )
           ),
           child: SizedBox(
-            height: 72,
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,

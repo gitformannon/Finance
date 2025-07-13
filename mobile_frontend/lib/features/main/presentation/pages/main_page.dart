@@ -76,12 +76,18 @@ class _MainPageState extends State<MainPage> {
             onTap: setPageIndex,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, size: AppSizes.navbarIcon),
-                label: 'Home',
+                icon: SizedBox(
+                  height: double.minPositive,
+                  child: Center(child: Icon(Icons.home, size: AppSizes.navbarIcon,)),
+                ),
+                label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person, size: AppSizes.navbarIcon),
-                label: 'Profile',
+                icon: SizedBox(
+                  height: double.minPositive,
+                  child: Center(child: Icon(Icons.person, size: AppSizes.navbarIcon)),
+                ),
+                label: '',
               ),
             ],
           ),
