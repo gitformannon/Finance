@@ -21,15 +21,23 @@ mixin LocalDataSource {
 
   Future<void> setVerified(bool value);
 
-  int getUserId();
+  String getUserId();
 
-  Future<void> setUserId(int id);
+  Future<void> setUserId(String id);
 
   Future<void> setLang(String val);
 
   Future<void> setUserFullName(String fullName);
 
   String getFullName();
+
+  Future<void> setUsername(String username);
+
+  String getUsername();
+
+  Future<void> setEmail(String email);
+
+  String getEmail();
 
 
   Future<void> setPhone(String phone);
