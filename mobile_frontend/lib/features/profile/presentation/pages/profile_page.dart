@@ -1,3 +1,4 @@
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/constants/locale_keys.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -45,104 +46,108 @@ class _ProfilePageState extends State<ProfilePage> {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: SubpageAppBar(
-            title: 'Profile',
+            title: LocaleKeys.profile.tr(),
             onBackTap: () =>
                 context.read<NavigateCubit>().goToMainPage(),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(left:AppSizes.paddingGeneral, right:AppSizes.paddingGeneral, bottom:AppSizes.paddingL, top:AppSizes.paddingM),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (p != null) ...[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Builder(builder: (context) {
-                        ImageProvider provider;
-                        final path = p.profileImage;
-                        if (path != null && path.isNotEmpty) {
-                          if (path == AppImages.profileDefault) {
-                            provider = const AssetImage(AppImages.profileDefault);
-                          } else if (path.startsWith('http')) {
-                            provider = NetworkImage(path);
-                          } else {
-                            provider = NetworkImage(
-                              "${AppApi.baseUrlProd}/$path",
-                            );
-                          }
-                        } else {
-                          provider = const AssetImage(AppImages.profileDefault);
-                        }
-                        return GestureDetector(
-                          onTap: () async {
-                            final picked =
-                                await _picker.pickImage(source: ImageSource.gallery);
-                            if (picked != null) {
-                              context
-                                  .read<ProfileCubit>()
-                                  .uploadProfile(File(picked.path));
+                  Padding(
+                    padding: const EdgeInsets.only(left: AppSizes.paddingM),
+                    child:
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Builder(builder: (context) {
+                            ImageProvider provider;
+                            final path = p.profileImage;
+                            if (path != null && path.isNotEmpty) {
+                              if (path == AppImages.profileDefault) {
+                                provider = const AssetImage(AppImages.profileDefault);
+                              } else if (path.startsWith('http')) {
+                                provider = NetworkImage(path);
+                              } else {
+                                provider = NetworkImage(
+                                  "${AppApi.baseUrlProd}/$path",
+                                );
+                              }
+                            } else {
+                              provider = const AssetImage(AppImages.profileDefault);
                             }
-                          },
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundImage: provider,
+                            return GestureDetector(
+                              onTap: () async {
+                                final picked =
+                                    await _picker.pickImage(source: ImageSource.gallery);
+                                if (picked != null) {
+                                  context
+                                      .read<ProfileCubit>()
+                                      .uploadProfile(File(picked.path));
+                                }
+                              },
+                              child: Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: provider,
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.camera_alt,
+                                        size: 16,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons.camera_alt,
-                                    size: 16,
-                                    color: AppColors.textPrimary,
-                                  ),
+                            );
+                          }),
+                          const SizedBox(width: AppSizes.spaceM16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${p.firstName} ${p.lastName}',
+                                  style: AppTextStyles.bodyMedium,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  '@${p.username}',
+                                  style: AppTextStyles.labelRegular,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                      }),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${p.firstName} ${p.lastName}',
-                              style: AppTextStyles.bodyMedium,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              '@${p.username}',
-                              style: AppTextStyles.labelRegular,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
-                    ],
                   ),
                 ],
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSizes.spaceM16),
                 TaskCardButton(
-                  title: 'Edit name',
-                  subtitle: '',
+                  title: 'Profile Information',
+                  subtitle: 'change your personal information',
                   onArrowTap: () =>
                       context.read<NavigateCubit>().goToEditNamePage(),
                 ),
                 TaskCardButton(
-                  title: 'Two-factor auth',
-                  subtitle: '',
+                  title: 'Two-factor authentication',
+                  subtitle: 'enable/disable security 2FA',
                   onArrowTap: () => context.read<NavigateCubit>().goToTotpPage(),
                 ),
                 const Spacer(),

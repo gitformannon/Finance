@@ -20,11 +20,11 @@ class TaskCardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppSizes.paddingS),
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingL, vertical: AppSizes.paddingM),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      padding: const EdgeInsets.only(left: AppSizes.paddingL, top: AppSizes.paddingS, bottom: AppSizes.paddingS, right: AppSizes.paddingS),
       decoration: BoxDecoration(
         color: AppColors.textPrimary,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(AppSizes.borderMedium),
       ),
       child: Row(
         children: [
@@ -34,16 +34,13 @@ class TaskCardButton extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.bodyLarge.copyWith(color: Colors.white),
+                  style: AppTextStyles.bodyLarge.copyWith(color: AppColors.surface),
                 ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(Icons.calendar_month, color: Colors.grey.shade400, size: 18),
-                    const SizedBox(width: 6),
                     Text(
                       subtitle,
-                      style: AppTextStyles.labelRegular.copyWith(color: Colors.grey.shade400),
+                      style: AppTextStyles.labelRegular.copyWith(color: AppColors.box),
                     ),
                   ],
                 )
@@ -53,13 +50,14 @@ class TaskCardButton extends StatelessWidget {
           WScaleAnimation(
             onTap: onArrowTap,
             child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.shade800,
+              width: AppSizes.buttonIcon,
+              height: AppSizes.buttonIcon,
+              decoration: const BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: AppColors.textSecondary,
+                borderRadius: BorderRadius.all(Radius.circular(AppSizes.borderButtonIcon))
               ),
-              child: const Icon(Icons.chevron_right, color: Colors.white),
+              child: const Icon(Icons.chevron_right, color: AppColors.surface),
             ),
           )
         ],
