@@ -40,8 +40,9 @@ class WNavbar extends StatelessWidget {
               backgroundColor: AppColors.textPrimary,
             )
           ),
-          child: SizedBox(
-            child: BottomNavigationBar(
+          child: Container(
+          height: double.minPositive,
+          child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
               onTap: onTap,

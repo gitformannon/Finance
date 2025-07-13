@@ -4,6 +4,7 @@ import 'package:Finance/features/main/cubits/main/main_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../home/presentation/pages/home_page.dart';
@@ -74,19 +75,13 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: WNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: SizedBox(
-                  height: double.minPositive,
-                  child: Center(child: Icon(Icons.home, size: AppSizes.navbarIcon,)),
-                ),
+                icon: Container(height: double.minPositive, child: const Center(heightFactor: double.minPositive, child: Icon(Icons.home, size: AppSizes.navbarIcon))),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: SizedBox(
-                  height: double.minPositive,
-                  child: Center(child: Icon(Icons.person, size: AppSizes.navbarIcon)),
-                ),
+                icon: Container(height: double.minPositive, child: const Center(heightFactor: double.minPositive, child: Icon(Icons.person, size: AppSizes.navbarIcon))),
                 label: '',
               ),
             ],
