@@ -11,6 +11,7 @@ import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
 import '../../../shared/presentation/widgets/textfields/w_masked_textfield.dart';
+import '../../../shared/presentation/widgets/appbar/w_inner_appbar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -54,9 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.background,
+      appBar: SubpageAppBar(
+        title: LocaleKeys.signUp.tr(),
+        onBackTap: () => Navigator.of(context).pop(),
       ),
       body: SafeArea(
         child: Center(
