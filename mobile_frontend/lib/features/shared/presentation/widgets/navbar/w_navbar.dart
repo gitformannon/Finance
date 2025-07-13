@@ -45,6 +45,7 @@ class WNavbar extends StatelessWidget {
               destinations: destinations,
               backgroundColor: AppColors.textPrimary,
               elevation: 4.0,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
             ),
           ),
         ),
