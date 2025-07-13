@@ -10,6 +10,7 @@ import '../../../../core/themes/app_text_styles.dart';
 import '../../../../core/constants/app_images.dart';
 import '../../../../core/constants/app_api.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
+import '../../../shared/presentation/widgets/app_buttons/w_button_black.dart';
 import '../../../shared/presentation/widgets/appbar/w_inner_appbar.dart';
 import '../../../shared/presentation/cubits/navigate/navigate_cubit.dart';
 import '../cubit/profile_cubit.dart';
@@ -133,14 +134,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
                 const SizedBox(height: 16),
-                WButton(
-                  onTap: () => context.read<NavigateCubit>().goToEditNamePage(),
-                  text: 'Edit name',
+                TaskCardButton(
+                  title: 'Edit name',
+                  subtitle: '',
+                  onArrowTap: () =>
+                      context.read<NavigateCubit>().goToEditNamePage(),
                 ),
-                const SizedBox(height: 8),
-                WButton(
-                  onTap: () => context.read<NavigateCubit>().goToTotpPage(),
-                  text: 'Two-factor auth',
+                TaskCardButton(
+                  title: 'Two-factor auth',
+                  subtitle: '',
+                  onArrowTap: () => context.read<NavigateCubit>().goToTotpPage(),
                 ),
                 const Spacer(),
                 WButton(
