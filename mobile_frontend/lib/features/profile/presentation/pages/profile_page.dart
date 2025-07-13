@@ -58,38 +58,82 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (p != null) ...[
-                  Text('ID: ${p.id}'),
-                  const SizedBox(height: 8),
-                  Builder(builder: (context) {
-                    ImageProvider provider;
-                    final path = p.profileImage;
-                    if (path != null && path.isNotEmpty) {
-                      if (path == AppImages.profileDefault) {
-                        provider = const AssetImage(AppImages.profileDefault);
-                      } else if (path.startsWith('http')) {
-                        provider = NetworkImage(path);
-                      } else {
-                        provider = NetworkImage(
-                          "${AppApi.baseUrlProd}/$path",
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Builder(builder: (context) {
+                        ImageProvider provider;
+                        final path = p.profileImage;
+                        if (path != null && path.isNotEmpty) {
+                          if (path == AppImages.profileDefault) {
+                            provider = const AssetImage(AppImages.profileDefault);
+                          } else if (path.startsWith('http')) {
+                            provider = NetworkImage(path);
+                          } else {
+                            provider = NetworkImage(
+                              "${AppApi.baseUrlProd}/$path",
+                            );
+                          }
+                        } else {
+                          provider = const AssetImage(AppImages.profileDefault);
+                        }
+                        return GestureDetector(
+                          onTap: () async {
+                            final picked =
+                                await _picker.pickImage(source: ImageSource.gallery);
+                            if (picked != null) {
+                              context
+                                  .read<ProfileCubit>()
+                                  .uploadProfile(File(picked.path));
+                            }
+                          },
+                          child: Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundImage: provider,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.camera_alt,
+                                    size: 16,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         );
-                      }
-                    } else {
-                      provider = const AssetImage(AppImages.profileDefault);
-                    }
-                    return CircleAvatar(
-                      radius: 40,
-                      backgroundImage: provider,
-                    );
-                  }),
-                  const SizedBox(height: 8),
-                  WButton(
-                    onTap: () async {
-                      final picked = await _picker.pickImage(source: ImageSource.gallery);
-                      if (picked != null) {
-                        context.read<ProfileCubit>().uploadProfile(File(picked.path));
-                      }
-                    },
-                    text: 'Change Photo',
+                      }),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${p.firstName} ${p.lastName}',
+                              style: AppTextStyles.bodyMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '@${p.username}',
+                              style: AppTextStyles.labelRegular,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   TextField(
