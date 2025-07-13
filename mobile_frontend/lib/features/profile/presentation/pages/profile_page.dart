@@ -64,8 +64,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ImageProvider provider;
                     final path = p.profileImage;
                     if (path != null && path.isNotEmpty) {
-                      if (path.startsWith('assets/')) {
-                        provider = AssetImage(path);
+                      if (path == AppImages.profileDefault) {
+                        provider = const AssetImage(AppImages.profileDefault);
                       } else {
                         provider = NetworkImage(
                           "${AppApi.baseUrlProd}/$path",
