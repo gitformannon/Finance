@@ -35,7 +35,8 @@ class WBottomAppBar extends StatelessWidget {
               hoverColor: AppColors.transparent,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: List.generate(items.length, (index) {
                 final item = items[index];
                 final isSelected = index == currentIndex;
@@ -44,7 +45,6 @@ class WBottomAppBar extends StatelessWidget {
                     onPressed: () => onTap(index),
                     iconSize: AppSizes.navbarIcon,
                     color: isSelected ? AppColors.primary : AppColors.def,
-                    padding: EdgeInsets.zero,
                     icon: item.icon,
                   ),
                 );

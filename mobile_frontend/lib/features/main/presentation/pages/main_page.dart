@@ -13,6 +13,8 @@ import '../../../../core/di/get_it.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../shared/presentation/widgets/navbar/w_bottom_app_bar.dart';
+import '../../../shared/presentation/widgets/navbar/curved_bottom_navbar.dart';
+
 
 class MainPage extends StatefulWidget {
   final int initialPage;
@@ -72,19 +74,9 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          bottomNavigationBar: WBottomAppBar(
+          bottomNavigationBar: CurvedBottomNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
-            items: [
-              BottomNavigationBarItem(
-                icon: Container(height: double.minPositive, child: const Center(heightFactor: double.minPositive, child: Icon(Icons.home, size: AppSizes.navbarIcon))),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(height: double.minPositive, child: const Center(heightFactor: double.minPositive, child: Icon(Icons.person, size: AppSizes.navbarIcon))),
-                label: '',
-              ),
-            ],
           ),
         );
       },

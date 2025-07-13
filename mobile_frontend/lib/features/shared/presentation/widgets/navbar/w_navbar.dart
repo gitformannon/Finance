@@ -41,8 +41,8 @@ class WNavbar extends StatelessWidget {
             )
           ),
           child: Container(
-          height: double.minPositive,
-          child: BottomNavigationBar(
+            height: double.minPositive,
+            child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               currentIndex: currentIndex,
               onTap: onTap,
