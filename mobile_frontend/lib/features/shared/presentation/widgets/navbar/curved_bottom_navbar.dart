@@ -10,8 +10,8 @@ class CurvedBottomNavbar extends StatelessWidget {
   /// Called when user taps on an item.
   final ValueChanged<int> onTap;
 
-  /// Icons to display in the navigation bar.
-  final List<IconData> icons;
+  /// Items to display in the navigation bar.
+  final List<BottomNavigationBarItem> items;
 
   /// Gradient colors for the active item.
   final List<Color> selectedGradient;
@@ -22,9 +22,6 @@ class CurvedBottomNavbar extends StatelessWidget {
   /// Background color of the navbar container.
   final Color backgroundColor;
 
-  /// Icon background color of the navbar container.
-  final Color backgroundColorIcon;
-
   /// Size of the icons.
   final double iconSize;
 
@@ -32,11 +29,10 @@ class CurvedBottomNavbar extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
-    required this.icons,
+    required this.items,
     this.selectedGradient = const [AppColors.primary, AppColors.primary],
     this.inactiveColor = AppColors.def,
     this.backgroundColor = AppColors.textPrimary,
-    this.backgroundColorIcon = AppColors.textSecondary,
     this.iconSize = AppSizes.navbarIcon,
   });
 
@@ -46,7 +42,10 @@ class CurvedBottomNavbar extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: Container(
         margin: const EdgeInsets.only(bottom: AppSizes.paddingL),
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingS, vertical: AppSizes.paddingM),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.paddingS,
+          vertical: AppSizes.paddingM,
+        ),
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(AppSizes.borderCircle),
@@ -60,8 +59,12 @@ class CurvedBottomNavbar extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(icons.length, (index) {
+          children: List.generate(items.length, (index) {
             final isSelected = index == currentIndex;
+            final item = items[index];
+            final icon = isSelected && item.activeIcon != null
+                ? item.activeIcon
+                : item.icon;
             return GestureDetector(
               onTap: () => onTap(index),
               child: Container(
@@ -70,15 +73,16 @@ class CurvedBottomNavbar extends StatelessWidget {
                 height: AppSizes.navbarButtonHeight,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: isSelected
-                      ? LinearGradient(colors: selectedGradient)
-                      : null,
+                  gradient:
+                      isSelected ? LinearGradient(colors: selectedGradient) : null,
                   color: isSelected ? null : AppColors.def.withOpacity(0.2),
                 ),
-                child: Icon(
-                  icons[index],
-                  color: isSelected ? AppColors.textPrimary : inactiveColor,
-                  size: iconSize,
+                child: IconTheme(
+                  data: IconThemeData(
+                    color: isSelected ? AppColors.textPrimary : inactiveColor,
+                    size: iconSize,
+                  ),
+                  child: icon,
                 ),
               ),
             );

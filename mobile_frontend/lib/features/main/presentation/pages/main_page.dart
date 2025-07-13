@@ -76,9 +76,9 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: CurvedBottomNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
-            icons: const [
-              Icons.home,
-              Icons.person,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
             ],
           ),
         );
