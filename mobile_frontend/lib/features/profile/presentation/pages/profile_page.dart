@@ -1,3 +1,5 @@
+import 'package:Finance/core/constants/locale_keys.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -143,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const Spacer(),
                 WButton(
                   onTap: () => context.read<ProfileCubit>().logout(),
-                  text: 'Logout',
+                  text: LocaleKeys.logout.tr(),
                 ),
               ],
             ),

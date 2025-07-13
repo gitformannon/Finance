@@ -80,34 +80,34 @@ class WButton extends StatelessWidget {
           boxShadow: shadow,
         ),
         child:
-            isLoading
-                ? const Center(child: CupertinoActivityIndicator())
-                : child ??
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        hasPreviousIcon
-                            ? Padding(
-                              padding: const EdgeInsets.only(right: 6),
-                              child: prevIcon ?? Container(),
-                            )
-                            : const SizedBox(),
-                        child ??
-                            Text(
-                              text,
-                              style: textStyle ?? AppTextStyles.bodyLarge,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                        hasNextIcon
-                            ? Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: nextIcon ?? Container(),
-                            )
-                            : const SizedBox(),
-                      ],
+          isLoading
+            ? const Center(child: CupertinoActivityIndicator())
+            : child ??
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  hasPreviousIcon
+                    ? Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: prevIcon ?? Container(),
+                    )
+                    : const SizedBox(),
+                  child ??
+                    Text(
+                      text,
+                      style: textStyle ?? AppTextStyles.bodyLarge,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
+                  hasNextIcon
+                    ? Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: nextIcon ?? Container(),
+                    )
+                    : const SizedBox(),
+                ],
+            ),
       ),
     );
   }
