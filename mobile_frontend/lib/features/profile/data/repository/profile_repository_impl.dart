@@ -7,6 +7,8 @@ import '../model/logout_request.dart';
 import '../model/update_profile_request.dart';
 import '../../domain/repository/profile_repository.dart';
 import '../model/profile_response.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
 
 class ProfileRepositoryImpl with ProfileRepository {
   final ApiClient _client;
@@ -64,6 +66,21 @@ class ProfileRepositoryImpl with ProfileRepository {
           .updateProfile(UpdateProfileRequest(firstName: firstName, lastName: lastName));
       await _localDataSource.setFirstName(resp.firstName);
       await _localDataSource.setLastName(resp.lastName);
+      if (resp.profileImage != null) {
+        await _localDataSource.setProfileImagePath(resp.profileImage!);
+      }
+      return Right(resp);
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProfileResponse>> uploadProfileImage(File file) async {
+    try {
+      final multipart = await MultipartFile.fromFile(file.path,
+          filename: file.path.split('/').last);
+      final resp = await _client.uploadProfileImage(multipart);
       if (resp.profileImage != null) {
         await _localDataSource.setProfileImagePath(resp.profileImage!);
       }

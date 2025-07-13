@@ -18,4 +18,11 @@ SQLALCHEMY_ECHO = os.getenv("SQLALCHEMY_ECHO", "false").lower() == "true"
 
 FERNET_KEY = os.getenv("FERNET_KEY", "0" * 32)
 
+# Paths
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+PROFILE_IMAGES_PATH = BASE_DIR / 'mobile_frontend' / 'assets' / 'png'
+DEFAULT_PROFILE_IMAGE = 'assets/png/defaultProfileImage.png'
+
 # ────────────────────────────────

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi import (
-    APIRouter, Depends, HTTPException, status, Body, Response
+    APIRouter, Depends, HTTPException, status, Body, Response, UploadFile
 )
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -11,6 +11,7 @@ from sqlalchemy.future import select
 from database import get_session
 from models.users import User
 import services.auth_service as auth_service
+import config
 from schemas.user import UserCreate, UserRead, UserUpdate
 from schemas.auth import (
     TokenBase,
@@ -42,7 +43,7 @@ async def register(data: UserCreate, session: AsyncSession = Depends(get_session
         hashed_password=auth_service.hash_password(data.password),
         first_name=data.first_name,
         last_name=data.last_name,
-        profile_image="static/default_profile.png",
+        profile_image=config.DEFAULT_PROFILE_IMAGE,
     )
     session.add(user)
     await session.commit()
@@ -150,6 +151,27 @@ async def update_current_user(
         user.first_name = data.first_name
     if data.last_name is not None:
         user.last_name = data.last_name
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user
+
+
+@router.post("/profile-image", response_model=UserRead)
+async def upload_profile_image(
+    file: UploadFile,
+    user: User = Depends(auth_service.get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    import uuid, os
+    from pathlib import Path
+
+    filename = f"{uuid.uuid4()}_{file.filename}"
+    os.makedirs(config.PROFILE_IMAGES_PATH, exist_ok=True)
+    file_path = config.PROFILE_IMAGES_PATH / filename
+    with open(file_path, "wb") as out_file:
+        out_file.write(await file.read())
+    user.profile_image = str(Path("assets/png") / filename)
     session.add(user)
     await session.commit()
     await session.refresh(user)
