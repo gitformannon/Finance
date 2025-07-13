@@ -29,8 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: MainAppBar(
         title: 'Profile',
         subtitle: 'Your account',
-        profileImage: const AssetImage(AppImages.logo),
-        onProfileTap: () {},
+        profileImage: AssetImage(AppImages.logo),
+        onTap: () {},
         onNotificationTap: () {},
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(

@@ -51,10 +51,6 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.background,
-          appBar: SubpageAppBar(
-            title: LocaleKeys.enter.tr(),
-            onBackTap: () => Navigator.of(context).pop(),
-          ),
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(

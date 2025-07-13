@@ -21,7 +21,7 @@ class AppSizes {
   static const double cardMinHeight160 = 160.0;
 
   // App bar height
-  static const double appBarHeight56 = 56.0;
+  static const double appBarHeight = 60.0;
 
   // Padding
   static const double paddingXS = 1.0;

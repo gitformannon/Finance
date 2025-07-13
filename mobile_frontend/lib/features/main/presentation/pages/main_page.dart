@@ -59,23 +59,16 @@ class _MainPageState extends State<MainPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.background,
-          body: PopScope(
-            canPop: false,
-            onPopInvoked: (value) {
-              // cubit.doYouWannaExitApp();
-            },
-            child: PageView(
-              controller: pageController,
-              onPageChanged: _updateState,
-              children: [
-                const HomePage(),
-                Container(),
-                BlocProvider(
-                  create: (context) => getItInstance<ProfileCubit>(),
-                  child: const ProfilePage(),
-                ),
-              ],
-            ),
+          body: IndexedStack(
+            index: state.currentIndex,
+            children: [
+              const HomePage(),
+              Container(), // Replace with real screen
+              BlocProvider(
+                create: (context) => getItInstance<ProfileCubit>(),
+                child: const ProfilePage(),
+              ),
+            ],
           ),
           bottomNavigationBar: CurvedBottomNavbar(
             currentIndex: state.currentIndex,

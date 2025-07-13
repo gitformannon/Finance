@@ -14,9 +14,9 @@ class CircularIconButton extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.onTap,
-    this.backgroundColor = AppColors.secondary,
-    this.iconColor = Colors.black,
-    this.size = 40,
+    this.backgroundColor = AppColors.accent,
+    this.iconColor = AppColors.textPrimary,
+    this.size = 60,
     this.showNotificationDot = false,
   }) : super(key: key);
 

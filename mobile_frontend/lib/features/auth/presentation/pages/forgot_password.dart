@@ -36,10 +36,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: SubpageAppBar(
-        title: LocaleKeys.resetPassword.tr(),
-        onBackTap: () => Navigator.of(context).pop(),
-      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

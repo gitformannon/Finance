@@ -55,10 +55,6 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: SubpageAppBar(
-        title: LocaleKeys.signUp.tr(),
-        onBackTap: () => Navigator.of(context).pop(),
-      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
