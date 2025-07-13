@@ -12,7 +12,6 @@ import '../../../../core/di/get_it.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
-import '../../../shared/presentation/widgets/navbar/w_bottom_app_bar.dart';
 import '../../../shared/presentation/widgets/navbar/curved_bottom_navbar.dart';
 
 
@@ -77,6 +76,12 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: CurvedBottomNavbar(
             currentIndex: state.currentIndex,
             onTap: setPageIndex,
+            icons: const [
+              Icons.home,
+              Icons.bar_chart,
+              Icons.favorite,
+              Icons.settings,
+            ],
           ),
         );
       },
