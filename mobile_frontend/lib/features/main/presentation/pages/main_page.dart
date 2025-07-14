@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../home/presentation/pages/home_page.dart';
+import '../../../budget/presentation/pages/budget_page.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -64,7 +65,7 @@ class _MainPageState extends State<MainPage> {
                 value: context.read<ProfileCubit>(),
                 child: const HomePage(),
               ),
-              Container(), // Replace with real screen
+              const BudgetPage(),
             ],
           ),
           bottomNavigationBar: CurvedBottomNavbar(
@@ -77,8 +78,8 @@ class _MainPageState extends State<MainPage> {
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.insert_chart_outlined),
-                activeIcon: Icon(Icons.insert_chart),
+                icon: Icon(Icons.account_balance_wallet_outlined),
+                activeIcon: Icon(Icons.account_balance_wallet),
                 label: '',
               ),
             ],
