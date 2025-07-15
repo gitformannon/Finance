@@ -43,42 +43,55 @@ class _BudgetPageState extends State<BudgetPage> {
               color: const Color(0xFFF3F4F6),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Total balance', style: TextStyle(fontSize: 16)),
-                const SizedBox(height: 8),
-                const Text('0 ₽',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 56,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+            child: Container(
+              width: double.infinity,
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Total balance', style: TextStyle(fontSize: 16)),
+                  SizedBox(height: 8),
+                  Text('0 ₽',
+                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFF3F4F6),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: const Text('Main'),
+                          subtitle: const Text('0 ₽'),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {},
                         ),
-                        child: const Text('For a day'),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Container(
+                      Container(
+                        width: 56,
                         height: 56,
-                        alignment: Alignment.center,
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
+                          border:
+                          Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Text('For a month'),
+                        child: const Icon(Icons.add, color: Colors.grey),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -95,8 +108,8 @@ class _BudgetPageState extends State<BudgetPage> {
                   ),
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     _BalanceChip(text: '+0 ₽'),
                     SizedBox(width: 8),
                     _BalanceChip(text: '-0 ₽'),
@@ -106,46 +119,44 @@ class _BudgetPageState extends State<BudgetPage> {
             ),
           ),
           const SizedBox(height: 12),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: context.watch<BudgetCubit>().state.transactions.isEmpty
-                  ? Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFFCBD5E1),
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      child: const Text(
-                        'No operations on this day',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    )
-                  : ListView.separated(
-                      itemCount: context.watch<BudgetCubit>().state.transactions.length,
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final tx = context.watch<BudgetCubit>().state.transactions[index];
-                        return ListTile(
-                          title: Text(tx.title),
-                          subtitle: Text(
-                            DateFormat('dd MMM yyyy').format(tx.date),
-                          ),
-                          trailing: Text(
-                            '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
-                            style: TextStyle(
-                              color: tx.isIncome ? Colors.green : Colors.red,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
-                      },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: context.watch<BudgetCubit>().state.transactions.isEmpty
+              ? Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFFCBD5E1),
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                child: const Text(
+                  'No operations on this day',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey),
+                ),
+              )
+            : ListView.separated(
+              itemCount: context.watch<BudgetCubit>().state.transactions.length,
+              separatorBuilder: (_, __) => const Divider(),
+              itemBuilder: (context, index) {
+                final tx = context.watch<BudgetCubit>().state.transactions[index];
+                return ListTile(
+                  title: Text(tx.title),
+                  subtitle: Text(
+                    DateFormat('dd MMM yyyy').format(tx.date),
+                  ),
+                  trailing: Text(
+                    '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
+                    style: TextStyle(
+                      color: tx.isIncome ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold,
                     ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -181,29 +192,6 @@ class _BudgetPageState extends State<BudgetPage> {
         ),
         child: Column(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ListTile(
-                    title: const Text('Main'),
-                    subtitle: const Text('0 ₽'),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {},
-                  ),
-                ),
-                Container(
-                  width: 56,
-                  height: 56,
-                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.add, color: Colors.grey),
-                ),
-              ],
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
