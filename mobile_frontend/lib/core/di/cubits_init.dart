@@ -16,6 +16,8 @@ import '../../features/profile/domain/usecase/totp/enable_totp.dart';
 import '../../features/profile/domain/usecase/totp/confirm_totp.dart';
 import '../../features/profile/domain/usecase/totp/disable_totp.dart';
 import 'get_it.dart';
+import '../../features/budget/presentation/cubit/budget_cubit.dart';
+import '../../features/budget/domain/usecase/get_transactions_by_date.dart';
 
 Future<void> cubitsInit() async {
   getItInstance.registerFactory<SplashCubit>(
@@ -46,6 +48,12 @@ Future<void> cubitsInit() async {
       getItInstance<EnableTotp>(),
       getItInstance<ConfirmTotp>(),
       getItInstance<DisableTotp>(),
+    ),
+  );
+
+  getItInstance.registerFactory<BudgetCubit>(
+    () => BudgetCubit(
+      getItInstance<GetTransactionsByDate>(),
     ),
   );
 }

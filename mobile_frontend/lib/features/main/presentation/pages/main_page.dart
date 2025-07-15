@@ -8,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../home/presentation/pages/home_page.dart';
 import '../../../budget/presentation/pages/budget_page.dart';
+import '../../../../core/di/get_it.dart';
+import '../../../budget/presentation/cubit/budget_cubit.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -65,7 +67,10 @@ class _MainPageState extends State<MainPage> {
                 value: context.read<ProfileCubit>(),
                 child: const HomePage(),
               ),
-              const BudgetPage(),
+              BlocProvider(
+                create: (_) => getItInstance<BudgetCubit>()..load(DateTime.now()),
+                child: const BudgetPage(),
+              ),
             ],
           ),
           bottomNavigationBar: CurvedBottomNavbar(
