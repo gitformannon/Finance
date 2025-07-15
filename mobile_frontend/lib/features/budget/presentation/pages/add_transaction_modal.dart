@@ -38,8 +38,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           final cubit = context.read<TransactionCubit>();
           return SizedBox(
             height: MediaQuery.of(context).size.height,
-            child: Scaffold(
-              backgroundColor: AppColors.background,
+            child: SafeArea(
+              top: true,
+              bottom: false,
+              child: Scaffold(
+                backgroundColor: AppColors.background,
               appBar: SubpageAppBar(
                 title: 'Add transaction',
                 onBackTap: () => Navigator.of(context).pop(),
