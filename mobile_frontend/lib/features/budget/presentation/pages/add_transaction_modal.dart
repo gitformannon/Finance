@@ -36,95 +36,96 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       child: BlocBuilder<TransactionCubit, TransactionState>(
         builder: (context, state) {
           final cubit = context.read<TransactionCubit>();
-          return SizedBox(
+          return Container(
             height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppSizes.borderLarge), topRight: Radius.circular(AppSizes.borderLarge)),
+            ),
             child: SafeArea(
               top: true,
               bottom: false,
-              child: Scaffold(
+              child:
+                Scaffold(
                 backgroundColor: AppColors.background,
-              appBar: SubpageAppBar(
-                title: 'Add transaction',
-                onBackTap: () => Navigator.of(context).pop(),
-              ),
-              body: SingleChildScrollView(
-                padding: EdgeInsets.all(AppSizes.paddingL.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DropdownButton<String>(
-                      value: state.accountId.isNotEmpty ? state.accountId : null,
-                      hint: Text('Main', style: AppTextStyles.bodyRegular),
-                      onChanged: (val) => cubit.setAccountId(val ?? ''),
-                      items: const [
-                        DropdownMenuItem(value: '1', child: Text('Main')),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.spaceM16.h),
-                    Row(
-                      children: [
-                        _typeButton(context, cubit, TransactionType.income, 'Income'),
-                        SizedBox(width: AppSizes.spaceS12.w),
-                        _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
-                        SizedBox(width: AppSizes.spaceS12.w),
-                        _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
-                      ],
-                    ),
-                    SizedBox(height: AppSizes.spaceM16.h),
-                    TextField(
-                      controller: _amountController,
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.right,
-                      decoration: const InputDecoration(prefixText: '\$ ', labelText: 'Amount'),
-                      onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                    ),
-                    SizedBox(height: AppSizes.spaceM16.h),
-                    GestureDetector(
-                      onTap: () async {
-                        final picked = await showDatePicker(
-                          context: context,
-                          initialDate: state.date,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
-                        );
-                        if (picked != null) cubit.setDate(picked);
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(Icons.calendar_today, size: 20),
-                          SizedBox(width: AppSizes.spaceS12.w),
-                          Text(DateFormat('dd MMM yyyy').format(state.date)),
+                body: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(vertical: AppSizes.paddingXS.w, horizontal: AppSizes.paddingM.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DropdownButton<String>(
+                        value: state.accountId.isNotEmpty ? state.accountId : null,
+                        hint: Text('Main', style: AppTextStyles.bodyRegular),
+                        onChanged: (val) => cubit.setAccountId(val ?? ''),
+                        items: const [
+                          DropdownMenuItem(value: '1', child: Text('Main')),
                         ],
                       ),
-                    ),
-                    SizedBox(height: AppSizes.spaceM16.h),
-                    TextField(
-                      controller: _noteController,
-                      decoration: const InputDecoration(labelText: 'Note', prefixIcon: Icon(Icons.note)),
-                      onChanged: cubit.setNote,
-                    ),
-                    if (state.type == TransactionType.transfer) ...[
                       SizedBox(height: AppSizes.spaceM16.h),
-                      Text('Where to transfer', style: AppTextStyles.bodyMedium),
-                      SizedBox(height: AppSizes.spaceS12.h),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(AppSizes.spaceM16.w),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-                          border: Border.all(color: AppColors.def, style: BorderStyle.solid),
+                      Row(
+                        children: [
+                          _typeButton(context, cubit, TransactionType.income, 'Income'),
+                          SizedBox(width: AppSizes.spaceS12.w),
+                          _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                          SizedBox(width: AppSizes.spaceS12.w),
+                          _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
+                        ],
+                      ),
+                      SizedBox(height: AppSizes.spaceM16.h),
+                      TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.right,
+                        decoration: const InputDecoration(labelText: 'Amount'),
+                        onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                      ),
+                      SizedBox(height: AppSizes.spaceM16.h),
+                      GestureDetector(
+                        onTap: () async {
+                          final picked = await showDatePicker(
+                            context: context,
+                            initialDate: state.date,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2100),
+                          );
+                          if (picked != null) cubit.setDate(picked);
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.calendar_today, size: 20),
+                            SizedBox(width: AppSizes.spaceS12.w),
+                            Text(DateFormat('dd MMM yyyy').format(state.date)),
+                          ],
                         ),
-                        child: const Center(child: Text('+ New account')),
+                      ),
+                      SizedBox(height: AppSizes.spaceM16.h),
+                      TextField(
+                        controller: _noteController,
+                        decoration: const InputDecoration(labelText: 'Note'),
+                        onChanged: cubit.setNote,
+                      ),
+                      if (state.type == TransactionType.transfer) ...[
+                        SizedBox(height: AppSizes.spaceM16.h),
+                        Text('Where to transfer', style: AppTextStyles.bodyMedium),
+                        SizedBox(height: AppSizes.spaceS12.h),
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(AppSizes.spaceM16.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+                            border: Border.all(color: AppColors.def, style: BorderStyle.solid),
+                          ),
+                          child: const Center(child: Text('+ New account')),
+                        ),
+                      ],
+                      SizedBox(height: AppSizes.spaceL20.h),
+                      WButton(
+                        onTap: cubit.submit,
+                        text: 'Save',
+                        isDisabled: !state.isValid || state.status.isLoading(),
+                        isLoading: state.status.isLoading(),
                       ),
                     ],
-                    SizedBox(height: AppSizes.spaceL20.h),
-                    WButton(
-                      onTap: cubit.submit,
-                      text: 'Save',
-                      isDisabled: !state.isValid || state.status.isLoading(),
-                      isLoading: state.status.isLoading(),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
