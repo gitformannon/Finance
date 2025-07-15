@@ -65,7 +65,7 @@ class _MainPageState extends State<MainPage> {
                 value: context.read<ProfileCubit>(),
                 child: const HomePage(),
               ),
-              const BudgetPage(),
+              Container(),
             ],
           ),
           bottomNavigationBar: CurvedBottomNavbar(
