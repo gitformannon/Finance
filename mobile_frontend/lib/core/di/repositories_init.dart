@@ -17,6 +17,9 @@ import '../../features/profile/domain/usecase/totp/confirm_totp.dart';
 import '../../features/profile/domain/usecase/totp/disable_totp.dart';
 import '../../features/profile/domain/repository/totp_repository.dart';
 import '../../features/profile/data/repository/totp_repository_impl.dart';
+import '../../features/budget/domain/repository/budget_repository.dart';
+import '../../features/budget/data/repository/budget_repository_impl.dart';
+import '../../features/budget/domain/usecase/get_transactions_by_date.dart';
 import '../navigation/app_pages.dart';
 import '../navigation/navigation_service.dart';
 import '../network/api_client.dart';
@@ -107,5 +110,13 @@ Future<void> repositoriesInit() async {
 
   getItInstance.registerLazySingleton<DisableTotp>(
     () => DisableTotp(getItInstance<TotpRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<BudgetRepository>(
+    () => BudgetRepositoryImpl(getItInstance<ApiClient>()),
+  );
+
+  getItInstance.registerLazySingleton<GetTransactionsByDate>(
+    () => GetTransactionsByDate(getItInstance<BudgetRepository>()),
   );
 }

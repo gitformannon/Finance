@@ -13,6 +13,7 @@ import '../../features/profile/data/model/totp_setup_response.dart';
 import '../../features/profile/data/model/totp_status_response.dart';
 import '../../features/profile/data/model/totp_code_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
+import '../../features/budget/data/model/transaction.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_routes.dart';
@@ -141,6 +142,9 @@ abstract class ApiClient {
 
   @POST(AppApi.totp_disable)
   Future<void> disableTotp(@Body() TotpCodeRequest request);
+
+  @GET(AppApi.transactions)
+  Future<List<Transaction>> getTransactions(@Query('date') String date);
 
 
 }

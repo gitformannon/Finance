@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../data/model/transaction.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/budget_cubit.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -13,20 +15,6 @@ class BudgetPage extends StatefulWidget {
 }
 
 class _BudgetPageState extends State<BudgetPage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      title: 'Coffee',
-      amount: -3.5,
-      date: DateTime(2025, 7, 20),
-      isIncome: false,
-    ),
-    Transaction(
-      title: 'Salary',
-      amount: 1500,
-      date: DateTime(2025, 7, 19),
-      isIncome: true,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +88,15 @@ class _BudgetPageState extends State<BudgetPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text('20 July 2025',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              children: [
+                Text(
+                  DateFormat('dd MMM yyyy').format(
+                    context.watch<BudgetCubit>().state.selectedDate,
+                  ),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
                 Row(
-                  children: [
+                  children: const [
                     _BalanceChip(text: '+0 ₽'),
                     SizedBox(width: 8),
                     _BalanceChip(text: '-0 ₽'),
@@ -117,7 +109,7 @@ class _BudgetPageState extends State<BudgetPage> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _transactions.isEmpty
+              child: context.watch<BudgetCubit>().state.transactions.isEmpty
                   ? Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
@@ -135,10 +127,10 @@ class _BudgetPageState extends State<BudgetPage> {
                       ),
                     )
                   : ListView.separated(
-                      itemCount: _transactions.length,
+                      itemCount: context.watch<BudgetCubit>().state.transactions.length,
                       separatorBuilder: (_, __) => const Divider(),
                       itemBuilder: (context, index) {
-                        final tx = _transactions[index];
+                        final tx = context.watch<BudgetCubit>().state.transactions[index];
                         return ListTile(
                           title: Text(tx.title),
                           subtitle: Text(
