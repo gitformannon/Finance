@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../data/model/transaction.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/budget_cubit.dart';
+import 'add_transaction_modal.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -162,7 +163,13 @@ class _BudgetPageState extends State<BudgetPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => const AddTransactionModal(),
+          );
+        },
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),

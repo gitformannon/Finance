@@ -1,6 +1,16 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel
+
+
+class TransactionCreate(BaseModel):
+    type: str
+    account_id: uuid.UUID
+    to_account_id: uuid.UUID | None = None
+    amount: float
+    note: str | None = None
+    date: date
+
 
 class TransactionRead(BaseModel):
     id: uuid.UUID
