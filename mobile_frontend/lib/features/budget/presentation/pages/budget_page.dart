@@ -1,10 +1,32 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../data/model/transaction.dart';
 
-class BudgetPage extends StatelessWidget {
+class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
+
+  @override
+  State<BudgetPage> createState() => _BudgetPageState();
+}
+
+class _BudgetPageState extends State<BudgetPage> {
+  final List<Transaction> _transactions = [
+    Transaction(
+      title: 'Coffee',
+      amount: -3.5,
+      date: DateTime(2025, 7, 20),
+      isIncome: false,
+    ),
+    Transaction(
+      title: 'Salary',
+      amount: 1500,
+      date: DateTime(2025, 7, 19),
+      isIncome: true,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -92,23 +114,46 @@ class BudgetPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: const Color(0xFFCBD5E1),
-                  style: BorderStyle.solid,
-                ),
-              ),
-              child: const Text(
-                'No operations on this day',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
-              ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _transactions.isEmpty
+                  ? Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFFCBD5E1),
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      child: const Text(
+                        'No operations on this day',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    )
+                  : ListView.separated(
+                      itemCount: _transactions.length,
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder: (context, index) {
+                        final tx = _transactions[index];
+                        return ListTile(
+                          title: Text(tx.title),
+                          subtitle: Text(
+                            DateFormat('dd MMM yyyy').format(tx.date),
+                          ),
+                          trailing: Text(
+                            '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
+                            style: TextStyle(
+                              color: tx.isIncome ? Colors.green : Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ),
         ],
