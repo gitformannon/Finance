@@ -7,7 +7,7 @@ from database import get_session
 from models.transactions import Transaction
 from models.users import User
 import services.auth_service as auth_service
-from schemas.transaction import TransactionRead
+from schemas.transaction import TransactionRead, TransactionCreate
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
 
@@ -26,3 +26,23 @@ async def transactions_by_date(
     ).order_by(Transaction.created_at.desc())
     result = await session.scalars(stmt)
     return list(result)
+
+
+@router.post("", response_model=TransactionRead, status_code=201)
+async def create_transaction(
+    data: TransactionCreate,
+    user: User = Depends(auth_service.get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    tx = Transaction(
+        user_id=user.id,
+        account_id=data.account_id,
+        amount=int(data.amount),
+        description=data.note,
+        created_at=datetime.combine(data.date, datetime.min.time()),
+    )
+    session.add(tx)
+    await session.commit()
+    await session.refresh(tx)
+    return tx
+

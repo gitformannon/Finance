@@ -146,5 +146,8 @@ abstract class ApiClient {
   @GET(AppApi.transactions)
   Future<List<Transaction>> getTransactions(@Query('date') String date);
 
+  @POST(AppApi.transactions)
+  Future<void> createTransaction(@Body() Map<String, dynamic> data);
+
 
 }
