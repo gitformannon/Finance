@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
 
+import 'package:intl/intl.dart';
+
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/failure.dart';
 import '../../domain/repository/budget_repository.dart';
@@ -16,7 +18,8 @@ class BudgetRepositoryImpl with BudgetRepository {
   @override
   Future<Either<Failure, List<Transaction>>> transactionsByDate(DateTime date) async {
     try {
-      final resp = await _client.getTransactions(date.toIso8601String());
+      final formatted = DateFormat('yyyy-MM-dd').format(date);
+      final resp = await _client.getTransactions(formatted);
       return Right(resp);
     } catch (e) {
       return Left(Failure(errorMessage: e.toString()));
