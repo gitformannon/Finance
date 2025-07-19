@@ -386,7 +386,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<List<dynamic>> getAccounts() async {
+  Future<List<Account>> getAccounts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -408,7 +408,11 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    return _result.data!;
+    List<Account> _value;
+    _value = _result.data!
+        .map((dynamic i) => Account.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return _value;
   }
 
   @override

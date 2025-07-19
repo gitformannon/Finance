@@ -5,7 +5,9 @@ import '../../../../core/helpers/enums_helpers.dart';
 import '../../data/model/create_transaction_request.dart';
 import '../../domain/usecase/add_transaction.dart';
 import '../../domain/usecase/get_categories.dart';
+import '../../domain/usecase/get_accounts.dart';
 import '../../data/model/category.dart';
+import '../../data/model/account.dart';
 
 enum TransactionType { income, purchase, transfer }
 
@@ -15,6 +17,7 @@ class TransactionState extends Equatable {
   final String toAccountId;
   final String categoryId;
   final List<Category> categories;
+  final List<Account> accounts;
   final double amount;
   final DateTime date;
   final String note;
@@ -27,6 +30,7 @@ class TransactionState extends Equatable {
     this.toAccountId = '',
     this.categoryId = '',
     this.categories = const [],
+    this.accounts = const [],
     this.amount = 0,
     required this.date,
     this.note = '',
@@ -36,9 +40,9 @@ class TransactionState extends Equatable {
 
   bool get isValid =>
       accountId.isNotEmpty &&
-      categoryId.isNotEmpty &&
       amount > 0 &&
-      (type != TransactionType.transfer || toAccountId.isNotEmpty);
+      (type != TransactionType.transfer || toAccountId.isNotEmpty) &&
+      (type == TransactionType.transfer || categoryId.isNotEmpty);
 
   TransactionState copyWith({
     TransactionType? type,
@@ -46,6 +50,7 @@ class TransactionState extends Equatable {
     String? toAccountId,
     String? categoryId,
     List<Category>? categories,
+    List<Account>? accounts,
     double? amount,
     DateTime? date,
     String? note,
@@ -58,6 +63,7 @@ class TransactionState extends Equatable {
       toAccountId: toAccountId ?? this.toAccountId,
       categoryId: categoryId ?? this.categoryId,
       categories: categories ?? this.categories,
+      accounts: accounts ?? this.accounts,
       amount: amount ?? this.amount,
       date: date ?? this.date,
       note: note ?? this.note,
@@ -68,13 +74,14 @@ class TransactionState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [type, accountId, toAccountId, categoryId, categories, amount, date, note, status, errorMessage];
+      [type, accountId, toAccountId, categoryId, categories, accounts, amount, date, note, status, errorMessage];
 }
 
 class TransactionCubit extends Cubit<TransactionState> {
   final AddTransaction _addTransaction;
   final GetCategories _getCategories;
-  TransactionCubit(this._addTransaction, this._getCategories)
+  final GetAccounts _getAccounts;
+  TransactionCubit(this._addTransaction, this._getCategories, this._getAccounts)
       : super(TransactionState(date: DateTime.now()));
 
   void setType(TransactionType type) => emit(state.copyWith(type: type));
@@ -90,6 +97,14 @@ class TransactionCubit extends Cubit<TransactionState> {
     result.fold(
       (failure) => emit(state.copyWith(errorMessage: failure.errorMessage)),
       (data) => emit(state.copyWith(categories: data)),
+    );
+  }
+
+  Future<void> loadAccounts() async {
+    final result = await _getAccounts(const NoParams());
+    result.fold(
+      (failure) => emit(state.copyWith(errorMessage: failure.errorMessage)),
+      (data) => emit(state.copyWith(accounts: data)),
     );
   }
 

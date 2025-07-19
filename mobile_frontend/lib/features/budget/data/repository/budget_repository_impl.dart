@@ -8,6 +8,7 @@ import '../../domain/repository/budget_repository.dart';
 import '../model/transaction.dart';
 import '../model/create_transaction_request.dart';
 import '../model/create_account_request.dart';
+import '../model/account.dart';
 import '../model/category.dart';
 import '../model/create_category_request.dart';
 
@@ -41,6 +42,16 @@ class BudgetRepositoryImpl with BudgetRepository {
     try {
       await _client.createAccount(request.toJson());
       return const Right(null);
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Account>>> getAccounts() async {
+    try {
+      final resp = await _client.getAccounts();
+      return Right(resp.map((e) => Account.fromJson(e)).toList());
     } catch (e) {
       return Left(Failure(errorMessage: e.toString()));
     }

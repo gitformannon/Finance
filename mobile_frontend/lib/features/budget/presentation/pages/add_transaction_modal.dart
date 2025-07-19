@@ -74,15 +74,19 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   elevation: 0,
                                   dropdownColor: AppColors.primary,
                                   focusColor: AppColors.secondary,
-                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(AppSizes.borderSM16), bottomLeft: Radius.circular(AppSizes.borderSM16)),
+                                  borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(AppSizes.borderSM16),
+                                      bottomLeft: Radius.circular(AppSizes.borderSM16)),
                                   value: state.accountId.isNotEmpty ? state.accountId : null,
                                   onChanged: (val) => cubit.setAccountId(val ?? ''),
-                                  items: const [
-                                    DropdownMenuItem(value: '1', child: Text('Main')),
-                                    DropdownMenuItem(value: '2', child: Text('Savings')),
-                                    DropdownMenuItem(value: '3', child: Text('Cash')),
-                                    DropdownMenuItem(value: '4', child: Text('Visa')),
-                                  ],
+                                  items: state.accounts
+                                      .map(
+                                        (a) => DropdownMenuItem(
+                                          value: a.id,
+                                          child: Text(a.name ?? 'Account'),
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
                                 Row(
                                   children: [
