@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 import '../cubit/transaction_cubit.dart';
+import '../../data/model/category.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 
 class AddTransactionModal extends StatefulWidget {
@@ -103,14 +104,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                     _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                   ],
                                 ),
-                                DropdownButton<String>(
-                                  hint: const Text('Category'),
-                                  value: state.categoryId.isNotEmpty ? state.categoryId : null,
-                                  items: state.categories
-                                      .map((e) => DropdownMenuItem(value: e.id, child: Text(e.name)))
-                                      .toList(),
-                                  onChanged: (val) => cubit.setCategoryId(val ?? ''),
-                                ),
                                 TextField(
                                   controller: _amountController,
                                   keyboardType: TextInputType.number,
@@ -148,10 +141,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         ),
                         Expanded(
                           child: Container(
-                            width: double.maxFinite.w,
-                            height: 250,
-                            color: AppColors.accent,
-                            child: const Text('Categories'),
+                            width: double.maxFinite,
+                            padding: EdgeInsets.all(AppSizes.paddingM.h),
+                            child: Wrap(
+                              spacing: AppSizes.spaceXS8.w,
+                              runSpacing: AppSizes.spaceXS8.w,
+                              children: state.categories
+                                  .map((e) => _categoryItem(context, cubit, e))
+                                  .toList(),
+                            ),
                           ),
                         ),
                         Padding(
@@ -208,6 +206,34 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           alignment: Alignment.center,
           child: Text(label, style: AppTextStyles.bodyRegular),
         ),
+      ),
+    );
+  }
+
+  Widget _categoryItem(BuildContext context, TransactionCubit cubit, Category cat) {
+    final selected = cubit.state.categoryId == cat.id;
+    return GestureDetector(
+      onTap: () => cubit.setCategoryId(cat.id),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primary : AppColors.secondary,
+          border: const Border(
+            bottom: BorderSide(color: AppColors.def, width: 0.5)
+          ),
+          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+          boxShadow: [
+            BoxShadow(
+              color: !selected ? AppColors.transparent : AppColors.primary,
+              blurRadius: !selected ? 0 : 5,
+              spreadRadius: !selected ? 0.1 : 0,
+              blurStyle: BlurStyle.outer,
+              offset: const Offset(0, 0),
+            )
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Text(cat.name, style: AppTextStyles.bodyRegular),
       ),
     );
   }
