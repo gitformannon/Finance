@@ -22,7 +22,7 @@ enum RequestStatus {
   bool isLoadingMore() => this == RequestStatus.loadingMore;
 }
 
-enum CategoryType { income, purchase, transfer }
+enum CategoryType { income, purchase }
 
 extension CategoryTypeX on CategoryType {
   static CategoryType fromString(String value) {
@@ -38,8 +38,6 @@ extension CategoryTypeX on CategoryType {
         return CategoryType.income;
       case -1:
         return CategoryType.purchase;
-      case 2:
-        return CategoryType.transfer;
       default:
         return CategoryType.income;
     }
