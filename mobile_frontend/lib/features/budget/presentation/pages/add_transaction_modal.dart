@@ -1,7 +1,6 @@
 import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
-import 'package:Finance/core/di/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,15 +23,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   final _noteController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    // Load categories after widget build
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TransactionCubit>().loadCategories();
-    });
-  }
-
-  @override
   void dispose() {
     _amountController.dispose();
     _noteController.dispose();
@@ -41,12 +31,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getItInstance<TransactionCubit>(),
-      child: BlocBuilder<TransactionCubit, TransactionState>(
-        builder: (context, state) {
-          final cubit = context.read<TransactionCubit>();
-          return Container(
+    return BlocBuilder<TransactionCubit, TransactionState>(
+      builder: (context, state) {
+        final cubit = context.read<TransactionCubit>();
+        return Container(
             height: MediaQuery.of(context).size.height,
             child: SafeArea(
               top: true,
