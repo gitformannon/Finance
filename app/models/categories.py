@@ -5,8 +5,8 @@ from uuid import uuid4
 from enum import Enum
 
 class CategoryType(Enum):
-    INCOME = "income"
-    PURCHASE = "purchase"
+    INCOME = 1
+    PURCHASE = -1
 
     @classmethod
     def _missing_(cls, value):

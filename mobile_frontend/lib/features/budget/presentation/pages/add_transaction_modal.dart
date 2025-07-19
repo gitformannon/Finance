@@ -130,6 +130,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         ),
                         Expanded(
                           child: Container(
+                            color: AppColors.accent,
                             width: double.maxFinite,
                             padding: EdgeInsets.all(AppSizes.paddingM.h),
                             child: GridView.count(
@@ -166,8 +167,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             ),
           );
         },
-      ),
-    );
+      );
   }
 
   Widget _typeButton(BuildContext context, TransactionCubit cubit, TransactionType type, String label) {
