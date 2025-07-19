@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../cubit/transaction_cubit.dart';
 import '../../data/model/category.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
+import 'add_category_modal.dart';
 
 class AddTransactionModal extends StatefulWidget {
   const AddTransactionModal({super.key});
@@ -143,12 +144,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           child: Container(
                             width: double.maxFinite,
                             padding: EdgeInsets.all(AppSizes.paddingM.h),
-                            child: Wrap(
-                              spacing: AppSizes.spaceXS8.w,
-                              runSpacing: AppSizes.spaceXS8.w,
-                              children: state.categories
-                                  .map((e) => _categoryItem(context, cubit, e))
-                                  .toList(),
+                            child: GridView.count(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: AppSizes.spaceXS8.w,
+                              mainAxisSpacing: AppSizes.spaceXS8.w,
+                              children: [
+                                ...state.categories
+                                    .map((e) => _categoryItem(context, cubit, e))
+                                    .toList(),
+                                _addCategoryButton(context, cubit),
+                              ],
                             ),
                           ),
                         ),
@@ -234,6 +239,35 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         ),
         alignment: Alignment.center,
         child: Text(cat.name, style: AppTextStyles.bodyRegular),
+      ),
+    );
+  }
+
+  Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
+    return GestureDetector(
+      onTap: () async {
+        await showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderSM16)),
+          ),
+          builder: (_) => const AddCategoryModal(),
+        );
+        cubit.loadCategories();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          border: const Border(
+            bottom: BorderSide(color: AppColors.def, width: 0.5),
+          ),
+          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+        ),
+        alignment: Alignment.center,
+        child: const Icon(Icons.add),
       ),
     );
   }
