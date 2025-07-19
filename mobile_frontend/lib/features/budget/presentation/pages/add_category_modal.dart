@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../cubit/category_cubit.dart';
-import '../cubit/transaction_cubit.dart';
+import '../../../../core/helpers/enums_helpers.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 
 class AddCategoryModal extends StatefulWidget {
@@ -67,9 +67,9 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                               children: [
                                 Row(
                                   children: [
-                                    _typeButton(context, cubit, TransactionType.income, 'Income'),
+                                    _typeButton(context, cubit, CategoryType.income, 'Income'),
                                     SizedBox(width: AppSizes.spaceXS8.w),
-                                    _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                                    _typeButton(context, cubit, CategoryType.purchase, 'Purchase'),
                                   ],
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
@@ -106,7 +106,7 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
     );
   }
 
-  Widget _typeButton(BuildContext context, CategoryCubit cubit, TransactionType type, String label) {
+  Widget _typeButton(BuildContext context, CategoryCubit cubit, CategoryType type, String label) {
     final selected = cubit.state.type == type;
     return GestureDetector(
       onTap: () => cubit.setType(type),
