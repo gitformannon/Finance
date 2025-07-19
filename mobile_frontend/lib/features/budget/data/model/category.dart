@@ -9,16 +9,25 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     final dynamic rawType = json['type'];
-    int? intType;
+
+    CategoryType type;
     if (rawType is int) {
-      intType = rawType;
+      type = CategoryTypeX.fromValue(rawType);
     } else if (rawType is String) {
-      intType = int.tryParse(rawType);
+      final parsed = int.tryParse(rawType);
+      if (parsed != null) {
+        type = CategoryTypeX.fromValue(parsed);
+      } else {
+        type = CategoryTypeX.fromString(rawType);
+      }
+    } else {
+      type = CategoryType.income;
     }
+
     return Category(
       id: json['id']?.toString() ?? '',
       name: json['name'] as String? ?? '',
-      type: CategoryTypeX.fromValue(intType),
+      type: type,
     );
   }
 }
