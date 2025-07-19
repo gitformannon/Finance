@@ -13,7 +13,7 @@ router = APIRouter(prefix="/accounts", tags=["Accounts"])
 
 @router.get("", response_model=list[AccountRead])
 async def list_accounts(
-    user: User = Depends(auth_service.get_current_user),
+    user: User = Depends(auth_service.get_current_user_with_access),
     session: AsyncSession = Depends(get_session),
 ):
     result = await session.scalars(select(Account).where(Account.user_id == user.id))
@@ -23,7 +23,7 @@ async def list_accounts(
 @router.post("", response_model=AccountRead, status_code=201)
 async def create_account(
     data: AccountCreate,
-    user: User = Depends(auth_service.get_current_user),
+    user: User = Depends(auth_service.get_current_user_with_access),
     session: AsyncSession = Depends(get_session),
 ):
     acc = Account(

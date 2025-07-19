@@ -12,6 +12,7 @@ import redis.asyncio as aioredis
 import config
 
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  # используется в get_current_user
+optional_oauth_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 from models.users import User
 from schemas.auth import TokenBase, NewRefreshRequest
@@ -107,6 +108,26 @@ async def get_current_user(
     # использует зависимость для получения текущей сессии БД
     required_scope: str | None = None,
 ):
+    payload = decode_token(token, required_scope)
+    if payload.get("type") != "access":
+        raise HTTPException(status_code=401, detail="Wrong token type")
+
+    user = await session.scalar(select(User).where(User.id == payload["sub"]))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+
+async def get_current_user_with_access(
+    access_token: str | None = None,
+    token: str | None = Depends(optional_oauth_scheme),
+    session: AsyncSession = Depends(get_session),
+    required_scope: str | None = None,
+):
+    """Return current user from query access_token or Authorization header."""
+    token = access_token or token
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
     payload = decode_token(token, required_scope)
     if payload.get("type") != "access":
         raise HTTPException(status_code=401, detail="Wrong token type")
