@@ -149,5 +149,17 @@ abstract class ApiClient {
   @POST(AppApi.transactions)
   Future<void> createTransaction(@Body() Map<String, dynamic> data);
 
+  @GET(AppApi.accounts)
+  Future<List<dynamic>> getAccounts();
+
+  @POST(AppApi.accounts)
+  Future<void> createAccount(@Body() Map<String, dynamic> data);
+
+  @GET(AppApi.categories)
+  Future<List<dynamic>> getCategories(@Query('type') String type);
+
+  @POST(AppApi.categories)
+  Future<void> createCategory(@Body() Map<String, dynamic> data);
+
 
 }

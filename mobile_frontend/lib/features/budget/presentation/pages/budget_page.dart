@@ -7,6 +7,7 @@ import '../../data/model/transaction.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/budget_cubit.dart';
 import 'add_transaction_modal.dart';
+import 'add_account_modal.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -67,16 +68,26 @@ class _BudgetPageState extends State<BudgetPage> {
                           onTap: () {},
                         ),
                       ),
-                      Container(
-                        width: 56,
-                        height: 56,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          border:
-                          Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
-                          borderRadius: BorderRadius.circular(16),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                            ),
+                            builder: (_) => const AddAccountModal(),
+                          );
+                        },
+                        child: Container(
+                          width: 56,
+                          height: 56,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: const Icon(Icons.add, color: Colors.grey),
                         ),
-                        child: const Icon(Icons.add, color: Colors.grey),
                       ),
                     ],
                   ),

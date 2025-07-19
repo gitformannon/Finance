@@ -20,6 +20,9 @@ import '../../features/budget/presentation/cubit/budget_cubit.dart';
 import '../../features/budget/domain/usecase/get_transactions_by_date.dart';
 import '../../features/budget/presentation/cubit/transaction_cubit.dart';
 import '../../features/budget/domain/usecase/add_transaction.dart';
+import '../../features/budget/domain/usecase/get_categories.dart';
+import '../../features/budget/domain/usecase/add_account.dart';
+import '../../features/budget/presentation/cubit/account_cubit.dart';
 
 Future<void> cubitsInit() async {
   getItInstance.registerFactory<SplashCubit>(
@@ -62,6 +65,12 @@ Future<void> cubitsInit() async {
   getItInstance.registerFactory<TransactionCubit>(
     () => TransactionCubit(
       getItInstance<AddTransaction>(),
+      getItInstance<GetCategories>(),
+    ),
+  );
+  getItInstance.registerFactory<AccountCubit>(
+    () => AccountCubit(
+      getItInstance<AddAccount>(),
     ),
   );
 }
