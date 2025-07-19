@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/budget_cubit.dart';
 import 'add_transaction_modal.dart';
 import 'add_account_modal.dart';
+import '../cubit/transaction_cubit.dart';
+import '../../../../core/di/get_it.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -174,7 +176,10 @@ class _BudgetPageState extends State<BudgetPage> {
                 top: Radius.circular(16),
               ),
             ),
-            builder: (_) => const AddTransactionModal(),
+            builder: (_) => BlocProvider(
+              create: (_) => getItInstance<TransactionCubit>()..loadCategories(),
+              child: const AddTransactionModal(),
+            ),
           );
         },
         backgroundColor: Colors.blue,
