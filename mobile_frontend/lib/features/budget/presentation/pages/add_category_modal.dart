@@ -30,7 +30,12 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => getItInstance<CategoryCubit>(),
-      child: BlocBuilder<CategoryCubit, CategoryState>(
+      child: BlocConsumer<CategoryCubit, CategoryState>(
+        listener: (context, state) {
+          if (state.status.isLoaded()) {
+            Navigator.of(context).pop();
+          }
+        },
         builder: (context, state) {
           final cubit = context.read<CategoryCubit>();
           return Container(
