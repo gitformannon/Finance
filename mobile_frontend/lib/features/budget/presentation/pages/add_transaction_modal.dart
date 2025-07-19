@@ -46,21 +46,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           final cubit = context.read<TransactionCubit>();
           return Container(
             height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(AppSizes.borderLarge),
-                topRight: Radius.circular(AppSizes.borderLarge),
-              ),
-            ),
             child: SafeArea(
               top: true,
               bottom: false,
               child: Scaffold(
-                backgroundColor: AppColors.background,
+                backgroundColor: AppColors.transparent,
                 body: ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(AppSizes.borderLarge),
-                    topRight: Radius.circular(AppSizes.borderLarge),
+                    topLeft: Radius.circular(AppSizes.borderSM16),
+                    topRight: Radius.circular(AppSizes.borderSM16),
                   ),
                   child: Container(
                     height: double.infinity,
@@ -68,107 +62,116 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [AppColors.textSecondary, AppColors.textPrimary],
+                        colors: [AppColors.box, AppColors.box],
                       ),
                     ),
                     child: Column(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSizes.paddingXS.w,
-                            horizontal: AppSizes.paddingM.h,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              DropdownButton<String>(
-                            hint: Text('Main', style: AppTextStyles.bodyRegular),
-                            menuWidth: double.maxFinite,
-                            alignment: Alignment.center,
-                            underline: Container(),
-                            elevation: 0,
-                            dropdownColor: AppColors.primary,
-                            focusColor: AppColors.secondary,
-                            borderRadius: const BorderRadius.only(bottomRight: Radius.circular(AppSizes.borderSM16), bottomLeft: Radius.circular(AppSizes.borderSM16)),
-                            value: state.accountId.isNotEmpty ? state.accountId : null,
-                            onChanged: (val) => cubit.setAccountId(val ?? ''),
-                            items: const [
-                              DropdownMenuItem(value: '1', child: Text('Main')),
-                              DropdownMenuItem(value: '2', child: Text('Savings')),
-                              DropdownMenuItem(value: '3', child: Text('Cash')),
-                              DropdownMenuItem(value: '4', child: Text('Visa')),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              _typeButton(context, cubit, TransactionType.income, 'Income'),
-                              SizedBox(width: AppSizes.spaceXS8.w),
-                              _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
-                              SizedBox(width: AppSizes.spaceXS8.w),
-                          _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
-                        ],
-                      ),
-                      DropdownButton<String>(
-                        hint: const Text('Category'),
-                        value: state.categoryId.isNotEmpty ? state.categoryId : null,
-                        items: state.categories
-                            .map((e) => DropdownMenuItem(value: e.id, child: Text(e.name)))
-                            .toList(),
-                        onChanged: (val) => cubit.setCategoryId(val ?? ''),
-                      ),
-                      TextField(
-                        controller: _amountController,
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.right,
-                            onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                          ),
-                          SizedBox(height: AppSizes.spaceM16.h),
-                          GestureDetector(
-                            onTap: () async {
-                              final picked = await showDatePicker(
-                                context: context,
-                                initialDate: state.date,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
-                              );
-                              if (picked != null) cubit.setDate(picked);
-                            },
-                            child: Row(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppSizes.paddingXS.w,
+                              horizontal: AppSizes.paddingM.h,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.calendar_today, size: 20),
-                                SizedBox(width: AppSizes.spaceS12.w),
-                                Text(DateFormat('dd MMM yyyy').format(state.date)),
+                                DropdownButton<String>(
+                                  hint: Text('Main', style: AppTextStyles.bodyRegular),
+                                  menuWidth: double.maxFinite,
+                                  alignment: Alignment.center,
+                                  underline: Container(),
+                                  elevation: 0,
+                                  dropdownColor: AppColors.primary,
+                                  focusColor: AppColors.secondary,
+                                  borderRadius: const BorderRadius.only(bottomRight: Radius.circular(AppSizes.borderSM16), bottomLeft: Radius.circular(AppSizes.borderSM16)),
+                                  value: state.accountId.isNotEmpty ? state.accountId : null,
+                                  onChanged: (val) => cubit.setAccountId(val ?? ''),
+                                  items: const [
+                                    DropdownMenuItem(value: '1', child: Text('Main')),
+                                    DropdownMenuItem(value: '2', child: Text('Savings')),
+                                    DropdownMenuItem(value: '3', child: Text('Cash')),
+                                    DropdownMenuItem(value: '4', child: Text('Visa')),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    _typeButton(context, cubit, TransactionType.income, 'Income'),
+                                    SizedBox(width: AppSizes.spaceXS8.w),
+                                    _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                                    SizedBox(width: AppSizes.spaceXS8.w),
+                                    _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
+                                  ],
+                                ),
+                                DropdownButton<String>(
+                                  hint: const Text('Category'),
+                                  value: state.categoryId.isNotEmpty ? state.categoryId : null,
+                                  items: state.categories
+                                      .map((e) => DropdownMenuItem(value: e.id, child: Text(e.name)))
+                                      .toList(),
+                                  onChanged: (val) => cubit.setCategoryId(val ?? ''),
+                                ),
+                                TextField(
+                                  controller: _amountController,
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.right,
+                                  onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                                ),
+                                SizedBox(height: AppSizes.spaceM16.h),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final picked = await showDatePicker(
+                                      context: context,
+                                      initialDate: state.date,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (picked != null) cubit.setDate(picked);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.calendar_today, size: 20),
+                                      SizedBox(width: AppSizes.spaceS12.w),
+                                      Text(DateFormat('dd MMM yyyy').format(state.date)),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: AppSizes.spaceM16.h),
+                                TextField(
+                                  controller: _noteController,
+                                  decoration: const InputDecoration(labelText: 'Note'),
+                                  onChanged: cubit.setNote,
+                                ),
                               ],
                             ),
                           ),
-                          SizedBox(height: AppSizes.spaceM16.h),
-                          TextField(
-                            controller: _noteController,
-                            decoration: const InputDecoration(labelText: 'Note'),
-                            onChanged: cubit.setNote,
+                        ),
+                        Expanded(
+                          child: Container(
+                            width: double.maxFinite.w,
+                            height: 250,
+                            color: AppColors.accent,
+                            child: const Text('Categories'),
                           ),
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(AppSizes.paddingM.h),
+                          child: SafeArea(
+                            top: false,
+                            child: WButton(
+                              onTap: cubit.submit,
+                              text: 'Save',
+                              isDisabled: !state.isValid ||
+                                  state.status.isLoading(),
+                              isLoading: state.status.isLoading(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(AppSizes.paddingM.h),
-                    child: SafeArea(
-                      top: false,
-                      child: WButton(
-                        onTap: cubit.submit,
-                        text: 'Save',
-                        isDisabled: !state.isValid ||
-                            state.status.isLoading(),
-                        isLoading: state.status.isLoading(),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            ),
             ),
           );
         },
