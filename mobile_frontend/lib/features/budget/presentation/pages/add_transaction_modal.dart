@@ -126,14 +126,20 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             decoration: const InputDecoration(labelText: 'Note'),
                             onChanged: cubit.setNote,
                           ),
-                          WButton(
-                            onTap: cubit.submit,
-                            text: 'Save',
-                            isDisabled: !state.isValid ||
-                                state.status.isLoading(),
-                            isLoading: state.status.isLoading(),
-                          ),
                         ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(AppSizes.paddingM.h),
+                    child: SafeArea(
+                      top: false,
+                      child: WButton(
+                        onTap: cubit.submit,
+                        text: 'Save',
+                        isDisabled: !state.isValid ||
+                            state.status.isLoading(),
+                        isLoading: state.status.isLoading(),
                       ),
                     ),
                   ),
