@@ -8,6 +8,16 @@ class CategoryType(Enum):
     INCOME = "income"
     PURCHASE = "purchase"
 
+    @classmethod
+    def _missing_(cls, value):
+        """Support case-insensitive conversion from strings."""
+        if isinstance(value, str):
+            value_lower = value.lower()
+            for member in cls:
+                if member.value.lower() == value_lower or member.name.lower() == value_lower:
+                    return member
+        return None
+
 class Category(Base):
     __tablename__ = "categories"
 
