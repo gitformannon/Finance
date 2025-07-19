@@ -10,11 +10,24 @@ class CategoryType(Enum):
 
     @classmethod
     def _missing_(cls, value):
-        """Support case-insensitive conversion from strings."""
+        """Support case-insensitive conversion from strings or numeric values."""
         if isinstance(value, str):
+            # try to parse numeric value first
+            try:
+                value_int = int(value)
+                for member in cls:
+                    if member.value == value_int:
+                        return member
+            except ValueError:
+                pass
+
             value_lower = value.lower()
             for member in cls:
-                if member.value.lower() == value_lower or member.name.lower() == value_lower:
+                if member.name.lower() == value_lower:
+                    return member
+        elif isinstance(value, int):
+            for member in cls:
+                if member.value == value:
                     return member
         return None
 
