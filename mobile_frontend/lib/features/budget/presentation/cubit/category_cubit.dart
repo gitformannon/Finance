@@ -4,24 +4,23 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/helpers/enums_helpers.dart';
 import '../../domain/usecase/add_category.dart';
 import '../../data/model/create_category_request.dart';
-import 'transaction_cubit.dart';
 
 class CategoryState extends Equatable {
   final String name;
-  final TransactionType type;
+  final CategoryType type;
   final RequestStatus status;
   final String errorMessage;
 
   const CategoryState({
     this.name = '',
-    this.type = TransactionType.income,
+    this.type = CategoryType.income,
     this.status = RequestStatus.initial,
     this.errorMessage = '',
   });
 
   CategoryState copyWith({
     String? name,
-    TransactionType? type,
+    CategoryType? type,
     RequestStatus? status,
     String? errorMessage,
   }) => CategoryState(
@@ -40,11 +39,11 @@ class CategoryCubit extends Cubit<CategoryState> {
   CategoryCubit(this._addCategory) : super(const CategoryState());
 
   void setName(String v) => emit(state.copyWith(name: v));
-  void setType(TransactionType t) => emit(state.copyWith(type: t));
+  void setType(CategoryType t) => emit(state.copyWith(type: t));
 
   Future<void> submit() async {
     emit(state.copyWith(status: RequestStatus.loading));
-    final request = CreateCategoryRequest(name: state.name, type: state.type.name);
+    final request = CreateCategoryRequest(name: state.name, type: state.type);
     final result = await _addCategory(AddCategoryParams(request));
     result.fold(
       (l) => emit(state.copyWith(status: RequestStatus.error, errorMessage: l.errorMessage)),

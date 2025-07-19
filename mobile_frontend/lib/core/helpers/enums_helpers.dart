@@ -21,3 +21,14 @@ enum RequestStatus {
 
   bool isLoadingMore() => this == RequestStatus.loadingMore;
 }
+
+enum CategoryType { income, purchase }
+
+extension CategoryTypeX on CategoryType {
+  static CategoryType fromString(String value) {
+    return CategoryType.values.firstWhere(
+      (e) => e.name.toLowerCase() == value.toLowerCase(),
+      orElse: () => CategoryType.income,
+    );
+  }
+}
