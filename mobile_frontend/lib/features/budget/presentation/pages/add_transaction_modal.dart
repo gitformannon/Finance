@@ -38,32 +38,37 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           return Container(
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(AppSizes.borderLarge), topRight: Radius.circular(AppSizes.borderLarge)),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(AppSizes.borderLarge),
+                topRight: Radius.circular(AppSizes.borderLarge),
+              ),
             ),
             child: SafeArea(
               top: true,
               bottom: false,
-              child:
-                Scaffold(
+              child: Scaffold(
                 backgroundColor: AppColors.background,
                 body: Container(
-                  height: double.maxFinite,
+                  height: double.infinity,
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [AppColors.textSecondary, AppColors.textPrimary]
+                      colors: [AppColors.textSecondary, AppColors.textPrimary],
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(vertical: AppSizes.paddingXS.w, horizontal: AppSizes.paddingM.h),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: DropdownButton<String>(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSizes.paddingXS.w,
+                            horizontal: AppSizes.paddingM.h,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              DropdownButton<String>(
                             hint: Text('Main', style: AppTextStyles.bodyRegular),
                             menuWidth: double.maxFinite,
                             alignment: Alignment.center,
