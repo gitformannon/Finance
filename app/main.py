@@ -7,6 +7,8 @@ import config
 
 from api.v1.auth import router as auth_router
 from api.v1.transactions import router as transactions_router
+from api.v1.accounts import router as accounts_router
+from api.v1.categories import router as categories_router
 
 app = FastAPI(
     title="Personal Budget API",
@@ -48,6 +50,8 @@ app.add_middleware(
 # Register routers
 app.include_router(auth_router)
 app.include_router(transactions_router)
+app.include_router(accounts_router)
+app.include_router(categories_router)
 
 
 

@@ -34,10 +34,14 @@ async def create_transaction(
     user: User = Depends(auth_service.get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
+    amount = int(data.amount)
+    if data.type == "purchase" and amount > 0:
+        amount = -amount
     tx = Transaction(
         user_id=user.id,
         account_id=data.account_id,
-        amount=int(data.amount),
+        category_id=data.category_id,
+        amount=amount,
         description=data.note,
         created_at=datetime.combine(data.date, datetime.min.time()),
     )

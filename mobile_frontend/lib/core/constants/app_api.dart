@@ -13,6 +13,8 @@ class AppApi{
   static const r_token = "/auth/refresh";
   static const profileImage = "/auth/profile-image";
   static const transactions = "/transactions";
+  static const accounts = "/accounts";
+  static const categories = "/categories";
 
   // static const orderStatus = "/order-status";
   // static const regions = "/regions";

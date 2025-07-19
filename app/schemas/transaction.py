@@ -7,6 +7,7 @@ class TransactionCreate(BaseModel):
     type: str
     account_id: uuid.UUID
     to_account_id: uuid.UUID | None = None
+    category_id: uuid.UUID | None = None
     amount: float
     note: str | None = None
     date: date
@@ -15,6 +16,7 @@ class TransactionCreate(BaseModel):
 class TransactionRead(BaseModel):
     id: uuid.UUID
     account_id: uuid.UUID
+    category_id: uuid.UUID | None = None
     amount: int
     description: str | None = None
     created_at: datetime

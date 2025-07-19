@@ -22,6 +22,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   final _noteController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Load categories after widget build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<TransactionCubit>().loadCategories();
+    });
+  }
+
+  @override
   void dispose() {
     _amountController.dispose();
     _noteController.dispose();
@@ -48,16 +57,21 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               bottom: false,
               child: Scaffold(
                 backgroundColor: AppColors.background,
-                body: Container(
-                  height: double.infinity,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [AppColors.textSecondary, AppColors.textPrimary],
-                    ),
+                body: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(AppSizes.borderLarge),
+                    topRight: Radius.circular(AppSizes.borderLarge),
                   ),
-                  child: Column(
+                  child: Container(
+                    height: double.infinity,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [AppColors.textSecondary, AppColors.textPrimary],
+                      ),
+                    ),
+                    child: Column(
                     children: [
                       Expanded(
                         child: SingleChildScrollView(
@@ -92,11 +106,19 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               SizedBox(width: AppSizes.spaceXS8.w),
                               _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
                               SizedBox(width: AppSizes.spaceXS8.w),
-                              _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
-                            ],
-                          ),
-                          TextField(
-                            controller: _amountController,
+                          _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
+                        ],
+                      ),
+                      DropdownButton<String>(
+                        hint: const Text('Category'),
+                        value: state.categoryId.isNotEmpty ? state.categoryId : null,
+                        items: state.categories
+                            .map((e) => DropdownMenuItem(value: e.id, child: Text(e.name)))
+                            .toList(),
+                        onChanged: (val) => cubit.setCategoryId(val ?? ''),
+                      ),
+                      TextField(
+                        controller: _amountController,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.right,
                             onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
@@ -158,7 +180,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     final selected = cubit.state.type == type;
     return Container(
       child: GestureDetector(
-        onTap: () => cubit.setType(type),
+        onTap: () {
+          cubit.setType(type);
+          cubit.loadCategories();
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
           decoration: BoxDecoration(
