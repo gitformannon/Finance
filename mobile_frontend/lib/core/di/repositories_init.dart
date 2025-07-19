@@ -23,6 +23,7 @@ import '../../features/budget/domain/usecase/get_transactions_by_date.dart';
 import '../../features/budget/domain/usecase/add_transaction.dart';
 import '../../features/budget/domain/usecase/get_categories.dart';
 import '../../features/budget/domain/usecase/add_account.dart';
+import '../../features/budget/domain/usecase/get_accounts.dart';
 import '../../features/budget/domain/usecase/add_category.dart';
 import '../navigation/app_pages.dart';
 import '../navigation/navigation_service.dart';
@@ -129,6 +130,9 @@ Future<void> repositoriesInit() async {
   );
   getItInstance.registerLazySingleton<AddAccount>(
     () => AddAccount(getItInstance<BudgetRepository>()),
+  );
+  getItInstance.registerLazySingleton<GetAccounts>(
+    () => GetAccounts(getItInstance<BudgetRepository>()),
   );
   getItInstance.registerLazySingleton<AddCategory>(
     () => AddCategory(getItInstance<BudgetRepository>()),

@@ -14,6 +14,7 @@ import '../../features/profile/data/model/totp_status_response.dart';
 import '../../features/profile/data/model/totp_code_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
 import '../../features/budget/data/model/transaction.dart';
+import '../../features/budget/data/model/account.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_routes.dart';
@@ -150,7 +151,7 @@ abstract class ApiClient {
   Future<void> createTransaction(@Body() Map<String, dynamic> data);
 
   @GET(AppApi.accounts)
-  Future<List<dynamic>> getAccounts();
+  Future<List<Account>> getAccounts();
 
   @POST(AppApi.accounts)
   Future<void> createAccount(@Body() Map<String, dynamic> data);

@@ -177,7 +177,9 @@ class _BudgetPageState extends State<BudgetPage> {
               ),
             ),
             builder: (_) => BlocProvider(
-              create: (_) => getItInstance<TransactionCubit>()..loadCategories(),
+              create: (_) => getItInstance<TransactionCubit>()
+                ..loadAccounts()
+                ..loadCategories(),
               child: const AddTransactionModal(),
             ),
           );
