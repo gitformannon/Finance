@@ -26,19 +26,6 @@ class _BudgetPageState extends State<BudgetPage> {
         child: Column(
           children: [
           const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                _buildFilterChip('Finance plan'),
-                const SizedBox(width: 8),
-                _buildFilterChip('Debts'),
-                const SizedBox(width: 8),
-                _buildFilterChip('Subscriptions'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
@@ -53,7 +40,7 @@ class _BudgetPageState extends State<BudgetPage> {
                 children: [
                   Text('Total balance', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 8),
-                  Text('0 ₽',
+                  Text('0 UZS',
                       style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   SizedBox(height: 16),
                 ],
@@ -75,7 +62,7 @@ class _BudgetPageState extends State<BudgetPage> {
                       Expanded(
                         child: ListTile(
                           title: const Text('Main'),
-                          subtitle: const Text('0 ₽'),
+                          subtitle: const Text('0 UZS'),
                           trailing: const Icon(Icons.chevron_right),
                           onTap: () {},
                         ),
@@ -113,9 +100,9 @@ class _BudgetPageState extends State<BudgetPage> {
                 ),
                 const Row(
                   children: [
-                    _BalanceChip(text: '+0 ₽'),
+                    _BalanceChip(text: '+ 0 UZS'),
                     SizedBox(width: 8),
-                    _BalanceChip(text: '-0 ₽'),
+                    _BalanceChip(text: '- 0 UZS'),
                   ],
                 ),
               ],

@@ -38,6 +38,7 @@ class AppSizes {
   static const double borderLarge = 48.0;
   static const double borderButtonIcon = 28.0;
   static const double borderCircle = 100.0;
+  static const double borderSM16 = 16;
 
   // Spacing
   static const double spaceXXS5 = 5.0;
