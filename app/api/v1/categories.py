@@ -14,7 +14,7 @@ router = APIRouter(prefix="/categories", tags=["Categories"])
 @router.get("", response_model=list[CategoryRead])
 async def list_categories(
     type: CategoryType | None = None,
-    user: User = Depends(auth_service.get_current_user),
+    user: User = Depends(auth_service.get_current_user_with_access),
     session: AsyncSession = Depends(get_session),
 ):
     stmt = select(Category).where(Category.user_id == user.id)
@@ -27,7 +27,7 @@ async def list_categories(
 @router.post("", response_model=CategoryRead, status_code=201)
 async def create_category(
     data: CategoryCreate,
-    user: User = Depends(auth_service.get_current_user),
+    user: User = Depends(auth_service.get_current_user_with_access),
     session: AsyncSession = Depends(get_session),
 ):
     cat = Category(
