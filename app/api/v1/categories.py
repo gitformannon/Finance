@@ -13,17 +13,13 @@ router = APIRouter(prefix="/categories", tags=["Categories"])
 
 @router.get("", response_model=list[CategoryRead])
 async def list_categories(
-    type: str | None = None,
+    type: CategoryType | None = None,
     user: User = Depends(auth_service.get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
     stmt = select(Category).where(Category.user_id == user.id)
     if type:
-        try:
-            cat_type = CategoryType(type)
-        except ValueError:
-            return []
-        stmt = stmt.where(Category.type == cat_type)
+        stmt = stmt.where(Category.type == type)
     result = await session.scalars(stmt)
     return list(result)
 
@@ -37,7 +33,7 @@ async def create_category(
     cat = Category(
         user_id=user.id,
         name=data.name,
-        type=CategoryType(data.type),
+        type=data.type,
     )
     session.add(cat)
     await session.commit()
