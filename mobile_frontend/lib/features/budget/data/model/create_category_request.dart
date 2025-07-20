@@ -8,6 +8,6 @@ class CreateCategoryRequest {
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'type': type.name,
+        'type': type.value,
       };
 }

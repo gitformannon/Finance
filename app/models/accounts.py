@@ -1,11 +1,12 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
-from enum import Enum
+from enum import IntEnum
+from .types import IntEnumType
 
-class AccountType(Enum):
+class AccountType(IntEnum):
     DEBIT_CARD = 1
     CREDIT_CARD = 2
     SAVINGS = 3
@@ -13,7 +14,7 @@ class AccountType(Enum):
     CASH = 5
     OTHER = 6
 
-class AccountStatus(Enum):
+class AccountStatus(IntEnum):
     ACTIVE = 1
     INACTIVE = 0
     SUSPENDED = -1
@@ -25,8 +26,8 @@ class Account(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     account_name = Column(String(50), nullable=True)
     account_number = Column(String(20), nullable=True, unique=True)
-    account_type = Column(SQLEnum(AccountType), nullable=True)
-    status = Column(SQLEnum(AccountStatus), default=1, nullable=False)
+    account_type = Column(IntEnumType(AccountType), nullable=True)
+    status = Column(IntEnumType(AccountStatus), default=AccountStatus.ACTIVE, nullable=False)
     balance = Column(Integer, nullable=False, default=0)
     initial_balance = Column(Integer, nullable=False, default=0)
     limit = Column(Integer, nullable=True)  # лимит для кредитных карт
