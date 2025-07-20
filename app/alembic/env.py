@@ -5,10 +5,15 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from sqlalchemy.pool import NullPool
 from alembic import context
 import os
+import sys
 from dotenv import load_dotenv
 
 # Загрузка .env
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
+
+# Ensure project root is in sys.path so that `database` and `models` modules are
+# importable when Alembic loads this file from the "alembic" directory.
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Настройки логирования
 fileConfig(context.config.config_file_name)
