@@ -18,13 +18,13 @@ def upgrade() -> None:
         'INVESTMENT',
         'CASH',
         'OTHER',
-        name='accounttype'
+        name='account_type'
     )
     account_status_enum = sa.Enum(
         'ACTIVE',
         'INACTIVE',
         'SUSPENDED',
-        name='accountstatus'
+        name='account_status'
     )
     account_type_enum.create(op.get_bind(), checkfirst=True)
     account_status_enum.create(op.get_bind(), checkfirst=True)
@@ -80,19 +80,19 @@ def downgrade() -> None:
                     existing_nullable=False)
 
     op.alter_column('accounts', 'status',
-                    existing_type=sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='accountstatus'),
+                    existing_type=sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='account_status'),
                     type_=sa.Integer(),
                     server_default=None,
                     existing_nullable=False)
 
     op.alter_column('accounts', 'account_type',
-                    existing_type=sa.Enum('DEBIT_CARD', 'CREDIT_CARD', 'SAVINGS', 'INVESTMENT', 'CASH', 'OTHER', name='accounttype'),
+                    existing_type=sa.Enum('DEBIT_CARD', 'CREDIT_CARD', 'SAVINGS', 'INVESTMENT', 'CASH', 'OTHER', name='account_type'),
                     type_=sa.String(length=20),
                     existing_nullable=True)
 
     op.alter_column('accounts', 'account_name', new_column_name='name')
 
-    account_status_enum = sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='accountstatus')
-    account_type_enum = sa.Enum('DEBIT_CARD', 'CREDIT_CARD', 'SAVINGS', 'INVESTMENT', 'CASH', 'OTHER', name='accounttype')
+    account_status_enum = sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='account_status')
+    account_type_enum = sa.Enum('DEBIT_CARD', 'CREDIT_CARD', 'SAVINGS', 'INVESTMENT', 'CASH', 'OTHER', name='account_type')
     account_status_enum.drop(op.get_bind(), checkfirst=True)
     account_type_enum.drop(op.get_bind(), checkfirst=True)
