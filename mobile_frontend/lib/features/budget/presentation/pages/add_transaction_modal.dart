@@ -143,26 +143,29 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         ),
                         Expanded(
                           child: Container(
-                            color: AppColors.accent,
-                            width: double.maxFinite,
+                            width: double.infinity,
                             padding: EdgeInsets.all(AppSizes.paddingM.h),
-                            child: GridView.count(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: AppSizes.spaceXS8.w,
-                              mainAxisSpacing: AppSizes.spaceXS8.w,
-                              children: [
-                                ...(state.type == TransactionType.transfer
-                                    ? state.accounts
-                                        .where((a) => a.id != state.accountId)
-                                        .map((e) => _accountItem(context, cubit, e))
-                                        .toList()
-                                    : state.categories
-                                        .map((e) => _categoryItem(context, cubit, e))
-                                        .toList()),
-                                if (state.type != TransactionType.transfer)
-                                  _addCategoryButton(context, cubit),
-                              ],
-                            ),
+                            child: state.type == TransactionType.transfer
+                              ? ListView.separated(
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: state.accounts.length,
+                                separatorBuilder: (c, i) => const Divider(),
+                                itemBuilder: (c, i) {
+                                  final acc = state.accounts[i];
+                                  return _accountItem(context, cubit, acc);
+                                },
+                              )
+                              : GridView.count(
+                                shrinkWrap: true,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: AppSizes.spaceXS8.w,
+                                mainAxisSpacing: AppSizes.spaceXS8.w,
+                                children: [
+                                  for (final cat in state.categories) _categoryItem(context, cubit, cat),
+                                  _addCategoryButton(context, cubit)
+                                ],
+                              ),
                           ),
                         ),
                         Padding(
