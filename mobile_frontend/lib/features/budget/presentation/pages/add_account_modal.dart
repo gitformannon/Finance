@@ -16,11 +16,22 @@ class AddAccountModal extends StatefulWidget {
 
 class _AddAccountModalState extends State<AddAccountModal> {
   final _nameController = TextEditingController();
+  final _numberController = TextEditingController();
   final _balanceController = TextEditingController();
+
+  final Map<int, String> _types = const {
+    1: 'Debit card',
+    2: 'Credit card',
+    3: 'Savings',
+    4: 'Investment',
+    5: 'Cash',
+    6: 'Other',
+  };
 
   @override
   void dispose() {
     _nameController.dispose();
+    _numberController.dispose();
     _balanceController.dispose();
     super.dispose();
   }
@@ -63,6 +74,26 @@ class _AddAccountModalState extends State<AddAccountModal> {
                                   controller: _nameController,
                                   decoration: const InputDecoration(labelText: 'Name'),
                                   onChanged: cubit.setName,
+                                ),
+                                SizedBox(height: AppSizes.spaceM16.h),
+                                TextField(
+                                  controller: _numberController,
+                                  decoration: const InputDecoration(labelText: 'Account number'),
+                                  onChanged: cubit.setNumber,
+                                ),
+                                SizedBox(height: AppSizes.spaceM16.h),
+                                DropdownButton<int>(
+                                  value: state.type,
+                                  hint: const Text('Account type'),
+                                  onChanged: cubit.setType,
+                                  items: _types.entries
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e.key,
+                                          child: Text(e.value),
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
                                 TextField(
