@@ -33,16 +33,30 @@ def upgrade() -> None:
     op.alter_column('accounts', 'name', new_column_name='account_name')
 
     # change column types
-    op.alter_column('accounts', 'account_type',
-                    existing_type=sa.String(length=20),
-                    type_=account_type_enum,
-                    existing_nullable=True)
+    op.alter_column(
+        'accounts',
+        'account_type',
+        existing_type=sa.String(length=20),
+        type_=account_type_enum,
+        existing_nullable=True,
+        postgresql_using="account_type::account_type",
+    )
 
-    op.alter_column('accounts', 'status',
-                    existing_type=sa.Integer(),
-                    type_=account_status_enum,
-                    server_default='ACTIVE',
-                    existing_nullable=False)
+    op.alter_column(
+        'accounts',
+        'status',
+        existing_type=sa.Integer(),
+        type_=account_status_enum,
+        server_default='ACTIVE',
+        existing_nullable=False,
+        postgresql_using=(
+            "CASE status "
+            "WHEN 1 THEN 'ACTIVE' "
+            "WHEN 0 THEN 'INACTIVE' "
+            "WHEN -1 THEN 'SUSPENDED' "
+            "END::account_status"
+        ),
+    )
 
     op.alter_column('accounts', 'balance',
                     existing_type=sa.Integer(),
