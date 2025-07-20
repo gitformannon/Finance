@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../cubit/transaction_cubit.dart';
 import '../../data/model/category.dart';
+import '../../data/model/account.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import 'add_category_modal.dart';
 
@@ -142,10 +143,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               crossAxisSpacing: AppSizes.spaceXS8.w,
                               mainAxisSpacing: AppSizes.spaceXS8.w,
                               children: [
-                                ...state.categories
-                                    .map((e) => _categoryItem(context, cubit, e))
-                                    .toList(),
-                                _addCategoryButton(context, cubit),
+                                ...state.type == TransactionType.transfer
+                                    ? state.accounts
+                                        .where((a) => a.id != state.accountId)
+                                        .map((e) => _accountItem(context, cubit, e))
+                                        .toList()
+                                    : state.categories
+                                        .map((e) => _categoryItem(context, cubit, e))
+                                        .toList(),
+                                if (state.type != TransactionType.transfer)
+                                  _addCategoryButton(context, cubit),
                               ],
                             ),
                           ),
@@ -180,7 +187,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       child: GestureDetector(
         onTap: () {
           cubit.setType(type);
-          cubit.loadCategories();
+          if (type == TransactionType.transfer) {
+            cubit.loadAccounts();
+          } else {
+            cubit.loadCategories();
+          }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
@@ -231,6 +242,34 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         ),
         alignment: Alignment.center,
         child: Text(cat.name, style: AppTextStyles.bodyRegular),
+      ),
+    );
+  }
+
+  Widget _accountItem(BuildContext context, TransactionCubit cubit, Account acc) {
+    final selected = cubit.state.toAccountId == acc.id;
+    return GestureDetector(
+      onTap: () => cubit.setToAccountId(acc.id),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primary : AppColors.secondary,
+          border: const Border(
+            bottom: BorderSide(color: AppColors.def, width: 0.5),
+          ),
+          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+          boxShadow: [
+            BoxShadow(
+              color: !selected ? AppColors.transparent : AppColors.primary,
+              blurRadius: !selected ? 0 : 5,
+              spreadRadius: !selected ? 0.1 : 0,
+              blurStyle: BlurStyle.outer,
+              offset: const Offset(0, 0),
+            )
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Text(acc.name ?? 'Account', style: AppTextStyles.bodyRegular),
       ),
     );
   }
