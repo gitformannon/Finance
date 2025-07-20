@@ -24,6 +24,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   final _noteController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<TransactionCubit>();
+    cubit.loadAccounts();
+    cubit.loadCategories();
+  }
+
+  @override
   void dispose() {
     _amountController.dispose();
     _noteController.dispose();
