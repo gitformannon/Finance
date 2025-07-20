@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
+from models.users import Status
 
 class UserBase(BaseModel):
     username: str
@@ -15,7 +16,7 @@ class UserRead(UserBase):
     id: uuid.UUID
     email: EmailStr
     profile_image: str | None = None
-    status: int
+    status: Status
     created_at: datetime
     updated_at: datetime
 

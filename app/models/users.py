@@ -3,9 +3,10 @@ from sqlalchemy import Column, Integer, String, DateTime, func, Boolean, LargeBi
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 from sqlalchemy.dialects.postgresql import UUID
-from enum import Enum
+from enum import IntEnum
+from .types import IntEnumType
 
-class Status(Enum):
+class Status(IntEnum):
     ACTIVE = 1
     INACTIVE = 0
     SUSPENDED = -1
@@ -22,7 +23,7 @@ class User(Base):
     profile_image = Column(String(255), nullable=True)
     totp_secret = Column(LargeBinary, nullable=True)
     is_totp_enabled = Column(Boolean, default=False, nullable=False)
-    status = Column(Integer, default=1, nullable=False)
+    status = Column(IntEnumType(Status), default=Status.ACTIVE, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 

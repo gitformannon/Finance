@@ -30,9 +30,7 @@ async def create_account(
         user_id=user.id,
         account_name=data.account_name,
         account_number=data.account_number,
-        account_type=(
-            AccountType(data.account_type) if data.account_type is not None else None
-        ),
+        account_type=data.account_type,
         balance=data.initial_balance,
         initial_balance=data.initial_balance,
     )

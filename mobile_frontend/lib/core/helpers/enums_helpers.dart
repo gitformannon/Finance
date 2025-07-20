@@ -42,4 +42,13 @@ extension CategoryTypeX on CategoryType {
         return CategoryType.income;
     }
   }
+
+  int get value {
+    switch (this) {
+      case CategoryType.income:
+        return 1;
+      case CategoryType.purchase:
+        return -1;
+    }
+  }
 }
