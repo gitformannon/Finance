@@ -51,7 +51,7 @@ class BudgetRepositoryImpl with BudgetRepository {
   Future<Either<Failure, List<Account>>> getAccounts() async {
     try {
       final resp = await _client.getAccounts();
-      return Right(resp.map((e) => Account.fromJson(e)).toList());
+      return Right(resp.map((e) => Account.fromJson(e as Map<String, dynamic>)).toList());
     } catch (e) {
       return Left(Failure(errorMessage: e.toString()));
     }

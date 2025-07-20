@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/failure.dart';
+import '../../../../core/network/no_params.dart';
 import '../../../../core/network/use_case.dart';
 import '../repository/budget_repository.dart';
 import '../../data/model/account.dart';
