@@ -11,6 +11,7 @@ import '../../data/model/category.dart';
 import '../../data/model/account.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import 'add_category_modal.dart';
+import '../../../../core/helpers/enums_helpers.dart';
 
 class AddTransactionModal extends StatefulWidget {
   const AddTransactionModal({super.key});
@@ -288,6 +289,13 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
     return GestureDetector(
       onTap: () async {
+        final type = cubit.state.type;
+        CategoryType? categoryType;
+        if (type == TransactionType.income) {
+          categoryType = CategoryType.income;
+        } else if (type == TransactionType.purchase) {
+          categoryType = CategoryType.purchase;
+        }
         await showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -295,7 +303,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderSM16)),
           ),
-          builder: (_) => const AddCategoryModal(),
+          builder: (_) => AddCategoryModal(type: categoryType),
         );
         cubit.loadCategories();
       },

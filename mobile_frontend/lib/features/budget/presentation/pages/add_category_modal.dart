@@ -11,7 +11,8 @@ import '../../../../core/helpers/enums_helpers.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 
 class AddCategoryModal extends StatefulWidget {
-  const AddCategoryModal({super.key});
+  final CategoryType? type;
+  const AddCategoryModal({this.type, super.key});
 
   @override
   State<AddCategoryModal> createState() => _AddCategoryModalState();
@@ -29,7 +30,11 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getItInstance<CategoryCubit>(),
+      create: (_) {
+        final cubit = getItInstance<CategoryCubit>();
+        if (widget.type != null) cubit.setType(widget.type!);
+        return cubit;
+      },
       child: BlocConsumer<CategoryCubit, CategoryState>(
         listener: (context, state) {
           if (state.status.isLoaded()) {
@@ -65,14 +70,16 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                             padding: EdgeInsets.all(AppSizes.paddingM.h),
                             child: Column(
                               children: [
-                                Row(
-                                  children: [
-                                    _typeButton(context, cubit, CategoryType.income, 'Income'),
-                                    SizedBox(width: AppSizes.spaceXS8.w),
-                                    _typeButton(context, cubit, CategoryType.purchase, 'Purchase'),
-                                  ],
-                                ),
-                                SizedBox(height: AppSizes.spaceM16.h),
+                                if (widget.type == null) ...[
+                                  Row(
+                                    children: [
+                                      _typeButton(context, cubit, CategoryType.income, 'Income'),
+                                      SizedBox(width: AppSizes.spaceXS8.w),
+                                      _typeButton(context, cubit, CategoryType.purchase, 'Purchase'),
+                                    ],
+                                  ),
+                                  SizedBox(height: AppSizes.spaceM16.h),
+                                ],
                                 TextField(
                                   controller: _nameController,
                                   decoration: const InputDecoration(labelText: 'Name'),
