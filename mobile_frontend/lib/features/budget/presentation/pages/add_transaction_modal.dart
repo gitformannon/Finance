@@ -151,14 +151,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               crossAxisSpacing: AppSizes.spaceXS8.w,
                               mainAxisSpacing: AppSizes.spaceXS8.w,
                               children: [
-                                ...state.type == TransactionType.transfer
+                                ...(state.type == TransactionType.transfer
                                     ? state.accounts
                                         .where((a) => a.id != state.accountId)
                                         .map((e) => _accountItem(context, cubit, e))
                                         .toList()
                                     : state.categories
                                         .map((e) => _categoryItem(context, cubit, e))
-                                        .toList(),
+                                        .toList()),
                                 if (state.type != TransactionType.transfer)
                                   _addCategoryButton(context, cubit),
                               ],

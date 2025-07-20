@@ -105,7 +105,11 @@ class TransactionCubit extends Cubit<TransactionState> {
     final result = await _getAccounts(const NoParams());
     result.fold(
       (failure) => emit(state.copyWith(errorMessage: failure.errorMessage)),
-      (data) => emit(state.copyWith(accounts: data)),
+      (data) {
+        final initialAccount =
+            state.accountId.isEmpty && data.isNotEmpty ? data.first.id : state.accountId;
+        emit(state.copyWith(accounts: data, accountId: initialAccount));
+      },
     );
   }
 
