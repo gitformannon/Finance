@@ -39,12 +39,21 @@ def upgrade() -> None:
     )
     op.execute('DROP TYPE IF EXISTS account_type')
 
+    # drop existing default so PostgreSQL doesn't try to cast it
+    op.alter_column(
+        'accounts',
+        'status',
+        server_default=None,
+        existing_type=sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='account_status'),
+        existing_nullable=False,
+    )
+
+    # convert enum values to integers
     op.alter_column(
         'accounts',
         'status',
         existing_type=sa.Enum('ACTIVE', 'INACTIVE', 'SUSPENDED', name='account_status'),
         type_=sa.Integer(),
-        server_default='1',
         postgresql_using=(
             "CASE status "
             "WHEN 'ACTIVE' THEN 1 "
@@ -54,6 +63,16 @@ def upgrade() -> None:
         ),
         existing_nullable=False,
     )
+
+    # set new integer default
+    op.alter_column(
+        'accounts',
+        'status',
+        server_default='1',
+        existing_type=sa.Integer(),
+        existing_nullable=False,
+    )
+
     op.execute('DROP TYPE IF EXISTS account_status')
 
 
