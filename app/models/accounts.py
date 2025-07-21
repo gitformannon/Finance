@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, func, BigInteger
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
@@ -28,9 +28,9 @@ class Account(Base):
     account_number = Column(String(20), nullable=True, unique=True)
     account_type = Column(IntEnumType(AccountType), nullable=True)
     status = Column(IntEnumType(AccountStatus), default=AccountStatus.ACTIVE, nullable=False)
-    balance = Column(Integer, nullable=False, default=0)
+    balance = Column(BigInteger, nullable=False, default=0)
     initial_balance = Column(Integer, nullable=False, default=0)
-    limit = Column(Integer, nullable=True)  # лимит для кредитных карт
+    limit = Column(BigInteger, nullable=True)  # лимит для кредитных карт
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
