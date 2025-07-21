@@ -37,10 +37,14 @@ async def create_transaction(
     amount = int(data.amount)
     if data.type == "purchase" and amount > 0:
         amount = -amount
+    to_account_value = data.to_account
+    if to_account_value is None and data.to_account_id is not None:
+        to_account_value = str(data.to_account_id)
     tx = Transaction(
         user_id=user.id,
         account_id=data.account_id,
         category_id=data.category_id,
+        to_account=to_account_value,
         amount=amount,
         description=data.note,
         created_at=datetime.combine(data.date, datetime.min.time()),
