@@ -2,6 +2,7 @@ import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -320,18 +321,22 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       isScrollControlled: true,
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderSM16)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.borderSM16),
+        ),
       ),
       builder: (_) {
         return StatefulBuilder(
           builder: (context, setState) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CalendarDatePicker(
-                initialDate: tempDate,
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                onDateChanged: (d) => setState(() => tempDate = d),
+              SizedBox(
+                height: 200.h,
+                child: CupertinoDatePicker(
+                  initialDateTime: tempDate,
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: (d) => setState(() => tempDate = d),
+                ),
               ),
               Padding(
                 padding: EdgeInsets.all(AppSizes.paddingM.h),
