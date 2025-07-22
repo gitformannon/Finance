@@ -115,15 +115,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
                                 GestureDetector(
-                                  onTap: () async {
-                                    final picked = await showDatePicker(
-                                      context: context,
-                                      initialDate: state.date,
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2100),
-                                    );
-                                    if (picked != null) cubit.setDate(picked);
-                                  },
+                                  onTap: () => _showCalendarPicker(context, cubit),
                                   child: Row(
                                     children: [
                                       const Icon(Icons.calendar_today, size: 20),
@@ -319,6 +311,42 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         alignment: Alignment.center,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+  Future<void> _showCalendarPicker(BuildContext context, TransactionCubit cubit) async {
+    DateTime tempDate = cubit.state.date;
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderSM16)),
+      ),
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setState) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CalendarDatePicker(
+                initialDate: tempDate,
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                onDateChanged: (d) => setState(() => tempDate = d),
+              ),
+              Padding(
+                padding: EdgeInsets.all(AppSizes.paddingM.h),
+                child: WButton(
+                  onTap: () {
+                    cubit.setDate(tempDate);
+                    Navigator.of(context).pop();
+                  },
+                  text: 'Select',
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
