@@ -94,6 +94,10 @@ class TransactionCubit extends Cubit<TransactionState> {
   void setNote(String note) => emit(state.copyWith(note: note));
 
   Future<void> loadCategories() async {
+    if (state.type == TransactionType.transfer) {
+      emit(state.copyWith(categories: []));
+      return;
+    }
     final result = await _getCategories(GetCategoriesParams(state.type.name));
     result.fold(
       (failure) => emit(state.copyWith(errorMessage: failure.errorMessage)),
