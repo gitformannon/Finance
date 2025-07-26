@@ -43,67 +43,58 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
         },
         builder: (context, state) {
           final cubit = context.read<CategoryCubit>();
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            child: SafeArea(
-              top: true,
-              bottom: false,
-              child: Scaffold(
-                backgroundColor: AppColors.transparent,
-                body: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(AppSizes.borderSM16),
-                    topRight: Radius.circular(AppSizes.borderSM16),
+          return Scaffold(
+            backgroundColor: AppColors.transparent,
+            body: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(AppSizes.borderSM16),
+                topRight: Radius.circular(AppSizes.borderSM16),
+              ),
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [AppColors.box, AppColors.box],
                   ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.box, AppColors.box],
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: EdgeInsets.all(AppSizes.paddingM.h),
-                            child: Column(
+                ),
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      padding: EdgeInsets.all(AppSizes.paddingM.h),
+                      child: Column(
+                        children: [
+                          if (widget.type == null) ...[
+                            Row(
                               children: [
-                                if (widget.type == null) ...[
-                                  Row(
-                                    children: [
-                                      _typeButton(context, cubit, CategoryType.income, 'Income'),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      _typeButton(context, cubit, CategoryType.purchase, 'Purchase'),
-                                    ],
-                                  ),
-                                  SizedBox(height: AppSizes.spaceM16.h),
-                                ],
-                                TextField(
-                                  controller: _nameController,
-                                  decoration: const InputDecoration(labelText: 'Name'),
-                                  onChanged: cubit.setName,
-                                ),
+                                _typeButton(context, cubit, CategoryType.income, 'Income'),
+                                SizedBox(width: AppSizes.spaceXS8.w),
+                                _typeButton(context, cubit, CategoryType.purchase, 'Purchase'),
                               ],
                             ),
+                            SizedBox(height: AppSizes.spaceM16.h),
+                          ],
+                          TextField(
+                            controller: _nameController,
+                            decoration: const InputDecoration(labelText: 'Name'),
+                            onChanged: cubit.setName,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(AppSizes.paddingM.h),
-                          child: SafeArea(
-                            top: false,
-                            child: WButton(
-                              onTap: cubit.submit,
-                              text: 'Save',
-                              isDisabled: state.name.isEmpty || state.status.isLoading(),
-                              isLoading: state.status.isLoading(),
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.all(AppSizes.paddingM.h),
+                      child: SafeArea(
+                        top: false,
+                        child: WButton(
+                          onTap: cubit.submit,
+                          text: 'Save',
+                          isDisabled: state.name.isEmpty || state.status.isLoading(),
+                          isLoading: state.status.isLoading(),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

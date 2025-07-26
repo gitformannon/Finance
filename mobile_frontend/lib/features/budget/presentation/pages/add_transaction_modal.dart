@@ -63,7 +63,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [AppColors.box, AppColors.box],
+                        colors: [AppColors.background, AppColors.background],
                       ),
                     ),
                     child: Column(
@@ -79,10 +79,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               children: [
                                 DropdownButton<String>(
                                   hint: Text('Main', style: AppTextStyles.bodyRegular),
+                                  menuMaxHeight: 100.h,
                                   menuWidth: double.maxFinite,
                                   alignment: Alignment.center,
                                   underline: Container(),
-                                  elevation: 0,
+                                  elevation: 2,
                                   dropdownColor: AppColors.primary,
                                   focusColor: AppColors.secondary,
                                   borderRadius: const BorderRadius.only(
@@ -102,9 +103,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 Row(
                                   children: [
                                     _typeButton(context, cubit, TransactionType.income, 'Income'),
-                                    SizedBox(width: AppSizes.spaceXS8.w),
+                                    SizedBox(width: AppSizes.spaceXXS5.w),
                                     _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
-                                    SizedBox(width: AppSizes.spaceXS8.w),
+                                    SizedBox(width: AppSizes.spaceXXS5.w),
                                     _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                   ],
                                 ),
@@ -119,17 +120,31 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   onTap: () => _showCalendarPicker(context, cubit),
                                   child: Row(
                                     children: [
-                                      const Icon(Icons.calendar_today, size: 20),
-                                      SizedBox(width: AppSizes.spaceS12.w),
-                                      Text(DateFormat('dd MMM yyyy').format(state.date)),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.def,
+                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                        ),
+                                        child: const Padding(padding: EdgeInsets.all(AppSizes.paddingS),
+                                          child: Icon(Icons.calendar_today, size: 24, color: AppColors.secondary,),
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.spaceXS8.w),
+                                      Text(DateFormat('dd MMMM yyyy').format(state.date)),
+                                      SizedBox(width: AppSizes.spaceXL24.w),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: AppColors.def,
+                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                        ),
+                                        child: const Padding(padding: EdgeInsets.all(AppSizes.paddingS),
+                                          child: Icon(Icons.sticky_note_2_rounded, size: 24, color: AppColors.secondary,),
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.spaceXS8.w),
+                                      Text('Note'),
                                     ],
                                   ),
-                                ),
-                                SizedBox(height: AppSizes.spaceM16.h),
-                                TextField(
-                                  controller: _noteController,
-                                  decoration: const InputDecoration(labelText: 'Note'),
-                                  onChanged: cubit.setNote,
                                 ),
                               ],
                             ),
@@ -201,23 +216,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
           decoration: BoxDecoration(
-            color: selected ? AppColors.primary : AppColors.secondary,
-            border: const Border(
-              bottom: BorderSide(color: AppColors.def, width: 0.5)
-            ),
+            color: selected ? AppColors.def : AppColors.transparent,
             borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-            boxShadow: [
-              BoxShadow(
-                color: !selected? AppColors.transparent : AppColors.primary,
-                blurRadius: !selected? 0 : 5,
-                spreadRadius: !selected? 0.1 : 0,
-                blurStyle: BlurStyle.outer,
-                offset: const Offset(0, 0),
-              )
-            ]
+            border: Border.all(
+              color: selected ? AppColors.primary : AppColors.def,
+              width: 0.5
+            ),
           ),
           alignment: Alignment.center,
-          child: Text(label, style: AppTextStyles.bodyRegular),
+          child: Text(label, style: selected ? AppTextStyles.bodyRegular : AppTextStyles.bodyRegular),
         ),
       ),
     );
@@ -231,19 +238,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
         padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
         decoration: BoxDecoration(
           color: selected ? AppColors.primary : AppColors.secondary,
-          border: const Border(
-            bottom: BorderSide(color: AppColors.def, width: 0.5)
+          border: Border.all(
+
           ),
           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-          boxShadow: [
-            BoxShadow(
-              color: !selected ? AppColors.transparent : AppColors.primary,
-              blurRadius: !selected ? 0 : 5,
-              spreadRadius: !selected ? 0.1 : 0,
-              blurStyle: BlurStyle.outer,
-              offset: const Offset(0, 0),
-            )
-          ],
         ),
         alignment: Alignment.center,
         child: Text(cat.name, style: AppTextStyles.bodyRegular),
@@ -330,22 +328,27 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           builder: (context, setState) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
+              Container(
                 height: 200.h,
+                color: AppColors.background,
                 child: CupertinoDatePicker(
                   initialDateTime: tempDate,
                   mode: CupertinoDatePickerMode.date,
+                  backgroundColor: AppColors.background,
                   onDateTimeChanged: (d) => setState(() => tempDate = d),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(AppSizes.paddingM.h),
-                child: WButton(
-                  onTap: () {
-                    cubit.setDate(tempDate);
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Select',
+              Container(
+                color: AppColors.background,
+                child: Padding(
+                  padding: EdgeInsets.all(AppSizes.paddingM.h),
+                  child: WButton(
+                    onTap: () {
+                      cubit.setDate(tempDate);
+                      Navigator.of(context).pop();
+                    },
+                    text: 'Select',
+                  ),
                 ),
               ),
             ],
