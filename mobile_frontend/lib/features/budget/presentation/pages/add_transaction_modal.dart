@@ -116,35 +116,56 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
-                                GestureDetector(
-                                  onTap: () => _showCalendarPicker(context, cubit),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.def,
-                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall)
-                                        ),
-                                        child: const Padding(padding: EdgeInsets.all(AppSizes.paddingS),
-                                          child: Icon(Icons.calendar_today, size: 24, color: AppColors.secondary,),
-                                        ),
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => _showCalendarPicker(context, cubit),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: AppColors.def,
+                                              borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(AppSizes.paddingS),
+                                              child: Icon(
+                                                Icons.calendar_today,
+                                                size: 24,
+                                                color: AppColors.secondary,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: AppSizes.spaceXS8.w),
+                                          Text(DateFormat('dd MMMM yyyy').format(state.date)),
+                                        ],
                                       ),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text(DateFormat('dd MMMM yyyy').format(state.date)),
-                                      SizedBox(width: AppSizes.spaceXL24.w),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: AppColors.def,
-                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall)
-                                        ),
-                                        child: const Padding(padding: EdgeInsets.all(AppSizes.paddingS),
-                                          child: Icon(Icons.sticky_note_2_rounded, size: 24, color: AppColors.secondary,),
-                                        ),
+                                    ),
+                                    SizedBox(width: AppSizes.spaceXL24.w),
+                                    GestureDetector(
+                                      onTap: () => _showNoteModal(context, cubit),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: AppColors.def,
+                                              borderRadius: BorderRadius.circular(AppSizes.borderSmall),
+                                            ),
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(AppSizes.paddingS),
+                                              child: Icon(
+                                                Icons.sticky_note_2_rounded,
+                                                size: 24,
+                                                color: AppColors.secondary,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: AppSizes.spaceXS8.w),
+                                          Text('Note'),
+                                        ],
                                       ),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text('Note'),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -349,6 +370,50 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                     },
                     text: 'Select',
                   ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showNoteModal(BuildContext context, TransactionCubit cubit) async {
+    _noteController.text = cubit.state.note;
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.borderSM16),
+        ),
+      ),
+      builder: (_) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(AppSizes.paddingM.h),
+                child: TextField(
+                  controller: _noteController,
+                  decoration: const InputDecoration(labelText: 'Note'),
+                  maxLines: null,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(AppSizes.paddingM.h),
+                child: WButton(
+                  onTap: () {
+                    cubit.setNote(_noteController.text);
+                    Navigator.of(context).pop();
+                  },
+                  text: 'Save',
                 ),
               ),
             ],
