@@ -7,12 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import '../../../shared/presentation/widgets/app_buttons/w_tile_button.dart';
 import '../cubit/transaction_cubit.dart';
 import '../../data/model/category.dart';
 import '../../data/model/account.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import 'add_category_modal.dart';
 import '../../../../core/helpers/enums_helpers.dart';
+import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
 
 class AddTransactionModal extends StatefulWidget {
   const AddTransactionModal({super.key});
@@ -46,180 +48,180 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
         return Container(
-            height: MediaQuery.of(context).size.height,
-            child: SafeArea(
-              top: true,
-              bottom: false,
-              child: Scaffold(
-                backgroundColor: AppColors.transparent,
-                body: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(AppSizes.borderSM16),
-                    topRight: Radius.circular(AppSizes.borderSM16),
-                  ),
-                  child: Container(
-                    height: double.infinity,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.background, AppColors.background],
-                      ),
+          height: MediaQuery.of(context).size.height,
+          child: SafeArea(
+            top: true,
+            bottom: false,
+            child: Scaffold(
+              backgroundColor: AppColors.transparent,
+              body: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppSizes.borderSM16),
+                  topRight: Radius.circular(AppSizes.borderSM16),
+                ),
+                child: Container(
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [AppColors.background, AppColors.background],
                     ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: EdgeInsets.symmetric(
-                              vertical: AppSizes.paddingXS.w,
-                              horizontal: AppSizes.paddingM.h,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                DropdownButton<String>(
-                                  hint: Text('Main', style: AppTextStyles.bodyRegular),
-                                  menuMaxHeight: 100.h,
-                                  menuWidth: double.maxFinite,
-                                  alignment: Alignment.center,
-                                  underline: Container(),
-                                  elevation: 2,
-                                  dropdownColor: AppColors.primary,
-                                  focusColor: AppColors.secondary,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomRight: Radius.circular(AppSizes.borderSM16),
-                                      bottomLeft: Radius.circular(AppSizes.borderSM16)),
-                                  value: state.accountId.isNotEmpty ? state.accountId : null,
-                                  onChanged: (val) => cubit.setAccountId(val ?? ''),
-                                  items: state.accounts
-                                      .map(
-                                        (a) => DropdownMenuItem(
-                                          value: a.id,
-                                          child: Text(a.name ?? 'Account'),
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                                Row(
-                                  children: [
-                                    _typeButton(context, cubit, TransactionType.income, 'Income'),
-                                    SizedBox(width: AppSizes.spaceXXS5.w),
-                                    _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
-                                    SizedBox(width: AppSizes.spaceXXS5.w),
-                                    _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
-                                  ],
-                                ),
-                                TextField(
-                                  controller: _amountController,
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.right,
-                                  onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                                ),
-                                SizedBox(height: AppSizes.spaceM16.h),
-                                Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => _showCalendarPicker(context, cubit),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.def,
-                                              borderRadius: BorderRadius.circular(AppSizes.borderSmall)
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(AppSizes.paddingS),
-                                              child: Icon(
-                                                Icons.calendar_today,
-                                                size: 24,
-                                                color: AppColors.secondary,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: AppSizes.spaceXS8.w),
-                                          Text(DateFormat('dd MMMM yyyy').format(state.date)),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(width: AppSizes.spaceXL24.w),
-                                    GestureDetector(
-                                      onTap: () => _showNoteModal(context, cubit),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.def,
-                                              borderRadius: BorderRadius.circular(AppSizes.borderSmall),
-                                            ),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(AppSizes.paddingS),
-                                              child: Icon(
-                                                Icons.sticky_note_2_rounded,
-                                                size: 24,
-                                                color: AppColors.secondary,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: AppSizes.spaceXS8.w),
-                                          Text('Note'),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSizes.paddingXS.w,
+                            horizontal: AppSizes.paddingM.h,
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(AppSizes.paddingM.h),
-                            child: state.type == TransactionType.transfer
-                              ? ListView.separated(
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: state.accounts.length,
-                                separatorBuilder: (c, i) => const Divider(),
-                                itemBuilder: (c, i) {
-                                  final acc = state.accounts[i];
-                                  return _accountItem(context, cubit, acc);
-                                },
-                              )
-                              : GridView.count(
-                                shrinkWrap: true,
-                                crossAxisCount: 3,
-                                crossAxisSpacing: AppSizes.spaceXS8.w,
-                                mainAxisSpacing: AppSizes.spaceXS8.w,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              DropdownButton<String>(
+                                hint: Text('Main', style: AppTextStyles.bodyRegular),
+                                menuMaxHeight: 100.h,
+                                menuWidth: double.maxFinite,
+                                alignment: Alignment.center,
+                                underline: Container(),
+                                elevation: 2,
+                                dropdownColor: AppColors.primary,
+                                focusColor: AppColors.secondary,
+                                borderRadius: const BorderRadius.only(
+                                    bottomRight: Radius.circular(AppSizes.borderSM16),
+                                    bottomLeft: Radius.circular(AppSizes.borderSM16)),
+                                value: state.accountId.isNotEmpty ? state.accountId : null,
+                                onChanged: (val) => cubit.setAccountId(val ?? ''),
+                                items: state.accounts
+                                    .map(
+                                      (a) => DropdownMenuItem(
+                                        value: a.id,
+                                        child: Text(a.name ?? 'Account'),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                              Row(
                                 children: [
-                                  for (final cat in state.categories) _categoryItem(context, cubit, cat),
-                                  _addCategoryButton(context, cubit)
+                                  _typeButton(context, cubit, TransactionType.income, 'Income'),
+                                  SizedBox(width: AppSizes.spaceXXS5.w),
+                                  _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                                  SizedBox(width: AppSizes.spaceXXS5.w),
+                                  _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                 ],
                               ),
+                              TextField(
+                                controller: _amountController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.right,
+                                onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                              ),
+                              SizedBox(height: AppSizes.spaceM16.h),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => _showCalendarPicker(context, cubit),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.def,
+                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(AppSizes.paddingS),
+                                            child: Icon(
+                                              Icons.calendar_today,
+                                              size: 24,
+                                              color: AppColors.secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: AppSizes.spaceXS8.w),
+                                        Text(DateFormat('dd MMMM yyyy').format(state.date)),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: AppSizes.spaceXL24.w),
+                                  GestureDetector(
+                                    onTap: () => _showNoteModal(context, cubit),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.def,
+                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(AppSizes.paddingS),
+                                            child: Icon(
+                                              Icons.sticky_note_2_rounded,
+                                              size: 24,
+                                              color: AppColors.secondary,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: AppSizes.spaceXS8.w),
+                                        Text('Note'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
                           padding: EdgeInsets.all(AppSizes.paddingM.h),
-                          child: SafeArea(
-                            top: false,
-                            child: WButton(
-                              onTap: cubit.submit,
-                              text: 'Save',
-                              isDisabled: !state.isValid ||
-                                  state.status.isLoading(),
-                              isLoading: state.status.isLoading(),
+                          child: state.type == TransactionType.transfer
+                            ? ListView.separated(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.accounts.length,
+                              separatorBuilder: (c, i) => const Divider(),
+                              itemBuilder: (c, i) {
+                                final acc = state.accounts[i];
+                                return _accountItem(context, cubit, acc);
+                              },
+                            )
+                            : GridView.count(
+                              shrinkWrap: true,
+                              crossAxisCount: 3,
+                              crossAxisSpacing: AppSizes.space3,
+                              mainAxisSpacing: AppSizes.space3,
+                              children: [
+                                for (final cat in state.categories) _categoryItem(context, cubit, cat),
+                                _addCategoryButton(context, cubit)
+                              ],
                             ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(AppSizes.paddingM.h),
+                        child: SafeArea(
+                          top: false,
+                          child: WButton(
+                            onTap: cubit.submit,
+                            text: 'Save',
+                            isDisabled: !state.isValid ||
+                                state.status.isLoading(),
+                            isLoading: state.status.isLoading(),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          );
-        },
-      );
+          ),
+        );
+      },
+    );
   }
 
   Widget _typeButton(BuildContext context, TransactionCubit cubit, TransactionType type, String label) {
@@ -253,48 +255,26 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
   Widget _categoryItem(BuildContext context, TransactionCubit cubit, Category cat) {
     final selected = cubit.state.categoryId == cat.id;
-    return GestureDetector(
-      onTap: () => cubit.setCategoryId(cat.id),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primary : AppColors.secondary,
-          border: Border.all(
-
-          ),
-          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-        ),
-        alignment: Alignment.center,
-        child: Text(cat.name, style: AppTextStyles.bodyRegular),
-      ),
+    return TileButton(
+      title: cat.name ?? 'Account',
+      subtitle: selected ? 'Selected' : null,
+      icon: Icons.account_balance_wallet_outlined,
+      selected: selected,
+      onTap: () => cubit.setToAccountId(cat.id),
+      height: 90.h,
     );
   }
 
   Widget _accountItem(BuildContext context, TransactionCubit cubit, Account acc) {
     final selected = cubit.state.toAccountId == acc.id;
-    return GestureDetector(
+    return TileButton(
+      title: acc.name ?? 'Account',
+      subtitle: selected ? 'Selected' : null,
+      icon: Icons.account_balance_wallet_outlined,
+      selected: selected,
       onTap: () => cubit.setToAccountId(acc.id),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primary : AppColors.secondary,
-          border: const Border(
-            bottom: BorderSide(color: AppColors.def, width: 0.5),
-          ),
-          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-          boxShadow: [
-            BoxShadow(
-              color: !selected ? AppColors.transparent : AppColors.primary,
-              blurRadius: !selected ? 0 : 5,
-              spreadRadius: !selected ? 0.1 : 0,
-              blurStyle: BlurStyle.outer,
-              offset: const Offset(0, 0),
-            )
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Text(acc.name ?? 'Account', style: AppTextStyles.bodyRegular),
-      ),
+      // If you use it in a vertical ListView, give it a bit more height:
+      height: 90.h,
     );
   }
 

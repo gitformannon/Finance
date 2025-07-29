@@ -41,6 +41,7 @@ class AppSizes {
   static const double borderSM16 = 16;
 
   // Spacing
+  static const double space3 = 3.0;
   static const double spaceXXS5 = 5.0;
   static const double spaceXS8 = 8.0;
   static const double spaceS12 = 12.0;
