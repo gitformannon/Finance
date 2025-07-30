@@ -256,12 +256,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   Widget _categoryItem(BuildContext context, TransactionCubit cubit, Category cat) {
     final selected = cubit.state.categoryId == cat.id;
     return TileButton(
-      title: cat.name ?? 'Account',
-      subtitle: selected ? 'Selected' : null,
+      title: cat.name ?? 'Category',
+      subtitle: selected ? null : null,
       icon: Icons.account_balance_wallet_outlined,
+      selectedIcon: Icons.account_balance_wallet,
       selected: selected,
-      onTap: () => cubit.setToAccountId(cat.id),
+      onTap: () => cubit.setCategoryId(cat.id),
       height: 90.h,
+      color: AppColors.primary,
+      selectedColor: AppColors.accent,
     );
   }
 
@@ -269,12 +272,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     final selected = cubit.state.toAccountId == acc.id;
     return TileButton(
       title: acc.name ?? 'Account',
-      subtitle: selected ? 'Selected' : null,
+      subtitle: selected ? null : null,
       icon: Icons.account_balance_wallet_outlined,
+      selectedIcon: Icons.account_balance_wallet,
       selected: selected,
-      onTap: () => cubit.setToAccountId(acc.id),
+      onTap: () => cubit.setAccountId(acc.id),
       // If you use it in a vertical ListView, give it a bit more height:
       height: 90.h,
+      color: AppColors.primary,
+      selectedColor: AppColors.accent,
     );
   }
 
@@ -313,6 +319,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       ),
     );
   }
+
   Future<void> _showCalendarPicker(BuildContext context, TransactionCubit cubit) async {
     DateTime tempDate = cubit.state.date;
     await showModalBottomSheet(

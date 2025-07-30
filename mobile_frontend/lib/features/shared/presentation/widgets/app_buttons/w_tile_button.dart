@@ -11,18 +11,20 @@ class TileButton extends StatelessWidget {
   const TileButton({
     required this.title,
     required this.icon,
+    required this.selectedIcon,
     this.subtitle,
     this.selected = false,
     this.onTap,
     this.height,
     this.padding,
-    this.color = AppColors.primary,
-    this.selectedColor = AppColors.accent,
+    required this.color,
+    required this.selectedColor,
   });
 
   final String title;
   final String? subtitle;
   final IconData icon;
+  final IconData selectedIcon;
   final bool selected;
   final VoidCallback? onTap;
   final double? height;
@@ -44,9 +46,9 @@ class TileButton extends StatelessWidget {
         child: Ink(
           height: height ?? 110.h,
           decoration: BoxDecoration(
-            color: baseColor,
+            color: color,
             borderRadius: radius,
-            border: Border.all(color: baseColor, width: 0.5),
+            border: Border.all(color: color, width: 0.5),
           ),
           child: Stack(
             children: [
@@ -59,10 +61,10 @@ class TileButton extends StatelessWidget {
                   height: 48.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: baseColor.withOpacity(.2),
-                    border: Border.all(color: baseColor.withOpacity(.35)),
+                    color: baseColor,
+                    border: Border.all(color: color.withOpacity(.35)),
                   ),
-                  child: Icon(icon, size: 18.sp, color: baseColor),
+                  child: Icon(selected ? icon : selectedIcon, size: 18.sp, color: selected ? color : selectedColor),
                 ),
               ),
 
@@ -79,12 +81,12 @@ class TileButton extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.bodyRegular.copyWith(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.surface,
+                          color: AppColors.textPrimary,
                           letterSpacing: -0.2,
                           height: 1.0,
                         ),
