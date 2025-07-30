@@ -285,37 +285,43 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   }
 
   Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
-    return GestureDetector(
-      onTap: () async {
-        final type = cubit.state.type;
-        CategoryType? categoryType;
-        if (type == TransactionType.income) {
-          categoryType = CategoryType.income;
-        } else if (type == TransactionType.purchase) {
-          categoryType = CategoryType.purchase;
-        }
-        await showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          useSafeArea: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.borderSM16)),
+    final radius = BorderRadius.circular(AppSizes.borderMedium);
+    return Material(
+      color: AppColors.transparent,
+      child: InkWell(
+        borderRadius: radius,
+        onTap: () async {
+          final type = cubit.state.type;
+          CategoryType? categoryType;
+          if (type == TransactionType.income) {
+            categoryType = CategoryType.income;
+          } else if (type == TransactionType.purchase) {
+            categoryType = CategoryType.purchase;
+          }
+          await showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(AppSizes.borderSM16),
+              ),
+            ),
+            builder: (_) => AddCategoryModal(type: categoryType),
+          );
+          cubit.loadCategories();
+        },
+        child: Ink(
+          height: 90.h,
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: radius,
+            border: Border.all(color: AppColors.primary, width: 0.5),
           ),
-          builder: (_) => AddCategoryModal(type: categoryType),
-        );
-        cubit.loadCategories();
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          border: const Border(
-            bottom: BorderSide(color: AppColors.def, width: 0.5),
+          child: const Center(
+            child: Icon(Icons.add, color: AppColors.accent),
           ),
-          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
         ),
-        alignment: Alignment.center,
-        child: const Icon(Icons.add),
       ),
     );
   }
