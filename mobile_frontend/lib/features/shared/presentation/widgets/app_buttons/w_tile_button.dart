@@ -16,6 +16,8 @@ class TileButton extends StatelessWidget {
     this.onTap,
     this.height,
     this.padding,
+    this.color = AppColors.primary,
+    this.selectedColor = AppColors.accent,
   });
 
   final String title;
@@ -25,10 +27,14 @@ class TileButton extends StatelessWidget {
   final VoidCallback? onTap;
   final double? height;
   final EdgeInsetsGeometry? padding;
+  final Color color;
+  final Color selectedColor;
 
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(AppSizes.borderMedium);
+
+    final Color baseColor = selected ? selectedColor : color;
 
     return Material(
       color: AppColors.transparent,
@@ -38,12 +44,9 @@ class TileButton extends StatelessWidget {
         child: Ink(
           height: height ?? 110.h,
           decoration: BoxDecoration(
-            color: selected ? AppColors.accent : AppColors.primary,
+            color: baseColor,
             borderRadius: radius,
-            border: Border.all(
-              color: selected ? AppColors.primary : AppColors.def,
-              width: 0.5,
-            ),
+            border: Border.all(color: baseColor, width: 0.5),
           ),
           child: Stack(
             children: [
@@ -56,16 +59,17 @@ class TileButton extends StatelessWidget {
                   height: 48.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: selected ? AppColors.primary.withOpacity(.2) : AppColors.accent.withOpacity(.2),
-                    border: Border.all(color: AppColors.primary.withOpacity(.35)),
+                    color: baseColor.withOpacity(.2),
+                    border: Border.all(color: baseColor.withOpacity(.35)),
                   ),
-                  child: Icon(icon, size: 18.sp, color: AppColors.primary),
+                  child: Icon(icon, size: 18.sp, color: baseColor),
                 ),
               ),
 
               // bottom-left text
               Padding(
-                padding: padding ??
+                padding:
+                    padding ??
                     EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
                 child: Align(
                   alignment: Alignment.bottomLeft,
