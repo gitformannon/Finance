@@ -343,7 +343,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       icon: Icons.account_balance_wallet,
       selectedIcon: Icons.account_balance_wallet,
       selected: selected,
-      onTap: () => cubit.setAccountId(acc.id),
+      onTap: () => cubit.setToAccountId(acc.id),
       // If you use it in a vertical ListView, give it a bit more height:
       height: 90.h,
       color: AppColors.primary,
