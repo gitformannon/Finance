@@ -233,7 +233,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       SizedBox(height: AppSizes.spaceM16.h),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(AppSizes.paddingM.h),
+                          padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
                               ? ListView.separated(
                                   padding: EdgeInsets.zero,
