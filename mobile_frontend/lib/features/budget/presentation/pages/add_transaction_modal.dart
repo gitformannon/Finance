@@ -232,33 +232,31 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       ),
                       SizedBox(height: AppSizes.spaceM16.h),
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          alignment: Alignment.topCenter,
+                        child: Padding(
                           padding: EdgeInsets.all(AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
-                            ? ListView.separated(
-                              padding: EdgeInsets.zero,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: state.accounts.length,
-                              separatorBuilder: (c, i) => const Divider(),
-                              itemBuilder: (c, i) {
-                                final acc = state.accounts[i];
-                                return _accountItem(context, cubit, acc);
-                              },
-                            )
-                            : GridView.count(
-                              padding: EdgeInsets.zero,
-                              crossAxisCount: 3,
-                              crossAxisSpacing: AppSizes.space3,
-                              mainAxisSpacing: AppSizes.space3,
-                              physics: const BouncingScrollPhysics(),
-                              children: [
-                                for (final cat in state.categories)
-                                  _categoryItem(context, cubit, cat),
-                                _addCategoryButton(context, cubit)
-                              ],
-                            ),
+                              ? ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: state.accounts.length,
+                                  separatorBuilder: (c, i) => const Divider(),
+                                  itemBuilder: (c, i) {
+                                    final acc = state.accounts[i];
+                                    return _accountItem(context, cubit, acc);
+                                  },
+                                )
+                              : GridView.count(
+                                  padding: EdgeInsets.zero,
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: AppSizes.space3,
+                                  mainAxisSpacing: AppSizes.space3,
+                                  physics: const BouncingScrollPhysics(),
+                                  children: [
+                                    for (final cat in state.categories)
+                                      _categoryItem(context, cubit, cat),
+                                    _addCategoryButton(context, cubit)
+                                  ],
+                                ),
                         ),
                       ),
                     ],
