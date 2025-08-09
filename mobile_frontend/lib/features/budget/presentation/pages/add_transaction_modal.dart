@@ -111,26 +111,37 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                 ],
                               ),
-                              TextField(
-                                controller: _amountController,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.right,
-                                onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                                style: const TextStyle(
-                                  color: AppColors.textPrimary,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                decoration: const InputDecoration(
-                                  hintText: '0',
-                                  hintStyle: TextStyle(
-                                    color: AppColors.def,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _amountController,
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.right,
+                                      onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                                      style: const TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      decoration: const InputDecoration(
+                                        hintText: '0',
+                                        hintStyle: TextStyle(
+                                          color: AppColors.def,
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: AppColors.def, width: 1),
+                                        ),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: AppColors.accent, width: 2),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-
-                                  // Always-visible currency with padding
-                                  suffix: Padding(
+                                  const Padding(
                                     padding: EdgeInsets.only(left: 8),
                                     child: Text(
                                       'UZS',
@@ -141,14 +152,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                       ),
                                     ),
                                   ),
-
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.def, width: 1),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.accent, width: 2),
-                                  ),
-                                ),
+                                ],
                               ),
                               SizedBox(height: AppSizes.spaceM16.h),
                               Row(
