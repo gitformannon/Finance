@@ -232,19 +232,18 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
-                            ? ListView.separated(
-                              padding: EdgeInsets.only(
-                                bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
-                              ),
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: state.accounts.length,
-                              separatorBuilder: (c, i) => const Divider(),
-                              itemBuilder: (c, i) {
-                                final acc = state.accounts[i];
-                                return _accountItem(context, cubit, acc);
-                              },
-                            )
-                            : GridView.count(
+                              ? ListView.builder(
+                                padding: EdgeInsets.only(
+                                  bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
+                                ),
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: state.accounts.length,
+                                itemBuilder: (c, i) {
+                                  final acc = state.accounts[i];
+                                  return _accountItem(context, cubit, acc);
+                                },
+                              )
+                              : GridView.count(
                               padding: EdgeInsets.only(
                                 bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
                               ),
