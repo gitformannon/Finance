@@ -58,6 +58,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             top: true,
             bottom: false,
             child: Scaffold(
+              extendBody: true,
+              resizeToAvoidBottomInset: true,
               backgroundColor: AppColors.transparent,
               body: ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -235,43 +237,53 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           alignment: Alignment.topCenter,
                           padding: EdgeInsets.all(AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
-                              ? ListView.separated(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: state.accounts.length,
-                                  separatorBuilder: (c, i) => const Divider(),
-                                  itemBuilder: (c, i) {
-                                    final acc = state.accounts[i];
-                                    return _accountItem(context, cubit, acc);
-                                  },
-                                )
-                              : GridView.count(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: AppSizes.space3,
-                                  mainAxisSpacing: AppSizes.space3,
-                                  physics: const BouncingScrollPhysics(),
-                                  children: [
-                                    for (final cat in state.categories)
-                                      _categoryItem(context, cubit, cat),
-                                    _addCategoryButton(context, cubit)
-                                  ],
-                                ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom:AppSizes.paddingM.h, right:AppSizes.paddingM.h, left:AppSizes.paddingM.h),
-                        child: SafeArea(
-                          top: false,
-                          child: WButton(
-                            onTap: cubit.submit,
-                            text: 'Save',
-                            isDisabled: !state.isValid ||
-                                state.status.isLoading(),
-                            isLoading: state.status.isLoading(),
-                          ),
+                            ? ListView.separated(
+                              padding: EdgeInsets.zero,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.accounts.length,
+                              separatorBuilder: (c, i) => const Divider(),
+                              itemBuilder: (c, i) {
+                                final acc = state.accounts[i];
+                                return _accountItem(context, cubit, acc);
+                              },
+                            )
+                            : GridView.count(
+                              padding: EdgeInsets.zero,
+                              crossAxisCount: 3,
+                              crossAxisSpacing: AppSizes.space3,
+                              mainAxisSpacing: AppSizes.space3,
+                              physics: const BouncingScrollPhysics(),
+                              children: [
+                                for (final cat in state.categories)
+                                  _categoryItem(context, cubit, cat),
+                                _addCategoryButton(context, cubit)
+                              ],
+                            ),
                         ),
                       ),
                     ],
                   ),
+                ),
+              ),
+              bottomNavigationBar: SafeArea(
+                top: false,
+                child: Padding(
+                padding: EdgeInsets.only(
+                  left: AppSizes.paddingM.h,
+                  right: AppSizes.paddingM.h,
+                  bottom: AppSizes.paddingM.h + MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: BlocBuilder<TransactionCubit, TransactionState>(
+                  builder: (context, state) {
+                    final cubit = context.read<TransactionCubit>();
+                    return WButton(
+                      onTap: cubit.submit,
+                      text: 'Save',
+                      isDisabled: !state.isValid || state.status.isLoading(),
+                      isLoading: state.status.isLoading(),
+                    );
+                  },
+                ),
                 ),
               ),
             ),
