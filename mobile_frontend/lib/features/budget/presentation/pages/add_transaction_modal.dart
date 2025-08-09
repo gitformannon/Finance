@@ -52,16 +52,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          child: SafeArea(
-            top: true,
-            bottom: false,
-            child: Scaffold(
-              extendBody: true,
-              resizeToAvoidBottomInset: true,
-              backgroundColor: AppColors.transparent,
-              body: ClipRRect(
+        return SafeArea(
+          top: true,
+          bottom: false,
+          child: Scaffold(
+            extendBody: false,
+            resizeToAvoidBottomInset: true,
+            backgroundColor: AppColors.transparent,
+            body: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(AppSizes.borderSM16),
                   topRight: Radius.circular(AppSizes.borderSM16),
@@ -236,7 +234,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
                               ? ListView.separated(
-                                  padding: EdgeInsets.zero,
+                                  padding: EdgeInsets.only(
+                                    bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
+                                  ),
                                   physics: const BouncingScrollPhysics(),
                                   itemCount: state.accounts.length,
                                   separatorBuilder: (c, i) => const Divider(),
@@ -246,7 +246,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   },
                                 )
                               : GridView.count(
-                                  padding: EdgeInsets.zero,
+                                  padding: EdgeInsets.only(
+                                    bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
+                                  ),
                                   crossAxisCount: 3,
                                   crossAxisSpacing: AppSizes.space3,
                                   mainAxisSpacing: AppSizes.space3,
@@ -285,8 +287,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 ),
               ),
             ),
-          ),
-        );
+          );
       },
     );
   }
