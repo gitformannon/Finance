@@ -12,7 +12,7 @@ import '../model/account.dart';
 import '../model/category.dart';
 import '../model/create_category_request.dart';
 
-class BudgetRepositoryImpl with BudgetRepository {
+class BudgetRepositoryImpl implements BudgetRepository {
   final ApiClient _client;
   BudgetRepositoryImpl(this._client);
 
