@@ -280,6 +280,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       text: 'Save',
                       isDisabled: !state.isValid || state.status.isLoading(),
                       isLoading: state.status.isLoading(),
+                      backgroundColor: AppColors.transparent,
                     );
                   },
                 ),
