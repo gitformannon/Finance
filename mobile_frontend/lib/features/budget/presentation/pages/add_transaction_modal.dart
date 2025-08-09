@@ -100,13 +100,13 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               value: state.accountId.isNotEmpty ? state.accountId : null,
                               onChanged: (val) => cubit.setAccountId(val ?? ''),
                               items: state.accounts
-                                  .map(
-                                    (a) => DropdownMenuItem(
-                                      value: a.id,
-                                      child: Text(a.name ?? 'Account'),
-                                    ),
-                                  )
-                                  .toList(),
+                                .map(
+                                  (a) => DropdownMenuItem(
+                                    value: a.id,
+                                    child: Text(a.name ?? 'Account'),
+                                  ),
+                                )
+                                .toList(),
                             ),
                             Row(
                               children: [
@@ -280,7 +280,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       text: 'Save',
                       isDisabled: !state.isValid || state.status.isLoading(),
                       isLoading: state.status.isLoading(),
-                      backgroundColor: AppColors.transparent,
                     );
                   },
                 ),
