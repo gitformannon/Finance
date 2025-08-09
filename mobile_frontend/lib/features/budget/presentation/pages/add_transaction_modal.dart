@@ -124,7 +124,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                     color: _amountFocusNode.hasFocus
                                         ? AppColors.accent
                                         : AppColors.def,
-                                    width: _amountFocusNode.hasFocus ? 2 : 1,
+                                    width: _amountFocusNode.hasFocus ? 1 : 1,
                                   ),
                                 ),
                               ),
