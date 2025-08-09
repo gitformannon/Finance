@@ -50,18 +50,23 @@ class _EditNamePageState extends State<EditNamePage> {
                   controller: _lastNameController,
                   decoration: const InputDecoration(labelText: 'Last Name'),
                 ),
-                const Spacer(),
-                WButton(
-                  onTap: () {
-                    context.read<ProfileCubit>().updateName(
-                          _firstNameController.text,
-                          _lastNameController.text,
-                        );
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Save',
-                ),
               ],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SafeArea(
+              top: false,
+              child: WButton(
+                onTap: () {
+                  context.read<ProfileCubit>().updateName(
+                        _firstNameController.text,
+                        _lastNameController.text,
+                      );
+                  Navigator.of(context).pop();
+                },
+                text: 'Save',
+              ),
             ),
           ),
         );
