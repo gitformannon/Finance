@@ -228,6 +228,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           ),
                         ),
                       ),
+                      SizedBox(height: AppSizes.spaceM16.h),
                       Expanded(
                         child: Container(
                           width: double.infinity,
@@ -257,7 +258,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.all(AppSizes.paddingM.h),
+                        padding: EdgeInsets.only(bottom:AppSizes.paddingM.h, right:AppSizes.paddingM.h, left:AppSizes.paddingM.h),
                         child: SafeArea(
                           top: false,
                           child: WButton(
