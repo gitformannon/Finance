@@ -111,49 +111,38 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _amountController,
-                                      keyboardType: TextInputType.number,
-                                      textAlign: TextAlign.right,
-                                      onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                                      style: const TextStyle(
-                                        color: AppColors.textPrimary,
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      decoration: const InputDecoration(
-                                        hintText: '0',
-                                        hintStyle: TextStyle(
-                                          color: AppColors.def,
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(color: AppColors.def, width: 1),
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(color: AppColors.accent, width: 2),
-                                        ),
-                                      ),
-                                    ),
+                              TextField(
+                                controller: _amountController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.right,
+                                onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                                style: const TextStyle(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: '0',
+                                  hintStyle: TextStyle(
+                                    color: AppColors.def,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 8),
-                                    child: Text(
-                                      'UZS',
-                                      style: TextStyle(
-                                        color: AppColors.textPrimary,
-                                        fontSize: 40,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                  suffixText: 'UZS',
+                                  suffixStyle: TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold
                                   ),
-                                ],
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: AppColors.def, width: 1),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: AppColors.accent, width: 2),
+                                  ),
+                                ),
                               ),
+                              Container(),
                               SizedBox(height: AppSizes.spaceM16.h),
                               Row(
                                 children: [
