@@ -258,7 +258,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     return TileButton(
       title: cat.name ?? 'Category',
       subtitle: selected ? null : null,
-      icon: Icons.account_balance_wallet_outlined,
+      icon: Icons.account_balance_wallet,
       selectedIcon: Icons.account_balance_wallet,
       selected: selected,
       onTap: () => cubit.setCategoryId(cat.id),
@@ -273,7 +273,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     return TileButton(
       title: acc.name ?? 'Account',
       subtitle: selected ? null : null,
-      icon: Icons.account_balance_wallet_outlined,
+      icon: Icons.account_balance_wallet,
       selectedIcon: Icons.account_balance_wallet,
       selected: selected,
       onTap: () => cubit.setAccountId(acc.id),
