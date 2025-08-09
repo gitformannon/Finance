@@ -58,7 +58,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             top: true,
             bottom: false,
             child: Scaffold(
-              extendBody: false,
+              extendBody: true,
               resizeToAvoidBottomInset: true,
               backgroundColor: AppColors.transparent,
               body: ClipRRect(
@@ -227,37 +227,37 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           ],
                         ),
                       ),
-                      SizedBox(height: AppSizes.spaceM16.h),
+                      SizedBox(height: AppSizes.spaceXL24.h),
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
                           child: state.type == TransactionType.transfer
-                              ? ListView.separated(
-                                  padding: EdgeInsets.only(
-                                    bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
-                                  ),
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: state.accounts.length,
-                                  separatorBuilder: (c, i) => const Divider(),
-                                  itemBuilder: (c, i) {
-                                    final acc = state.accounts[i];
-                                    return _accountItem(context, cubit, acc);
-                                  },
-                                )
-                              : GridView.count(
-                                  padding: EdgeInsets.only(
-                                    bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
-                                  ),
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: AppSizes.space3,
-                                  mainAxisSpacing: AppSizes.space3,
-                                  physics: const BouncingScrollPhysics(),
-                                  children: [
-                                    for (final cat in state.categories)
-                                      _categoryItem(context, cubit, cat),
-                                    _addCategoryButton(context, cubit)
-                                  ],
-                                ),
+                            ? ListView.separated(
+                              padding: EdgeInsets.only(
+                                bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
+                              ),
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.accounts.length,
+                              separatorBuilder: (c, i) => const Divider(),
+                              itemBuilder: (c, i) {
+                                final acc = state.accounts[i];
+                                return _accountItem(context, cubit, acc);
+                              },
+                            )
+                            : GridView.count(
+                              padding: EdgeInsets.only(
+                                bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
+                              ),
+                              crossAxisCount: 3,
+                              crossAxisSpacing: AppSizes.space3,
+                              mainAxisSpacing: AppSizes.space3,
+                              physics: const BouncingScrollPhysics(),
+                              children: [
+                                for (final cat in state.categories)
+                                  _categoryItem(context, cubit, cat),
+                                _addCategoryButton(context, cubit)
+                              ],
+                            ),
                         ),
                       ),
                     ],
@@ -270,7 +270,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 padding: EdgeInsets.only(
                   left: AppSizes.paddingM.h,
                   right: AppSizes.paddingM.h,
-                  bottom: AppSizes.paddingM.h + MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: BlocBuilder<TransactionCubit, TransactionState>(
                   builder: (context, state) {
