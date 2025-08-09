@@ -32,7 +32,7 @@ class CurvedBottomNavbar extends StatelessWidget {
     required this.items,
     this.selectedGradient = const [AppColors.primary, AppColors.primary],
     this.inactiveColor = AppColors.def,
-    this.backgroundColor = AppColors.textPrimary,
+    this.backgroundColor = AppColors.transparent,
     this.iconSize = AppSizes.navbarIcon,
   });
 
