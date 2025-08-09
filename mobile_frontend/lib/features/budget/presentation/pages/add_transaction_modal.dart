@@ -52,16 +52,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          child: SafeArea(
-            top: true,
-            bottom: false,
-            child: Scaffold(
-              extendBody: false,
-              resizeToAvoidBottomInset: true,
-              backgroundColor: AppColors.transparent,
-              body: ClipRRect(
+        return SafeArea(
+          top: true,
+          bottom: false,
+          child: Scaffold(
+            extendBody: false,
+            resizeToAvoidBottomInset: true,
+            backgroundColor: AppColors.transparent,
+            body: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(AppSizes.borderSM16),
                   topRight: Radius.circular(AppSizes.borderSM16),
@@ -285,8 +283,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 ),
               ),
             ),
-          ),
-        );
+          );
       },
     );
   }
