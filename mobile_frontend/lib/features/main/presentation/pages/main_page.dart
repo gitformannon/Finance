@@ -60,6 +60,7 @@ class _MainPageState extends State<MainPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.background,
+          extendBody: true,
           body: IndexedStack(
             index: state.currentIndex,
             children: [
