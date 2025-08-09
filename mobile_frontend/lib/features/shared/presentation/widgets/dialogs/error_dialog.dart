@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app_buttons/w_dialog_button.dart';
+
 class ErrorDialog extends StatelessWidget {
   final String message;
 
@@ -11,9 +13,10 @@ class ErrorDialog extends StatelessWidget {
       title: const Text('Error'),
       content: Text(message),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('OK'),
+        WDialogButton(
+          text: 'OK',
+          onTap: () => Navigator.pop(context),
+          isPrimary: true,
         ),
       ],
     );

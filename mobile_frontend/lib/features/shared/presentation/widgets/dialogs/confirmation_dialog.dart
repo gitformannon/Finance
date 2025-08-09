@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app_buttons/w_dialog_button.dart';
+
 class ConfirmationDialog extends StatelessWidget {
   final String title;
   final String message;
@@ -20,13 +22,14 @@ class ConfirmationDialog extends StatelessWidget {
       title: Text(title),
       content: Text(message),
       actions: [
-        TextButton(
-          onPressed: onCancel,
-          child: const Text('Cancel'),
+        WDialogButton(
+          text: 'Cancel',
+          onTap: onCancel,
         ),
-        ElevatedButton(
-          onPressed: onConfirm,
-          child: const Text('OK'),
+        WDialogButton(
+          text: 'OK',
+          onTap: onConfirm,
+          isPrimary: true,
         ),
       ],
     );
