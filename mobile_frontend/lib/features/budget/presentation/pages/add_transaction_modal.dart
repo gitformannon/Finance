@@ -116,6 +116,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.right,
                                 onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
+                                decoration: const InputDecoration(
+                                  hintText: 'Enter transaction sum',
+                                ),
                               ),
                               SizedBox(height: AppSizes.spaceM16.h),
                               Row(
