@@ -7,7 +7,7 @@ import '../../data/model/account.dart';
 import '../../data/model/category.dart';
 import '../../data/model/create_category_request.dart';
 
-mixin BudgetRepository {
+abstract class BudgetRepository {
   Future<Either<Failure, List<Transaction>>> transactionsByDate(DateTime date);
   Future<Either<Failure, void>> createTransaction(CreateTransactionRequest request);
   Future<Either<Failure, void>> createAccount(CreateAccountRequest request);
