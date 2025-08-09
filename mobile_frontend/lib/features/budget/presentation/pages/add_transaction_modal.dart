@@ -52,14 +52,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
-        return SafeArea(
-          top: true,
-          bottom: false,
-          child: Scaffold(
-            extendBody: false,
-            resizeToAvoidBottomInset: true,
-            backgroundColor: AppColors.transparent,
-            body: ClipRRect(
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          child: SafeArea(
+            top: true,
+            bottom: false,
+            child: Scaffold(
+              extendBody: false,
+              resizeToAvoidBottomInset: true,
+              backgroundColor: AppColors.transparent,
+              body: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(AppSizes.borderSM16),
                   topRight: Radius.circular(AppSizes.borderSM16),
@@ -83,147 +85,146 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                              DropdownButton<String>(
-                                hint: Text('Main', style: AppTextStyles.bodyRegular),
-                                menuMaxHeight: 100.h,
-                                menuWidth: double.maxFinite,
-                                alignment: Alignment.center,
-                                underline: Container(),
-                                elevation: 2,
-                                dropdownColor: AppColors.primary,
-                                focusColor: AppColors.secondary,
-                                borderRadius: const BorderRadius.only(
-                                    bottomRight: Radius.circular(AppSizes.borderSM16),
-                                    bottomLeft: Radius.circular(AppSizes.borderSM16)),
-                                value: state.accountId.isNotEmpty ? state.accountId : null,
-                                onChanged: (val) => cubit.setAccountId(val ?? ''),
-                                items: state.accounts
-                                    .map(
-                                      (a) => DropdownMenuItem(
-                                        value: a.id,
-                                        child: Text(a.name ?? 'Account'),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                              Row(
-                                children: [
-                                  _typeButton(context, cubit, TransactionType.income, 'Income'),
-                                  SizedBox(width: AppSizes.spaceXXS5.w),
-                                  _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
-                                  SizedBox(width: AppSizes.spaceXXS5.w),
-                                  _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
-                                ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: _amountFocusNode.hasFocus
-                                          ? AppColors.accent
-                                          : AppColors.def,
-                                      width: _amountFocusNode.hasFocus ? 2 : 1,
+                            DropdownButton<String>(
+                              hint: Text('Main', style: AppTextStyles.bodyRegular),
+                              menuMaxHeight: 100.h,
+                              menuWidth: double.maxFinite,
+                              alignment: Alignment.center,
+                              underline: Container(),
+                              elevation: 2,
+                              dropdownColor: AppColors.primary,
+                              focusColor: AppColors.secondary,
+                              borderRadius: const BorderRadius.only(
+                                  bottomRight: Radius.circular(AppSizes.borderSM16),
+                                  bottomLeft: Radius.circular(AppSizes.borderSM16)),
+                              value: state.accountId.isNotEmpty ? state.accountId : null,
+                              onChanged: (val) => cubit.setAccountId(val ?? ''),
+                              items: state.accounts
+                                  .map(
+                                    (a) => DropdownMenuItem(
+                                      value: a.id,
+                                      child: Text(a.name ?? 'Account'),
                                     ),
+                                  )
+                                  .toList(),
+                            ),
+                            Row(
+                              children: [
+                                _typeButton(context, cubit, TransactionType.income, 'Income'),
+                                SizedBox(width: AppSizes.spaceXXS5.w),
+                                _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                                SizedBox(width: AppSizes.spaceXXS5.w),
+                                _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
+                              ],
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: _amountFocusNode.hasFocus
+                                        ? AppColors.accent
+                                        : AppColors.def,
+                                    width: _amountFocusNode.hasFocus ? 2 : 1,
                                   ),
                                 ),
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: _amountController,
-                                        keyboardType: TextInputType.number,
-                                        textAlign: TextAlign.right,
-                                        onChanged: (v) => cubit
-                                            .setAmount(double.tryParse(v) ?? 0),
-                                        style: const TextStyle(
-                                          color: AppColors.textPrimary,
+                              ),
+                              child: Row(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _amountController,
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.right,
+                                      onChanged: (v) => cubit
+                                          .setAmount(double.tryParse(v) ?? 0),
+                                      style: const TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      focusNode: _amountFocusNode,
+                                      decoration: const InputDecoration(
+                                        hintText: '0',
+                                        hintStyle: TextStyle(
+                                          color: AppColors.def,
                                           fontSize: 40,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        focusNode: _amountFocusNode,
-                                        decoration: const InputDecoration(
-                                          hintText: '0',
-                                          hintStyle: TextStyle(
-                                            color: AppColors.def,
-                                            fontSize: 40,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          border: InputBorder.none,
-                                        ),
+                                        border: InputBorder.none,
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: AppSizes.spaceXS8.w),
-                                      child: const Text(
-                                        'UZS',
-                                        style: TextStyle(
-                                          color: AppColors.textPrimary,
-                                          fontSize: 40,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: AppSizes.spaceM16.h),
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () => _showCalendarPicker(context, cubit),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: AppColors.def,
-                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall)
-                                          ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(AppSizes.paddingS),
-                                            child: Icon(
-                                              Icons.calendar_today,
-                                              size: 24,
-                                              color: AppColors.secondary,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: AppSizes.spaceXS8.w),
-                                        Text(DateFormat('dd MMMM yyyy').format(state.date)),
-                                      ],
                                     ),
                                   ),
-                                  SizedBox(width: AppSizes.spaceXL24.w),
-                                  GestureDetector(
-                                    onTap: () => _showNoteModal(context, cubit),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: AppColors.def,
-                                            borderRadius: BorderRadius.circular(AppSizes.borderSmall),
-                                          ),
-                                          child: const Padding(
-                                            padding: EdgeInsets.all(AppSizes.paddingS),
-                                            child: Icon(
-                                              Icons.sticky_note_2_rounded,
-                                              size: 24,
-                                              color: AppColors.secondary,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: AppSizes.spaceXS8.w),
-                                        Text('Note'),
-                                      ],
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: AppSizes.spaceXS8.w),
+                                    child: const Text(
+                                      'UZS',
+                                      style: TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: AppSizes.spaceM16.h),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => _showCalendarPicker(context, cubit),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.def,
+                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(AppSizes.paddingS),
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            size: 24,
+                                            color: AppColors.secondary,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.spaceXS8.w),
+                                      Text(DateFormat('dd MMMM yyyy').format(state.date)),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: AppSizes.spaceXL24.w),
+                                GestureDetector(
+                                  onTap: () => _showNoteModal(context, cubit),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.def,
+                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall),
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(AppSizes.paddingS),
+                                          child: Icon(
+                                            Icons.sticky_note_2_rounded,
+                                            size: 24,
+                                            color: AppColors.secondary,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: AppSizes.spaceXS8.w),
+                                      Text('Note'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: AppSizes.spaceM16.h),
@@ -285,7 +286,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 ),
               ),
             ),
-          );
+          ),
+        );
       },
     );
   }
