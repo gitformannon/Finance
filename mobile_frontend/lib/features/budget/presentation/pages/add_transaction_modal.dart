@@ -75,16 +75,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                   child: Column(
                     children: [
-                      Flexible(
-                        fit: FlexFit.loose,
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSizes.paddingXS.w,
-                            horizontal: AppSizes.paddingM.h,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppSizes.paddingXS.w,
+                          horizontal: AppSizes.paddingM.h,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
                               DropdownButton<String>(
                                 hint: Text('Main', style: AppTextStyles.bodyRegular),
                                 menuMaxHeight: 100.h,
