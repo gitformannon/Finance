@@ -26,6 +26,7 @@ class AddTransactionModal extends StatefulWidget {
 class _AddTransactionModalState extends State<AddTransactionModal> {
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
+  final _amountFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -33,12 +34,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     final cubit = context.read<TransactionCubit>();
     cubit.loadAccounts();
     cubit.loadCategories();
+    _amountFocusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _amountController.dispose();
     _noteController.dispose();
+    _amountFocusNode.dispose();
     super.dispose();
   }
 
@@ -111,38 +116,61 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
                                 ],
                               ),
-                              TextField(
-                                controller: _amountController,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.right,
-                                onChanged: (v) => cubit.setAmount(double.tryParse(v) ?? 0),
-                                style: const TextStyle(
-                                  color: AppColors.textPrimary,
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: _amountFocusNode.hasFocus
+                                          ? AppColors.accent
+                                          : AppColors.def,
+                                      width: _amountFocusNode.hasFocus ? 2 : 1,
+                                    ),
+                                  ),
                                 ),
-                                decoration: const InputDecoration(
-                                  hintText: '0',
-                                  hintStyle: TextStyle(
-                                    color: AppColors.def,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  suffixText: 'UZS',
-                                  suffixStyle: TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.def, width: 1),
-                                  ),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: AppColors.accent, width: 2),
-                                  ),
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        controller: _amountController,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.right,
+                                        onChanged: (v) => cubit
+                                            .setAmount(double.tryParse(v) ?? 0),
+                                        style: const TextStyle(
+                                          color: AppColors.textPrimary,
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        focusNode: _amountFocusNode,
+                                        decoration: const InputDecoration(
+                                          hintText: '0',
+                                          hintStyle: TextStyle(
+                                            color: AppColors.def,
+                                            fontSize: 40,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: AppSizes.spaceXS8.w),
+                                      child: const Text(
+                                        'UZS',
+                                        style: TextStyle(
+                                          color: AppColors.textPrimary,
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Container(),
                               SizedBox(height: AppSizes.spaceM16.h),
                               Row(
                                 children: [
