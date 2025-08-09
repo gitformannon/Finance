@@ -58,7 +58,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             top: true,
             bottom: false,
             child: Scaffold(
-              extendBody: true,
+              extendBody: false,
               resizeToAvoidBottomInset: true,
               backgroundColor: AppColors.transparent,
               body: ClipRRect(
