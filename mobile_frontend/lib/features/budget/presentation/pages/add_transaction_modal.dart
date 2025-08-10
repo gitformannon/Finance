@@ -321,11 +321,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               bottomNavigationBar: Builder(
                 builder: (context) {
                   final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+                  final cubit = context.read<TransactionCubit>();
 
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
                     curve: Curves.easeOut,
-                    height: keyboardOpen ? 56 : 0,   // show only when keyboard is open
+                    height: 56,
                     child: Material(
                       color: AppColors.background,
                       elevation: 8,
@@ -336,32 +337,35 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              _opBtn('+', () => _insertText('+', context.read<TransactionCubit>())),
-                              const SizedBox(width: 8),
-                              _opBtn('−', () => _insertText('-', context.read<TransactionCubit>())),
-                              const SizedBox(width: 8),
-                              _opBtn('×', () => _insertText('*', context.read<TransactionCubit>())),
-                              const SizedBox(width: 8),
-                              _opBtn('÷', () => _insertText('/', context.read<TransactionCubit>())),
-                              const Spacer(),
-                              TextButton(
-                                onPressed: () => _amountFocusNode.unfocus(),
-                                child: const Text('Done'),
-                              ),
-                              const SizedBox(width: 8),
+                              if (keyboardOpen) ...[
+                                _opBtn('+', () => _insertText('+', cubit)),
+                                const SizedBox(width: 8),
+                                _opBtn('−', () => _insertText('-', cubit)),
+                                const SizedBox(width: 8),
+                                _opBtn('×', () => _insertText('*', cubit)),
+                                const SizedBox(width: 8),
+                                _opBtn('÷', () => _insertText('/', cubit)),
+                                const Spacer(),
+                                TextButton(
+                                  onPressed: () => _amountFocusNode.unfocus(),
+                                  child: const Text('Done'),
+                                ),
+                                const SizedBox(width: 8),
+                              ] else
+                                const Spacer(),
                               SizedBox(
                                 height: 40,
                                 child: WButton(
                                   onTap: () {
                                     final value = _evaluate(_amountController.text);
-                                    context.read<TransactionCubit>()
+                                    cubit
                                       ..setAmount(value)
                                       ..submit();
                                   },
                                   text: 'Save',
-                                  isDisabled: !context.read<TransactionCubit>().state.isValid ||
-                                      context.read<TransactionCubit>().state.status.isLoading(),
-                                  isLoading: context.read<TransactionCubit>().state.status.isLoading(),
+                                  isDisabled: !cubit.state.isValid ||
+                                      cubit.state.status.isLoading(),
+                                  isLoading: cubit.state.status.isLoading(),
                                 ),
                               ),
                             ],
