@@ -15,7 +15,6 @@ import '../../data/model/account.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import 'add_category_modal.dart';
 import '../../../../core/helpers/enums_helpers.dart';
-import '../../../shared/presentation/widgets/app_buttons/w_text_button.dart';
 
 class AddTransactionModal extends StatefulWidget {
   const AddTransactionModal({super.key});
@@ -55,48 +54,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     } catch (_) {
       return 0;
     }
-  }
-
-  void _insertText(String value, TransactionCubit cubit) {
-    final selection = _amountController.selection;
-    final newText =
-        _amountController.text.replaceRange(selection.start, selection.end, value);
-    final index = selection.start + value.length;
-    _amountController.value = TextEditingValue(
-      text: newText,
-      selection: TextSelection.collapsed(offset: index),
-    );
-    cubit.setAmount(_evaluate(newText));
-  }
-
-  Widget _buildKeyboardActions(TransactionCubit cubit) {
-    return Container(
-      color: AppColors.def,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          for (final op in ['+', '-', '*', '/'])
-            WTextButton(
-              text: op == '*' ? 'x' : op,
-              onTap: () => _insertText(op, cubit),
-            ),
-          WTextButton(
-            text: 'Done',
-            onTap: () {
-              final value = _evaluate(_amountController.text);
-              _amountController
-                ..text = value == value.roundToDouble()
-                    ? value.toInt().toString()
-                    : value.toString()
-                ..selection = TextSelection.collapsed(
-                    offset: _amountController.text.length);
-              cubit.setAmount(value);
-              _amountFocusNode.unfocus();
-            },
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -320,7 +277,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               ),
               bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  bottom: MediaQuery.of(context).viewInsets.bottom +
+                      (_amountFocusNode.hasFocus ? AppSizes.spaceXS8.h : 0),
                 ),
                 child: SafeArea(
                   top: false,
@@ -328,27 +286,21 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                     padding: EdgeInsets.symmetric(
                       horizontal: AppSizes.paddingM.h,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_amountFocusNode.hasFocus) _buildKeyboardActions(cubit),
-                        BlocBuilder<TransactionCubit, TransactionState>(
-                          builder: (context, state) {
-                            final cubit = context.read<TransactionCubit>();
-                            return WButton(
-                              onTap: () {
-                                final value = _evaluate(_amountController.text);
-                                cubit.setAmount(value);
-                                cubit.submit();
-                              },
-                              text: 'Save',
-                              isDisabled:
-                                  !state.isValid || state.status.isLoading(),
-                              isLoading: state.status.isLoading(),
-                            );
+                    child: BlocBuilder<TransactionCubit, TransactionState>(
+                      builder: (context, state) {
+                        final cubit = context.read<TransactionCubit>();
+                        return WButton(
+                          onTap: () {
+                            final value = _evaluate(_amountController.text);
+                            cubit.setAmount(value);
+                            cubit.submit();
                           },
-                        ),
-                      ],
+                          text: 'Save',
+                          isDisabled:
+                              !state.isValid || state.status.isLoading(),
+                          isLoading: state.status.isLoading(),
+                        );
+                      },
                     ),
                   ),
                 ),
