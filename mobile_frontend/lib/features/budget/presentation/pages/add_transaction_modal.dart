@@ -129,15 +129,14 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                   child: Column(
                     children: [
-                      Flexible(
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSizes.paddingXS.w,
-                            horizontal: AppSizes.paddingM.h,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppSizes.paddingXS.w,
+                          horizontal: AppSizes.paddingM.h,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
                             DropdownButton<String>(
                               hint: Text('Main', style: AppTextStyles.bodyRegular),
                               menuMaxHeight: 100.h,
@@ -280,7 +279,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           ],
                         ),
                       ),
-                      ),
                       SizedBox(height: AppSizes.space48.h),
                       Expanded(
                         child: Padding(
@@ -320,86 +318,46 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                 ),
               ),
-              bottomNavigationBar: Builder(
-                builder: (context) {
-                  final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-                  final cubit = context.read<TransactionCubit>();
-
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    curve: Curves.easeOut,
-                    height: 56,
-                    child: Material(
-                      color: AppColors.background,
-                      elevation: 8,
-                      child: SafeArea(
-                        top: false,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (keyboardOpen) ...[
-                                _opBtn('+', () => _insertText('+', cubit)),
-                                const SizedBox(width: 8),
-                                _opBtn('−', () => _insertText('-', cubit)),
-                                const SizedBox(width: 8),
-                                _opBtn('×', () => _insertText('*', cubit)),
-                                const SizedBox(width: 8),
-                                _opBtn('÷', () => _insertText('/', cubit)),
-                                const Spacer(),
-                                TextButton(
-                                  onPressed: () => _amountFocusNode.unfocus(),
-                                  child: const Text('Done'),
-                                ),
-                                const SizedBox(width: 8),
-                              ] else
-                                const Spacer(),
-                              SizedBox(
-                                height: 40,
-                                child: WButton(
-                                  onTap: () {
-                                    final value = _evaluate(_amountController.text);
-                                    cubit
-                                      ..setAmount(value)
-                                      ..submit();
-                                  },
-                                  text: 'Save',
-                                  isDisabled: !cubit.state.isValid ||
-                                      cubit.state.status.isLoading(),
-                                  isLoading: cubit.state.status.isLoading(),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+              bottomNavigationBar: AnimatedPadding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                duration: const Duration(milliseconds: 100),
+                child: SafeArea(
+                  top: false,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.paddingM.h,
                     ),
-                  );
-                },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (_amountFocusNode.hasFocus) _buildKeyboardActions(cubit),
+                        BlocBuilder<TransactionCubit, TransactionState>(
+                          builder: (context, state) {
+                            final cubit = context.read<TransactionCubit>();
+                            return WButton(
+                              onTap: () {
+                                final value = _evaluate(_amountController.text);
+                                cubit.setAmount(value);
+                                cubit.submit();
+                              },
+                              text: 'Save',
+                              isDisabled:
+                                  !state.isValid || state.status.isLoading(),
+                              isLoading: state.status.isLoading(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _opBtn(String label, VoidCallback onTap) {
-    return SizedBox(
-      height: 36,
-      width: 48,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          side: BorderSide(color: AppColors.def, width: 0.7),
-        ),
-        onPressed: onTap,
-        child: Text(label, style: AppTextStyles.bodyRegular),
-      ),
     );
   }
 
