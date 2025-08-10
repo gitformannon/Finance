@@ -318,46 +318,82 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                 ),
               ),
-              bottomNavigationBar: AnimatedPadding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                duration: const Duration(milliseconds: 100),
-                child: SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.paddingM.h,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (_amountFocusNode.hasFocus) _buildKeyboardActions(cubit),
-                        BlocBuilder<TransactionCubit, TransactionState>(
-                          builder: (context, state) {
-                            final cubit = context.read<TransactionCubit>();
-                            return WButton(
-                              onTap: () {
-                                final value = _evaluate(_amountController.text);
-                                cubit.setAmount(value);
-                                cubit.submit();
-                              },
-                              text: 'Save',
-                              isDisabled:
-                                  !state.isValid || state.status.isLoading(),
-                              isLoading: state.status.isLoading(),
-                            );
-                          },
+              bottomNavigationBar: Builder(
+                builder: (context) {
+                  final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOut,
+                    height: keyboardOpen ? 56 : 0,   // show only when keyboard is open
+                    child: Material(
+                      color: AppColors.background,
+                      elevation: 8,
+                      child: SafeArea(
+                        top: false,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _opBtn('+', () => _insertText('+', context.read<TransactionCubit>())),
+                              const SizedBox(width: 8),
+                              _opBtn('−', () => _insertText('-', context.read<TransactionCubit>())),
+                              const SizedBox(width: 8),
+                              _opBtn('×', () => _insertText('*', context.read<TransactionCubit>())),
+                              const SizedBox(width: 8),
+                              _opBtn('÷', () => _insertText('/', context.read<TransactionCubit>())),
+                              const Spacer(),
+                              TextButton(
+                                onPressed: () => _amountFocusNode.unfocus(),
+                                child: const Text('Done'),
+                              ),
+                              const SizedBox(width: 8),
+                              SizedBox(
+                                height: 40,
+                                child: WButton(
+                                  onTap: () {
+                                    final value = _evaluate(_amountController.text);
+                                    context.read<TransactionCubit>()
+                                      ..setAmount(value)
+                                      ..submit();
+                                  },
+                                  text: 'Save',
+                                  isDisabled: !context.read<TransactionCubit>().state.isValid ||
+                                      context.read<TransactionCubit>().state.status.isLoading(),
+                                  isLoading: context.read<TransactionCubit>().state.status.isLoading(),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _opBtn(String label, VoidCallback onTap) {
+    return SizedBox(
+      height: 36,
+      width: 48,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          side: BorderSide(color: AppColors.def, width: 0.7),
+        ),
+        onPressed: onTap,
+        child: Text(label, style: AppTextStyles.bodyRegular),
+      ),
     );
   }
 
