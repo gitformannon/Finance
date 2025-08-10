@@ -188,7 +188,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   Expanded(
                                     child: TextField(
                                       controller: _amountController,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.numberWithOptions(decimal: true),
                                       textAlign: TextAlign.right,
                                       onChanged: (v) =>
                                           cubit.setAmount(_evaluate(v)),
@@ -320,7 +320,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               ),
               bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom + AppSizes.spaceM16.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
                 child: SafeArea(
                   top: false,
