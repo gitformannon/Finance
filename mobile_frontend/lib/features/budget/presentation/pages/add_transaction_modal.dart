@@ -58,6 +58,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
@@ -68,7 +70,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             bottom: false,
             child: Scaffold(
               extendBody: true,
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               backgroundColor: AppColors.transparent,
               body: ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -277,32 +279,25 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               ),
               bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom +
-                      (_amountFocusNode.hasFocus ? AppSizes.spaceXS8.h : 0),
+                  bottom: MediaQuery.of(context).viewInsets.bottom + AppSizes.padding16.h,
+                  left: AppSizes.paddingM.w,
+                  right: AppSizes.paddingM.w
                 ),
-                child: SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.paddingM.h,
-                    ),
-                    child: BlocBuilder<TransactionCubit, TransactionState>(
-                      builder: (context, state) {
-                        final cubit = context.read<TransactionCubit>();
-                        return WButton(
-                          onTap: () {
-                            final value = _evaluate(_amountController.text);
-                            cubit.setAmount(value);
-                            cubit.submit();
-                          },
-                          text: 'Save',
-                          isDisabled:
-                              !state.isValid || state.status.isLoading(),
-                          isLoading: state.status.isLoading(),
-                        );
+                child: BlocBuilder<TransactionCubit, TransactionState>(
+                  builder: (context, state) {
+                    final cubit = context.read<TransactionCubit>();
+                    return WButton(
+                      onTap: () {
+                        final value = _evaluate(_amountController.text);
+                        cubit.setAmount(value);
+                        cubit.submit();
                       },
-                    ),
-                  ),
+                      text: 'Save',
+                      isDisabled:
+                          !state.isValid || state.status.isLoading(),
+                      isLoading: state.status.isLoading(),
+                    );
+                  },
                 ),
               ),
             ),
@@ -484,11 +479,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             topLeft: Radius.circular(AppSizes.borderSM16),
         topRight: Radius.circular(AppSizes.borderSM16),
         ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
+          child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
@@ -523,7 +514,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                 ),
               ],
             ),
-          ),
         );
       },
     );
