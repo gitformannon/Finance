@@ -48,6 +48,7 @@ class AppSizes {
   static const double spaceM16 = 16.0;
   static const double spaceL20 = 20.0;
   static const double spaceXL24 = 24.0;
+  static const double space48 = 48.0;
 
   // Font Sizes
   static const double textSize6 = 6.0;

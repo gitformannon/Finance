@@ -25,7 +25,7 @@ class _BudgetPageState extends State<BudgetPage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        bottom: false,
+        bottom: true,
         child: Column(
           children: [
           const SizedBox(height: 12),
@@ -126,46 +126,45 @@ class _BudgetPageState extends State<BudgetPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: context.watch<BudgetCubit>().state.transactions.isEmpty
-                  ? Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFFCBD5E1),
-                          style: BorderStyle.solid,
+                ? Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFFCBD5E1),
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  child: const Text(
+                    'No operations on this day',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                )
+                : ListView.separated(
+                  itemCount: context.watch<BudgetCubit>().state.transactions.length,
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final tx = context.watch<BudgetCubit>().state.transactions[index];
+                    return ListTile(
+                      title: Text(tx.title),
+                      subtitle: Text(
+                        DateFormat('dd MMM yyyy').format(tx.date),
+                      ),
+                      trailing: Text(
+                        '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
+                        style: TextStyle(
+                          color: tx.isIncome ? Colors.green : Colors.red,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: const Text(
-                        'No operations on this day',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    )
-                  : ListView.separated(
-                      itemCount: context.watch<BudgetCubit>().state.transactions.length,
-                      separatorBuilder: (_, __) => const Divider(),
-                      itemBuilder: (context, index) {
-                        final tx = context.watch<BudgetCubit>().state.transactions[index];
-                        return ListTile(
-                          title: Text(tx.title),
-                          subtitle: Text(
-                            DateFormat('dd MMM yyyy').format(tx.date),
-                          ),
-                          trailing: Text(
-                            '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
-                            style: TextStyle(
-                              color: tx.isIncome ? Colors.green : Colors.red,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    );
+                  },
+                ),
             ),
           ),
-        ],
-      ),
+        ],),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -186,8 +185,8 @@ class _BudgetPageState extends State<BudgetPage> {
             ),
           );
         },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
+        backgroundColor: AppColors.accent,
+        child: const Icon(Icons.add, color: AppColors.surface),
       ),
     );
   }
