@@ -318,9 +318,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                 ),
               ),
-              bottomNavigationBar:Padding(
+              bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? MediaQuery.of(context).viewInsets.bottom + 16 : 0,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + AppSizes.spaceM16.h,
                 ),
                 child: SafeArea(
                   top: false,
