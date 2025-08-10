@@ -71,7 +71,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
   Widget _buildKeyboardActions(TransactionCubit cubit) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: AppSizes.paddingXS.h),
+      color: AppColors.def,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -318,11 +318,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                   ),
                 ),
               ),
-              bottomNavigationBar: AnimatedPadding(
+              bottomNavigationBar:Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? MediaQuery.of(context).viewInsets.bottom + 16 : 0,
                 ),
-                duration: const Duration(milliseconds: 100),
                 child: SafeArea(
                   top: false,
                   child: Padding(
