@@ -1,6 +1,7 @@
 import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
+import 'package:Finance/features/budget/presentation/widgets/income_category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,6 +60,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   @override
   Widget build(BuildContext context) {
     final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    print(_amountFocusNode.hasFocus);
 
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
@@ -70,7 +72,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             bottom: false,
             child: Scaffold(
               extendBody: true,
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               backgroundColor: AppColors.transparent,
               body: ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -97,7 +99,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             DropdownButton<String>(
-                              hint: Text('Main', style: AppTextStyles.bodyRegular),
+                              hint: Text(
+                                'Main',
+                                style: AppTextStyles.bodyRegular,
+                              ),
                               menuMaxHeight: 100.h,
                               menuWidth: double.maxFinite,
                               alignment: Alignment.center,
@@ -106,51 +111,78 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                               dropdownColor: AppColors.primary,
                               focusColor: AppColors.secondary,
                               borderRadius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(AppSizes.borderSM16),
-                                  bottomLeft: Radius.circular(AppSizes.borderSM16)),
-                              value: state.accountId.isNotEmpty ? state.accountId : null,
+                                bottomRight: Radius.circular(
+                                  AppSizes.borderSM16,
+                                ),
+                                bottomLeft: Radius.circular(
+                                  AppSizes.borderSM16,
+                                ),
+                              ),
+                              value:
+                                  state.accountId.isNotEmpty
+                                      ? state.accountId
+                                      : null,
                               onChanged: (val) => cubit.setAccountId(val ?? ''),
-                              items: state.accounts
-                                .map(
-                                  (a) => DropdownMenuItem(
-                                    value: a.id,
-                                    child: Text(a.name ?? 'Account'),
-                                  ),
-                                )
-                                .toList(),
+                              items:
+                                  state.accounts
+                                      .map(
+                                        (a) => DropdownMenuItem(
+                                          value: a.id,
+                                          child: Text(a.name ?? 'Account'),
+                                        ),
+                                      )
+                                      .toList(),
                             ),
                             Row(
                               children: [
-                                _typeButton(context, cubit, TransactionType.income, 'Income'),
+                                _typeButton(
+                                  context,
+                                  cubit,
+                                  TransactionType.income,
+                                  'Income',
+                                ),
                                 SizedBox(width: AppSizes.spaceXXS5.w),
-                                _typeButton(context, cubit, TransactionType.purchase, 'Purchase'),
+                                _typeButton(
+                                  context,
+                                  cubit,
+                                  TransactionType.purchase,
+                                  'Purchase',
+                                ),
                                 SizedBox(width: AppSizes.spaceXXS5.w),
-                                _typeButton(context, cubit, TransactionType.transfer, 'Transfer'),
+                                _typeButton(
+                                  context,
+                                  cubit,
+                                  TransactionType.transfer,
+                                  'Transfer',
+                                ),
                               ],
                             ),
                             Container(
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: _amountFocusNode.hasFocus
-                                      ? AppColors.accent
-                                      : AppColors.def,
+                                    color:
+                                        _amountFocusNode.hasFocus
+                                            ? AppColors.accent
+                                            : AppColors.def,
                                     width: _amountFocusNode.hasFocus ? 1 : 1,
                                   ),
                                 ),
                               ),
                               child: Row(
-                                crossAxisAlignment:
-                                  CrossAxisAlignment.baseline,
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
                                 textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   Expanded(
                                     child: TextField(
                                       controller: _amountController,
-                                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                      keyboardType:
+                                          TextInputType.numberWithOptions(
+                                            decimal: true,
+                                          ),
                                       textAlign: TextAlign.right,
-                                      onChanged: (v) =>
-                                          cubit.setAmount(_evaluate(v)),
+                                      onChanged:
+                                          (v) => cubit.setAmount(_evaluate(v)),
                                       style: const TextStyle(
                                         color: AppColors.textPrimary,
                                         fontSize: 40,
@@ -170,7 +202,8 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        left: AppSizes.spaceXS8.w),
+                                      left: AppSizes.spaceXS8.w,
+                                    ),
                                     child: const Text(
                                       'UZS',
                                       style: TextStyle(
@@ -187,16 +220,21 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             Row(
                               children: [
                                 GestureDetector(
-                                  onTap: () => _showCalendarPicker(context, cubit),
+                                  onTap:
+                                      () => _showCalendarPicker(context, cubit),
                                   child: Row(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: AppColors.def.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall)
+                                          borderRadius: BorderRadius.circular(
+                                            AppSizes.borderSmall,
+                                          ),
                                         ),
                                         child: const Padding(
-                                          padding: EdgeInsets.all(AppSizes.paddingS),
+                                          padding: EdgeInsets.all(
+                                            AppSizes.paddingS,
+                                          ),
                                           child: Icon(
                                             Icons.calendar_today,
                                             size: 24,
@@ -205,22 +243,35 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                         ),
                                       ),
                                       SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text(DateFormat('dd MMMM yyyy').format(state.date)),
+                                      Text(
+                                        DateFormat(
+                                          'dd MMMM yyyy',
+                                        ).format(state.date),
+                                      ),
                                     ],
                                   ),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
                                 GestureDetector(
-                                  onTap: () => _showNoteModal(context, cubit),
+                                  onTap: () {
+                                    setState(() {
+                                      _amountFocusNode.unfocus();
+                                    });
+                                    _showNoteModal(context, cubit);
+                                  },
                                   child: Row(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
                                           color: AppColors.def.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(AppSizes.borderSmall),
+                                          borderRadius: BorderRadius.circular(
+                                            AppSizes.borderSmall,
+                                          ),
                                         ),
                                         child: const Padding(
-                                          padding: EdgeInsets.all(AppSizes.paddingS),
+                                          padding: EdgeInsets.all(
+                                            AppSizes.paddingS,
+                                          ),
                                           child: Icon(
                                             Icons.sticky_note_2_rounded,
                                             size: 24,
@@ -241,36 +292,51 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                       SizedBox(height: AppSizes.space48.h),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingM.h),
-                          child: state.type == TransactionType.transfer
-                            ? ListView.separated(
-                              padding: EdgeInsets.only(
-                                bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
-                              ),
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: state.accounts.length,
-                              itemBuilder: (c, i) {
-                                final acc = state.accounts[i];
-                                return _accountItem(context, cubit, acc);
-                              },
-                              separatorBuilder: (c, i) => const Divider(
-                                color: AppColors.transparent,
-                              ),
-                            )
-                            : GridView.count(
-                            padding: EdgeInsets.only(
-                              bottom: AppSizes.buttonHeight.h + AppSizes.paddingNavBar.h,
-                            ),
-                            crossAxisCount: 3,
-                            crossAxisSpacing: AppSizes.space3,
-                            mainAxisSpacing: AppSizes.space3,
-                            physics: const BouncingScrollPhysics(),
-                            children: [
-                              for (final cat in state.categories)
-                                _categoryItem(context, cubit, cat),
-                              _addCategoryButton(context, cubit)
-                            ],
-                            ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSizes.paddingM.h,
+                          ),
+                          child:
+                              state.type == TransactionType.transfer
+                                  ? ListView.separated(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          AppSizes.buttonHeight.h +
+                                          AppSizes.paddingNavBar.h,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: state.accounts.length,
+                                    itemBuilder: (c, i) {
+                                      final acc = state.accounts[i];
+                                      return _accountItem(context, cubit, acc);
+                                    },
+                                    separatorBuilder:
+                                        (c, i) => const Divider(
+                                          color: AppColors.transparent,
+                                        ),
+                                  )
+                                  : GridView.count(
+                                    padding: EdgeInsets.only(
+                                      bottom:
+                                          AppSizes.buttonHeight.h +
+                                          AppSizes.paddingNavBar.h,
+                                    ),
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: AppSizes.space3,
+                                    mainAxisSpacing: AppSizes.space3,
+                                    physics: const BouncingScrollPhysics(),
+                                    children: [
+                                      for (final cat in state.categories)
+                                        IncomeCategoryItem(
+                                          title: cat.name,
+                                          icon: 'assets/svg/ic_global.svg',
+                                          iconColor: Colors.yellow,
+                                          boxColor: Colors.red,
+                                          selectedBoxColor: Colors.green,
+                                          onTap: () => cubit.setCategoryId(cat.id),
+                                        ),
+                                        _addCategoryButton(context, cubit),
+                                    ],
+                                  ),
                         ),
                       ),
                     ],
@@ -279,9 +345,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               ),
               bottomNavigationBar: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom + AppSizes.padding16.h,
+                  bottom:
+                      _amountFocusNode.hasFocus
+                          ? MediaQuery.of(context).viewInsets.bottom + AppSizes.spaceM16
+                          : MediaQuery.of(context).padding.bottom,
                   left: AppSizes.paddingM.w,
-                  right: AppSizes.paddingM.w
+                  right: AppSizes.paddingM.w,
                 ),
                 child: BlocBuilder<TransactionCubit, TransactionState>(
                   builder: (context, state) {
@@ -293,8 +362,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         cubit.submit();
                       },
                       text: 'Save',
-                      isDisabled:
-                          !state.isValid || state.status.isLoading(),
+                      isDisabled: !state.isValid || state.status.isLoading(),
                       isLoading: state.status.isLoading(),
                     );
                   },
@@ -307,7 +375,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     );
   }
 
-  Widget _typeButton(BuildContext context, TransactionCubit cubit, TransactionType type, String label) {
+  Widget _typeButton(
+    BuildContext context,
+    TransactionCubit cubit,
+    TransactionType type,
+    String label,
+  ) {
     final selected = cubit.state.type == type;
     return Container(
       child: GestureDetector(
@@ -320,13 +393,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
           }
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS, horizontal: AppSizes.paddingM),
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSizes.paddingS,
+            horizontal: AppSizes.paddingM,
+          ),
           decoration: BoxDecoration(
             color: selected ? AppColors.accent : AppColors.def.withOpacity(0.2),
             borderRadius: BorderRadius.circular(AppSizes.borderMedium),
             border: Border.all(
               color: selected ? AppColors.accent : AppColors.def,
-              width: 0.5
+              width: 0.5,
             ),
           ),
           alignment: Alignment.center,
@@ -334,14 +410,18 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             label,
             style: AppTextStyles.bodyRegular.copyWith(
               color: selected ? AppColors.surface : AppColors.textSecondary,
-            )
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _categoryItem(BuildContext context, TransactionCubit cubit, Category cat) {
+  Widget _categoryItem(
+    BuildContext context,
+    TransactionCubit cubit,
+    Category cat,
+  ) {
     final selected = cubit.state.categoryId == cat.id;
     return TileButton(
       title: cat.name ?? 'Category',
@@ -356,7 +436,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     );
   }
 
-  Widget _accountItem(BuildContext context, TransactionCubit cubit, Account acc) {
+  Widget _accountItem(
+    BuildContext context,
+    TransactionCubit cubit,
+    Account acc,
+  ) {
     final selected = cubit.state.toAccountId == acc.id;
     return TileButton(
       title: acc.name ?? 'Account',
@@ -406,15 +490,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
             borderRadius: radius,
             border: Border.all(color: AppColors.primary, width: 0.5),
           ),
-          child: const Center(
-            child: Icon(Icons.add, color: AppColors.accent),
-          ),
+          child: const Center(child: Icon(Icons.add, color: AppColors.accent)),
         ),
       ),
     );
   }
 
-  Future<void> _showCalendarPicker(BuildContext context, TransactionCubit cubit) async {
+  Future<void> _showCalendarPicker(
+    BuildContext context,
+    TransactionCubit cubit,
+  ) async {
     DateTime tempDate = cubit.state.date;
     await showModalBottomSheet(
       context: context,
@@ -422,52 +507,56 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       useSafeArea: true,
       builder: (_) {
         return ClipRRect(
-            borderRadius: const BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(AppSizes.borderSM16),
-        topRight: Radius.circular(AppSizes.borderSM16),
-        ),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
           child: StatefulBuilder(
-            builder: (context, setState) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 200.h,
-                  color: AppColors.background,
-                  child: CupertinoDatePicker(
-                    initialDateTime: tempDate,
-                    mode: CupertinoDatePickerMode.date,
-                    backgroundColor: AppColors.background,
-                    onDateTimeChanged: (d) => setState(() => tempDate = d),
-                  ),
-                ),
-                Container(
-                  color: AppColors.background,
-                  child: SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: AppSizes.paddingM.w,
-                        right: AppSizes.paddingM.w,
-                      ),
-                      child: WButton(
-                        onTap: () {
-                          cubit.setDate(tempDate);
-                          Navigator.of(context).pop();
-                        },
-                        text: 'Select',
+            builder:
+                (context, setState) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      height: 200.h,
+                      color: AppColors.background,
+                      child: CupertinoDatePicker(
+                        initialDateTime: tempDate,
+                        mode: CupertinoDatePickerMode.date,
+                        backgroundColor: AppColors.background,
+                        onDateTimeChanged: (d) => setState(() => tempDate = d),
                       ),
                     ),
-                  ),
+                    Container(
+                      color: AppColors.background,
+                      child: SafeArea(
+                        top: false,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: AppSizes.paddingM.w,
+                            right: AppSizes.paddingM.w,
+                          ),
+                          child: WButton(
+                            onTap: () {
+                              cubit.setDate(tempDate);
+                              Navigator.of(context).pop();
+                            },
+                            text: 'Select',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
           ),
         );
       },
     );
   }
 
-  Future<void> _showNoteModal(BuildContext context, TransactionCubit cubit) async {
+  Future<void> _showNoteModal(
+    BuildContext context,
+    TransactionCubit cubit,
+  ) async {
     _noteController.text = cubit.state.note;
     await showModalBottomSheet(
       context: context,
@@ -475,45 +564,45 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       useSafeArea: true,
       builder: (_) {
         return ClipRRect(
-            borderRadius: const BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(AppSizes.borderSM16),
-        topRight: Radius.circular(AppSizes.borderSM16),
-        ),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
           child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  color: AppColors.background,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                color: AppColors.background,
+                child: Padding(
+                  padding: EdgeInsets.all(AppSizes.paddingM.h),
+                  child: TextField(
+                    controller: _noteController,
+                    decoration: const InputDecoration(labelText: 'Note'),
+                    maxLines: null,
+                  ),
+                ),
+              ),
+              Container(
+                color: AppColors.background,
+                child: SafeArea(
+                  top: false,
                   child: Padding(
-                    padding: EdgeInsets.all(AppSizes.paddingM.h),
-                    child: TextField(
-                      controller: _noteController,
-                      decoration: const InputDecoration(labelText: 'Note'),
-                      maxLines: null,
+                    padding: EdgeInsets.only(
+                      left: AppSizes.paddingM.w,
+                      right: AppSizes.paddingM.w,
+                    ),
+                    child: WButton(
+                      onTap: () {
+                        cubit.setNote(_noteController.text);
+                        Navigator.of(context).pop();
+                      },
+                      text: 'Save',
                     ),
                   ),
                 ),
-                Container(
-                  color: AppColors.background,
-                  child: SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: AppSizes.paddingM.w,
-                        right: AppSizes.paddingM.w,
-                      ),
-                      child: WButton(
-                        onTap: () {
-                          cubit.setNote(_noteController.text);
-                          Navigator.of(context).pop();
-                        },
-                        text: 'Save',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
+          ),
         );
       },
     );
