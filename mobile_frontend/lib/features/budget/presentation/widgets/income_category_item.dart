@@ -52,7 +52,7 @@ class IncomeCategoryItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: selectedBoxColor,
                 ),
-                child: SvgPicture.asset(icon, color: Colors.black),
+                child: SvgPicture.asset(icon, color: selected ? Colors.black : Colors.red),
               ),
             ],
           ),

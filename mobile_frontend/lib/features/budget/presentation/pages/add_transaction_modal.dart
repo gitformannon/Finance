@@ -329,9 +329,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                         IncomeCategoryItem(
                                           title: cat.name,
                                           icon: 'assets/svg/ic_global.svg',
-                                          iconColor: Colors.yellow,
-                                          boxColor: Colors.red,
-                                          selectedBoxColor: Colors.green,
+                                          iconColor: AppColors.textPrimary,
+                                          boxColor: AppColors.primary,
+                                          selectedBoxColor: AppColors.accent,
+                                          selected: cubit.state.categoryId == cat.id,
                                           onTap: () => cubit.setCategoryId(cat.id),
                                         ),
                                         _addCategoryButton(context, cubit),
