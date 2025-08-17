@@ -2,7 +2,9 @@ import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:Finance/features/budget/presentation/widgets/add_category_item.dart';
-import 'package:Finance/features/budget/presentation/widgets/income_category_item.dart';
+import 'package:Finance/features/budget/presentation/widgets/category_item.dart';
+import 'package:Finance/features/budget/presentation/widgets/transaction_type_button.dart';
+import 'package:Finance/features/budget/presentation/widgets/transfer_account_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -135,6 +137,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             ),
                             Row(
                               children: [
+                                TransactionTypeButton(),
                                 _typeButton(
                                   context,
                                   cubit,
@@ -298,21 +301,33 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           child:
                             state.type == TransactionType.transfer
                               ? ListView.separated(
-                                padding: EdgeInsets.only(
-                                  bottom:
-                                      AppSizes.buttonHeight.h +
-                                      AppSizes.paddingNavBar.h,
-                                ),
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: state.accounts.length,
                                 itemBuilder: (c, i) {
                                   final acc = state.accounts[i];
-                                  return _accountItem(context, cubit, acc);
+                                  return AccountCardButton(
+                                    iconColor: AppColors.box,
+                                    selectedIconColor: AppColors.accent,
+                                    iconBoxColor: AppColors.def.withOpacity(0.1),
+                                    selectedIconBoxColor: AppColors.surface,
+                                    titleColor: AppColors.textPrimary,
+                                    selectedTitleColor: AppColors.surface,
+                                    boxColor: AppColors.def.withOpacity(0.2),
+                                    selectedBoxColor: AppColors.accent,
+                                    boxBorderColor: AppColors.def,
+                                    selectedBoxBorderColor: AppColors.accent,
+                                    title: acc.name ?? 'Account',
+                                    subtitle: acc.number ?? '',
+                                    icon: 'assets/svg/ic_more.svg',
+                                    selected: cubit.state.toAccountId == acc.id,
+                                    onTap: () => cubit.setToAccountId(acc.id)
+                                  );
                                 },
                                 separatorBuilder:
-                                    (c, i) => const Divider(
-                                      color: AppColors.transparent,
-                                    ),
+                                  (c, i) => const Divider(
+                                    color: AppColors.transparent,
+                                    height: AppSizes.space3,
+                                  ),
                               )
                               : GridView.count(
                                 padding: EdgeInsets.only(
@@ -326,12 +341,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 physics: const BouncingScrollPhysics(),
                                 children: [
                                   for (final cat in state.categories)
-                                    IncomeCategoryItem(
+                                    CategoryItem(
                                       icon: 'assets/svg/ic_global.svg',
-                                      iconColor: AppColors.textSecondary,
+                                      iconColor: AppColors.box,
                                       selectedIconColor: AppColors.accent,
-                                      iconBoxColor: AppColors.def.withOpacity(0.2),
-                                      selectedIconBoxColor: AppColors.box,
+                                      iconBoxColor: AppColors.def.withOpacity(0.1),
+                                      selectedIconBoxColor: AppColors.surface,
                                       title: cat.name,
                                       titleColor: AppColors.textPrimary,
                                       selectedTitleColor: AppColors.surface,
@@ -434,44 +449,44 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     );
   }
 
-  Widget _categoryItem(
-    BuildContext context,
-    TransactionCubit cubit,
-    Category cat,
-  ) {
-    final selected = cubit.state.categoryId == cat.id;
-    return TileButton(
-      title: cat.name ?? 'Category',
-      subtitle: selected ? null : null,
-      icon: Icons.account_balance_wallet,
-      selectedIcon: Icons.account_balance_wallet,
-      selected: selected,
-      onTap: () => cubit.setCategoryId(cat.id),
-      height: 90.h,
-      color: AppColors.primary,
-      selectedColor: AppColors.accent,
-    );
-  }
+  // Widget _categoryItem(
+  //   BuildContext context,
+  //   TransactionCubit cubit,
+  //   Category cat,
+  // ) {
+  //   final selected = cubit.state.categoryId == cat.id;
+  //   return TileButton(
+  //     title: cat.name ?? 'Category',
+  //     subtitle: selected ? null : null,
+  //     icon: Icons.account_balance_wallet,
+  //     selectedIcon: Icons.account_balance_wallet,
+  //     selected: selected,
+  //     onTap: () => cubit.setCategoryId(cat.id),
+  //     height: 90.h,
+  //     color: AppColors.primary,
+  //     selectedColor: AppColors.accent,
+  //   );
+  // }
 
-  Widget _accountItem(
-    BuildContext context,
-    TransactionCubit cubit,
-    Account acc,
-  ) {
-    final selected = cubit.state.toAccountId == acc.id;
-    return TileButton(
-      title: acc.name ?? 'Account',
-      subtitle: selected ? null : null,
-      icon: Icons.account_balance_wallet,
-      selectedIcon: Icons.account_balance_wallet,
-      selected: selected,
-      onTap: () => cubit.setToAccountId(acc.id),
-      // If you use it in a vertical ListView, give it a bit more height:
-      height: 50.h,
-      color: AppColors.primary,
-      selectedColor: AppColors.accent,
-    );
-  }
+  // Widget _accountItem(
+  //   BuildContext context,
+  //   TransactionCubit cubit,
+  //   Account acc,
+  // ) {
+  //   final selected = cubit.state.toAccountId == acc.id;
+  //   return TileButton(
+  //     title: acc.name ?? 'Account',
+  //     subtitle: selected ? null : null,
+  //     icon: Icons.account_balance_wallet,
+  //     selectedIcon: Icons.account_balance_wallet,
+  //     selected: selected,
+  //     onTap: () => cubit.setToAccountId(acc.id),
+  //     // If you use it in a vertical ListView, give it a bit more height:
+  //     height: 50.h,
+  //     color: AppColors.primary,
+  //     selectedColor: AppColors.accent,
+  //   );
+  // }
 
   Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
     final radius = BorderRadius.circular(AppSizes.borderMedium);

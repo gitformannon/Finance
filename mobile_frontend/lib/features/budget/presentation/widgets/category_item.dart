@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class IncomeCategoryItem extends StatelessWidget {
+class CategoryItem extends StatelessWidget {
   final Color boxColor;
   final Color? selectedBoxColor;
   final String icon;
@@ -23,7 +23,7 @@ class IncomeCategoryItem extends StatelessWidget {
   final Color? iconBoxColor;
   final Color? selectedIconBoxColor;
 
-  const IncomeCategoryItem({
+  const CategoryItem({
     required this.boxColor,
     this.selectedBoxColor,
     required this.icon,
