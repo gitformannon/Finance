@@ -137,26 +137,49 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             ),
                             Row(
                               children: [
-                                TransactionTypeButton(),
-                                _typeButton(
-                                  context,
-                                  cubit,
-                                  TransactionType.income,
-                                  'Income',
+                                TransactionTypeButton(
+                                  title: 'Income',
+                                  titleColor: AppColors.textSecondary,
+                                  selectedTitleColor: AppColors.surface,
+                                  boxColor: AppColors.def.withOpacity(0.2),
+                                  selectedBoxColor: AppColors.accent,
+                                  boxBorderColor: AppColors.def,
+                                  selectedBoxBorderColor: AppColors.accent,
+                                  selected: state.type == TransactionType.income,
+                                  onTap: () {
+                                    cubit.setType(TransactionType.income);
+                                    cubit.loadCategories();
+                                  },
                                 ),
                                 SizedBox(width: AppSizes.spaceXXS5.w),
-                                _typeButton(
-                                  context,
-                                  cubit,
-                                  TransactionType.purchase,
-                                  'Purchase',
+                                TransactionTypeButton(
+                                  title: 'Purchase',
+                                  titleColor: AppColors.textSecondary,
+                                  selectedTitleColor: AppColors.surface,
+                                  boxColor: AppColors.def.withOpacity(0.2),
+                                  selectedBoxColor: AppColors.accent,
+                                  boxBorderColor: AppColors.def,
+                                  selectedBoxBorderColor: AppColors.accent,
+                                  selected: state.type == TransactionType.purchase,
+                                  onTap: () {
+                                    cubit.setType(TransactionType.purchase);
+                                    cubit.loadCategories();
+                                  },
                                 ),
                                 SizedBox(width: AppSizes.spaceXXS5.w),
-                                _typeButton(
-                                  context,
-                                  cubit,
-                                  TransactionType.transfer,
-                                  'Transfer',
+                                TransactionTypeButton(
+                                  title: 'Transfer',
+                                  titleColor: AppColors.textSecondary,
+                                  selectedTitleColor: AppColors.surface,
+                                  boxColor: AppColors.def.withOpacity(0.2),
+                                  selectedBoxColor: AppColors.accent,
+                                  boxBorderColor: AppColors.def,
+                                  selectedBoxBorderColor: AppColors.accent,
+                                  selected: state.type == TransactionType.transfer,
+                                  onTap: () {
+                                    cubit.setType(TransactionType.transfer);
+                                    cubit.loadAccounts();
+                                  },
                                 ),
                               ],
                             ),
@@ -407,47 +430,47 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     );
   }
 
-  Widget _typeButton(
-    BuildContext context,
-    TransactionCubit cubit,
-    TransactionType type,
-    String label,
-  ) {
-    final selected = cubit.state.type == type;
-    return Container(
-      child: GestureDetector(
-        onTap: () {
-          cubit.setType(type);
-          if (type == TransactionType.transfer) {
-            cubit.loadAccounts();
-          } else {
-            cubit.loadCategories();
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSizes.paddingS,
-            horizontal: AppSizes.paddingM,
-          ),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.accent : AppColors.def.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-            border: Border.all(
-              color: selected ? AppColors.accent : AppColors.def,
-              width: 0.5,
-            ),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: AppTextStyles.bodyRegular.copyWith(
-              color: selected ? AppColors.surface : AppColors.textSecondary,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _typeButton(
+  //   BuildContext context,
+  //   TransactionCubit cubit,
+  //   TransactionType type,
+  //   String label,
+  // ) {
+  //   final selected = cubit.state.type == type;
+  //   return Container(
+  //     child: GestureDetector(
+  //       onTap: () {
+  //         cubit.setType(type);
+  //         if (type == TransactionType.transfer) {
+  //           cubit.loadAccounts();
+  //         } else {
+  //           cubit.loadCategories();
+  //         }
+  //       },
+  //       child: Container(
+  //         padding: const EdgeInsets.symmetric(
+  //           vertical: AppSizes.paddingS,
+  //           horizontal: AppSizes.paddingM,
+  //         ),
+  //         decoration: BoxDecoration(
+  //           color: selected ? AppColors.accent : AppColors.def.withOpacity(0.2),
+  //           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+  //           border: Border.all(
+  //             color: selected ? AppColors.accent : AppColors.def,
+  //             width: 0.5,
+  //           ),
+  //         ),
+  //         alignment: Alignment.center,
+  //         child: Text(
+  //           label,
+  //           style: AppTextStyles.bodyRegular.copyWith(
+  //             color: selected ? AppColors.surface : AppColors.textSecondary,
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // Widget _categoryItem(
   //   BuildContext context,
@@ -488,45 +511,45 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   //   );
   // }
 
-  Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
-    final radius = BorderRadius.circular(AppSizes.borderMedium);
-    return Material(
-      color: AppColors.transparent,
-      child: InkWell(
-        borderRadius: radius,
-        onTap: () async {
-          final type = cubit.state.type;
-          CategoryType? categoryType;
-          if (type == TransactionType.income) {
-            categoryType = CategoryType.income;
-          } else if (type == TransactionType.purchase) {
-            categoryType = CategoryType.purchase;
-          }
-          await showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useSafeArea: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(AppSizes.borderSM16),
-              ),
-            ),
-            builder: (_) => AddCategoryModal(type: categoryType),
-          );
-          cubit.loadCategories();
-        },
-        child: Ink(
-          height: 90.h,
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: radius,
-            border: Border.all(color: AppColors.primary, width: 0.5),
-          ),
-          child: const Center(child: Icon(Icons.add, color: AppColors.accent)),
-        ),
-      ),
-    );
-  }
+  // Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
+  //   final radius = BorderRadius.circular(AppSizes.borderMedium);
+  //   return Material(
+  //     color: AppColors.transparent,
+  //     child: InkWell(
+  //       borderRadius: radius,
+  //       onTap: () async {
+  //         final type = cubit.state.type;
+  //         CategoryType? categoryType;
+  //         if (type == TransactionType.income) {
+  //           categoryType = CategoryType.income;
+  //         } else if (type == TransactionType.purchase) {
+  //           categoryType = CategoryType.purchase;
+  //         }
+  //         await showModalBottomSheet(
+  //           context: context,
+  //           isScrollControlled: true,
+  //           useSafeArea: true,
+  //           shape: const RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.vertical(
+  //               top: Radius.circular(AppSizes.borderSM16),
+  //             ),
+  //           ),
+  //           builder: (_) => AddCategoryModal(type: categoryType),
+  //         );
+  //         cubit.loadCategories();
+  //       },
+  //       child: Ink(
+  //         height: 90.h,
+  //         decoration: BoxDecoration(
+  //           color: AppColors.primary,
+  //           borderRadius: radius,
+  //           border: Border.all(color: AppColors.primary, width: 0.5),
+  //         ),
+  //         child: const Center(child: Icon(Icons.add, color: AppColors.accent)),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> _showCalendarPicker(
     BuildContext context,
