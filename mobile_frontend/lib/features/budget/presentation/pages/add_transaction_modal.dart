@@ -246,40 +246,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             SizedBox(height: AppSizes.spaceM16.h),
                             Row(
                               children: [
-                                GestureDetector(
-                                  onTap: () => BottomDatepickerModal.show(
-                                  context,
-                                  initialDate: cubit.state.date,
+                                BottomDatepickerField(
+                                  date: state.date,
                                   onSelect: cubit.setDate,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.def.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(
-                                            AppSizes.borderSmall,
-                                          ),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(
-                                            AppSizes.paddingS,
-                                          ),
-                                          child: Icon(
-                                            Icons.calendar_today,
-                                            size: 24,
-                                            color: AppColors.textSecondary,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text(
-                                        DateFormat(
-                                          'dd MMMM yyyy',
-                                        ).format(state.date),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
                                 GestureDetector(
