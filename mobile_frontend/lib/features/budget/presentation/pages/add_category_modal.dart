@@ -12,7 +12,10 @@ import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 
 class AddCategoryModal extends StatefulWidget {
   final CategoryType? type;
-  const AddCategoryModal({this.type, super.key});
+  const AddCategoryModal({
+    this.type,
+    super.key
+  });
 
   @override
   State<AddCategoryModal> createState() => _AddCategoryModalState();

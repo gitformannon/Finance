@@ -1,6 +1,7 @@
 import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
+import 'package:Finance/features/budget/presentation/widgets/add_category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/income_category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -342,8 +343,16 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                           selected: cubit.state.categoryId == cat.id,
                                           onTap: () => cubit.setCategoryId(cat.id),
                                         ),
-                                        AddIncomeCategoryItem,
-                                        _addCategoryButton(context, cubit),
+                                      AddCategoryItem(
+                                        boxColor: AppColors.def.withOpacity(0.2),
+                                        boxBorderColor: AppColors.def,
+                                        type: state.type == TransactionType.income
+                                            ? CategoryType.income
+                                            : state.type == TransactionType.purchase
+                                            ? CategoryType.purchase
+                                            : null,
+                                        onCategoryAdded: cubit.loadCategories,
+                                      ),
                                     ],
                                   ),
                         ),

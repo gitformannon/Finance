@@ -5,27 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class IncomeCategoryItem extends StatelessWidget {
-  const IncomeCategoryItem({
-    super.key,
-    required this.boxColor,
-    this.selectedBoxColor,
-    required this.icon,
-    required this.iconColor,
-    this.selectedIconColor,
-    this.onTap,
-    this.selected = false,
-    required this.title,
-    this.titleColor,
-    this.selectedTitleColor,
-    this.subtitle,
-    this.subtitleColor,
-    this.selectedSubtitleColor,
-    required this.boxBorderColor,
-    required this.selectedBoxBorderColor,
-    this.iconBoxColor,
-    this.selectedIconBoxColor
-  });
-
   final Color boxColor;
   final Color? selectedBoxColor;
   final String icon;
@@ -43,6 +22,27 @@ class IncomeCategoryItem extends StatelessWidget {
   final Color selectedBoxBorderColor;
   final Color? iconBoxColor;
   final Color? selectedIconBoxColor;
+
+  const IncomeCategoryItem({
+    required this.boxColor,
+    this.selectedBoxColor,
+    required this.icon,
+    required this.iconColor,
+    this.selectedIconColor,
+    this.onTap,
+    this.selected = false,
+    required this.title,
+    this.titleColor,
+    this.selectedTitleColor,
+    this.subtitle,
+    this.subtitleColor,
+    this.selectedSubtitleColor,
+    required this.boxBorderColor,
+    required this.selectedBoxBorderColor,
+    this.iconBoxColor,
+    this.selectedIconBoxColor,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
