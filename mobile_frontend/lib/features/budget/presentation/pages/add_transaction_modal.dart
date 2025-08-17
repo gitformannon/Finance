@@ -5,11 +5,10 @@ import 'package:Finance/features/budget/presentation/widgets/add_category_item.d
 import 'package:Finance/features/budget/presentation/widgets/category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/transaction_type_button.dart';
 import 'package:Finance/features/budget/presentation/widgets/transfer_account_item.dart';
+import 'package:Finance/features/budget/presentation/widgets/bottom_datepicker_modal.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 import '../../../shared/presentation/widgets/app_buttons/w_tile_button.dart';
@@ -245,37 +244,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             SizedBox(height: AppSizes.spaceM16.h),
                             Row(
                               children: [
-                                GestureDetector(
-                                  onTap:
-                                      () => _showCalendarPicker(context, cubit),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.def.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(
-                                            AppSizes.borderSmall,
-                                          ),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(
-                                            AppSizes.paddingS,
-                                          ),
-                                          child: Icon(
-                                            Icons.calendar_today,
-                                            size: 24,
-                                            color: AppColors.textSecondary,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text(
-                                        DateFormat(
-                                          'dd MMMM yyyy',
-                                        ).format(state.date),
-                                      ),
-                                    ],
-                                  ),
+                                BottomDatepickerField(
+                                  date: state.date,
+                                  onSelect: cubit.setDate,
+                                  maximumDate: DateTime.now(),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
                                 GestureDetector(
@@ -550,63 +522,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   //     ),
   //   );
   // }
-
-  Future<void> _showCalendarPicker(
-    BuildContext context,
-    TransactionCubit cubit,
-  ) async {
-    DateTime tempDate = cubit.state.date;
-    await showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(AppSizes.borderSM16),
-            topRight: Radius.circular(AppSizes.borderSM16),
-          ),
-          child: StatefulBuilder(
-            builder:
-                (context, setState) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      height: 200.h,
-                      color: AppColors.background,
-                      child: CupertinoDatePicker(
-                        initialDateTime: tempDate,
-                        mode: CupertinoDatePickerMode.date,
-                        backgroundColor: AppColors.background,
-                        onDateTimeChanged: (d) => setState(() => tempDate = d),
-                      ),
-                    ),
-                    Container(
-                      color: AppColors.background,
-                      child: SafeArea(
-                        top: false,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: AppSizes.paddingM.w,
-                            right: AppSizes.paddingM.w,
-                          ),
-                          child: WButton(
-                            onTap: () {
-                              cubit.setDate(tempDate);
-                              Navigator.of(context).pop();
-                            },
-                            text: 'Select',
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-          ),
-        );
-      },
-    );
-  }
 
   Future<void> _showNoteModal(
     BuildContext context,
