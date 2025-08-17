@@ -61,7 +61,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   @override
   Widget build(BuildContext context) {
     final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    print(_amountFocusNode.hasFocus);
 
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
@@ -120,19 +119,19 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 ),
                               ),
                               value:
-                                  state.accountId.isNotEmpty
-                                      ? state.accountId
-                                      : null,
+                                state.accountId.isNotEmpty
+                                  ? state.accountId
+                                  : null,
                               onChanged: (val) => cubit.setAccountId(val ?? ''),
                               items:
-                                  state.accounts
-                                      .map(
-                                        (a) => DropdownMenuItem(
-                                          value: a.id,
-                                          child: Text(a.name ?? 'Account'),
-                                        ),
-                                      )
-                                      .toList(),
+                                state.accounts
+                                  .map(
+                                    (a) => DropdownMenuItem(
+                                      value: a.id,
+                                      child: Text(a.name ?? 'Account'),
+                                    ),
+                                  )
+                                  .toList(),
                             ),
                             Row(
                               children: [
@@ -163,9 +162,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                 border: Border(
                                   bottom: BorderSide(
                                     color:
-                                        _amountFocusNode.hasFocus
-                                            ? AppColors.accent
-                                            : AppColors.def,
+                                      _amountFocusNode.hasFocus
+                                        ? AppColors.accent
+                                        : AppColors.def,
                                     width: _amountFocusNode.hasFocus ? 1 : 1,
                                   ),
                                 ),
@@ -297,64 +296,64 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             horizontal: AppSizes.paddingM.h,
                           ),
                           child:
-                              state.type == TransactionType.transfer
-                                  ? ListView.separated(
-                                    padding: EdgeInsets.only(
-                                      bottom:
-                                          AppSizes.buttonHeight.h +
-                                          AppSizes.paddingNavBar.h,
+                            state.type == TransactionType.transfer
+                              ? ListView.separated(
+                                padding: EdgeInsets.only(
+                                  bottom:
+                                      AppSizes.buttonHeight.h +
+                                      AppSizes.paddingNavBar.h,
+                                ),
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: state.accounts.length,
+                                itemBuilder: (c, i) {
+                                  final acc = state.accounts[i];
+                                  return _accountItem(context, cubit, acc);
+                                },
+                                separatorBuilder:
+                                    (c, i) => const Divider(
+                                      color: AppColors.transparent,
                                     ),
-                                    physics: const BouncingScrollPhysics(),
-                                    itemCount: state.accounts.length,
-                                    itemBuilder: (c, i) {
-                                      final acc = state.accounts[i];
-                                      return _accountItem(context, cubit, acc);
-                                    },
-                                    separatorBuilder:
-                                        (c, i) => const Divider(
-                                          color: AppColors.transparent,
-                                        ),
-                                  )
-                                  : GridView.count(
-                                    padding: EdgeInsets.only(
-                                      bottom:
-                                          AppSizes.buttonHeight.h +
-                                          AppSizes.paddingNavBar.h,
+                              )
+                              : GridView.count(
+                                padding: EdgeInsets.only(
+                                  bottom:
+                                      AppSizes.buttonHeight.h +
+                                      AppSizes.paddingNavBar.h,
+                                ),
+                                crossAxisCount: 3,
+                                crossAxisSpacing: AppSizes.space3,
+                                mainAxisSpacing: AppSizes.space3,
+                                physics: const BouncingScrollPhysics(),
+                                children: [
+                                  for (final cat in state.categories)
+                                    IncomeCategoryItem(
+                                      icon: 'assets/svg/ic_global.svg',
+                                      iconColor: AppColors.textSecondary,
+                                      selectedIconColor: AppColors.accent,
+                                      iconBoxColor: AppColors.def.withOpacity(0.2),
+                                      selectedIconBoxColor: AppColors.box,
+                                      title: cat.name,
+                                      titleColor: AppColors.textPrimary,
+                                      selectedTitleColor: AppColors.surface,
+                                      boxColor: AppColors.def.withOpacity(0.2),
+                                      selectedBoxColor: AppColors.accent,
+                                      boxBorderColor: AppColors.def,
+                                      selectedBoxBorderColor: AppColors.accent,
+                                      selected: cubit.state.categoryId == cat.id,
+                                      onTap: () => cubit.setCategoryId(cat.id),
                                     ),
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: AppSizes.space3,
-                                    mainAxisSpacing: AppSizes.space3,
-                                    physics: const BouncingScrollPhysics(),
-                                    children: [
-                                      for (final cat in state.categories)
-                                        IncomeCategoryItem(
-                                          icon: 'assets/svg/ic_global.svg',
-                                          iconColor: AppColors.textSecondary,
-                                          selectedIconColor: AppColors.accent,
-                                          iconBoxColor: AppColors.def.withOpacity(0.2),
-                                          selectedIconBoxColor: AppColors.box,
-                                          title: cat.name,
-                                          titleColor: AppColors.textPrimary,
-                                          selectedTitleColor: AppColors.surface,
-                                          boxColor: AppColors.def.withOpacity(0.2),
-                                          selectedBoxColor: AppColors.accent,
-                                          boxBorderColor: AppColors.def,
-                                          selectedBoxBorderColor: AppColors.accent,
-                                          selected: cubit.state.categoryId == cat.id,
-                                          onTap: () => cubit.setCategoryId(cat.id),
-                                        ),
-                                      AddCategoryItem(
-                                        boxColor: AppColors.def.withOpacity(0.2),
-                                        boxBorderColor: AppColors.def,
-                                        type: state.type == TransactionType.income
-                                            ? CategoryType.income
-                                            : state.type == TransactionType.purchase
-                                            ? CategoryType.purchase
-                                            : null,
-                                        onCategoryAdded: cubit.loadCategories,
-                                      ),
-                                    ],
-                                  ),
+                                    AddCategoryItem(
+                                      boxColor: AppColors.def.withOpacity(0.2),
+                                      boxBorderColor: AppColors.def,
+                                      type: state.type == TransactionType.income
+                                        ? CategoryType.income
+                                        : state.type == TransactionType.purchase
+                                        ? CategoryType.purchase
+                                        : null,
+                                      onCategoryAdded: cubit.loadCategories,
+                                    ),
+                                ],
+                              ),
                         ),
                       ),
                     ],
