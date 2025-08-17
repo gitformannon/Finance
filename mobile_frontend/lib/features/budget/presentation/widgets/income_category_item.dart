@@ -1,4 +1,5 @@
 import 'package:Finance/core/constants/app_sizes.dart';
+import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,12 +12,18 @@ class IncomeCategoryItem extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     this.selectedIconColor,
-    required this.title,
     this.onTap,
     this.selected = false,
+    required this.title,
     this.titleColor,
+    this.selectedTitleColor,
     this.subtitle,
-    this.subtitleColor
+    this.subtitleColor,
+    this.selectedSubtitleColor,
+    required this.boxBorderColor,
+    required this.selectedBoxBorderColor,
+    this.iconBoxColor,
+    this.selectedIconBoxColor
   });
 
   final Color boxColor;
@@ -26,66 +33,89 @@ class IncomeCategoryItem extends StatelessWidget {
   final Color? selectedIconColor;
   final String title;
   final Color? titleColor;
+  final Color? selectedTitleColor;
   final String? subtitle;
   final Color? subtitleColor;
+  final Color? selectedSubtitleColor;
   final VoidCallback? onTap;
   final bool selected;
+  final Color boxBorderColor;
+  final Color selectedBoxBorderColor;
+  final Color? iconBoxColor;
+  final Color? selectedIconBoxColor;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSizes.paddingS),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-        color: boxColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: 48.w,
-                width: 48.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: selectedBoxColor,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSizes.paddingS),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+          border: Border.all(
+            width: 0.5,
+            color: selected ? selectedBoxBorderColor : boxBorderColor,
+          ),
+          color: selected ? (selectedBoxColor ?? boxColor) : boxColor
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 48.w,
+                  width: 48.w,
+
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected
+                        ? selectedIconBoxColor
+                        : (iconBoxColor ?? selectedIconBoxColor),
+
+                  ),
+                  child: SvgPicture.asset(
+                    icon,
+                    color: selected
+                        ? (selectedIconColor ?? iconColor)
+                        : iconColor,
+                  ),
                 ),
-                child: SvgPicture.asset(icon, color: selected ? Colors.black : Colors.red),
-              ),
-            ],
-          ),
-
-          const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.only(left: AppSizes.paddingM, bottom: AppSizes.paddingS),
-            child: Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: titleColor,
-                fontWeight: FontWeight.bold
-              ),
+              ],
             ),
-          ),
 
-          if(subtitle != null)
+            const Spacer(),
+
             Padding(
-              padding: const EdgeInsets.only(left: AppSizes.paddingM, bottom: AppSizes.paddingS),
+              padding: const EdgeInsets.only(left: AppSizes.paddingM, right: AppSizes.paddingS, bottom: AppSizes.paddingS),
               child: Text(
-                subtitle!,
+                title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: subtitleColor,
+                  color: selected ? selectedTitleColor : titleColor,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
 
-        ],
+            if(subtitle != null)
+              Padding(
+                padding: const EdgeInsets.only(left: AppSizes.paddingM, right: AppSizes.paddingS, bottom: AppSizes.paddingS),
+                child: Text(
+                  subtitle!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: selected ? selectedSubtitleColor : subtitleColor,
+                  ),
+                ),
+              ),
+
+          ],
+        ),
       ),
     );
   }
