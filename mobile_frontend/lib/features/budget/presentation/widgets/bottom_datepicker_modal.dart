@@ -104,7 +104,7 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
   }
 }
 
-class BottomDatepickerField extends StatelessWidget {
+class BottomDatepickerField extends StatefulWidget {
   const BottomDatepickerField({
     super.key,
     required this.date,
