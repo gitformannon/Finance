@@ -79,6 +79,7 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
               onDateTimeChanged: (d) => setState(() => _tempDate = d),
             ),
           ),
+
           Container(
             color: AppColors.background,
             child: SafeArea(
@@ -98,13 +99,14 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
               ),
             ),
           ),
+
         ],
       ),
     );
   }
 }
 
-class BottomDatepickerField extends StatefulWidget {
+class BottomDatepickerField extends StatelessWidget {
   const BottomDatepickerField({
     super.key,
     required this.date,
@@ -121,19 +123,14 @@ class BottomDatepickerField extends StatefulWidget {
   final String dateFormat;
 
   @override
-  State<BottomDatepickerField> createState() => _BottomDatepickerFieldState();
-}
-
-class _BottomDatepickerFieldState extends State<BottomDatepickerField> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => BottomDatepickerModal.show(
         context,
-        initialDate: widget.date,
-        onSelect: widget.onSelect,
-        minimumDate: widget.minimumDate,
-        maximumDate: widget.maximumDate,
+        initialDate: date,
+        onSelect: onSelect,
+        minimumDate: minimumDate,
+        maximumDate: maximumDate,
       ),
       child: Row(
         children: [
@@ -152,7 +149,7 @@ class _BottomDatepickerFieldState extends State<BottomDatepickerField> {
             ),
           ),
           SizedBox(width: AppSizes.spaceXS8.w),
-          Text(DateFormat(widget.dateFormat).format(widget.date)),
+          Text(DateFormat(dateFormat).format(date)),
         ],
       ),
     );
