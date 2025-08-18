@@ -7,9 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class BottomDatepickerModal extends StatefulWidget {
-  final DateTime initialDate;
-  final ValueChanged<DateTime> onSelect;
-
   const BottomDatepickerModal({
     super.key,
     required this.initialDate,
@@ -23,136 +20,30 @@ class BottomDatepickerModal extends StatefulWidget {
   final DateTime? minimumDate;
   final DateTime? maximumDate;
 
-  static Future<void> show(
-    BuildContext context, {
+  static Future<void> show(BuildContext context, {
     required DateTime initialDate,
     required ValueChanged<DateTime> onSelect,
     DateTime? minimumDate,
     DateTime? maximumDate,
   }) {
-  });
-
-  static Future<void> show(
-      BuildContext context, {
-        required DateTime initialDate,
-        required ValueChanged<DateTime> onSelect,
-      }) {
-
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => BottomDatepickerModal(
-        initialDate: initialDate,
-        onSelect: onSelect,
-        minimumDate: minimumDate,
-        maximumDate: maximumDate,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppSizes.borderSM16)
+          )
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    DateTime tempDate = initialDate;
-
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(AppSizes.borderSM16),
-        topRight: Radius.circular(AppSizes.borderSM16),
-      ),
-      child: StatefulBuilder(
-        builder: (context, setState) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              height: 200.h,
-              color: AppColors.background,
-              child: CupertinoDatePicker(
-                initialDateTime: tempDate,
-                minimumDate: minimumDate,
-                maximumDate: maximumDate,
-                mode: CupertinoDatePickerMode.date,
-                backgroundColor: AppColors.background,
-                onDateTimeChanged: (d) => setState(() => tempDate = d),
-              ),
-            ),
-            Container(
-              color: AppColors.background,
-              child: SafeArea(
-                top: false,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: AppSizes.paddingM.w,
-                    right: AppSizes.paddingM.w,
-                  ),
-                  child: WButton(
-                    onTap: () {
-                      onSelect(tempDate);
-                      Navigator.of(context).pop();
-                    },
-                    text: 'Select',
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class BottomDatepickerField extends StatelessWidget {
-  const BottomDatepickerField({
-    super.key,
-    required this.date,
-    required this.onSelect,
-    this.minimumDate,
-    this.maximumDate,
-    this.dateFormat = 'dd MMMM yyyy',
-  });
-
-  final DateTime date;
-  final ValueChanged<DateTime> onSelect;
-  final DateTime? minimumDate;
-  final DateTime? maximumDate;
-  final String dateFormat;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => BottomDatepickerModal.show(
-        context,
-        initialDate: date,
-        onSelect: onSelect,
-        minimumDate: minimumDate,
-        maximumDate: maximumDate,
-      ),
-      child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.def.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(AppSizes.borderSmall),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(AppSizes.paddingS),
-              child: Icon(
-                Icons.calendar_today,
-                size: 24,
-                color: AppColors.textSecondary,
-              ),
-            ),
+      builder: (_) =>
+          BottomDatepickerModal(
+            initialDate: initialDate,
+            onSelect: onSelect,
+            minimumDate: minimumDate,
+            maximumDate: maximumDate,
           ),
-          SizedBox(width: AppSizes.spaceXS8.w),
-          Text(
-            DateFormat(dateFormat).format(date),
-          ),
-        ],
-      ),
     );
   }
-}
 
   State<BottomDatepickerModal> createState() => _BottomDatepickerModalState();
 }
@@ -181,6 +72,8 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
             color: AppColors.background,
             child: CupertinoDatePicker(
               initialDateTime: _tempDate,
+              minimumDate: widget.minimumDate,
+              maximumDate: widget.maximumDate,
               mode: CupertinoDatePickerMode.date,
               backgroundColor: AppColors.background,
               onDateTimeChanged: (d) => setState(() => _tempDate = d),
@@ -212,22 +105,35 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
 }
 
 class BottomDatepickerField extends StatelessWidget {
-  BottomDatepickerField({
+  const BottomDatepickerField({
     super.key,
     required this.date,
-    required this.onSelect
-  })
+    required this.onSelect,
+    this.minimumDate,
+    this.maximumDate,
+    this.dateFormat = 'dd MMM yyyy',
+  });
 
   final DateTime date;
   final ValueChanged<DateTime> onSelect;
+  final DateTime? minimumDate;
+  final DateTime? maximumDate;
+  final String dateFormat;
 
+  @override
+  State<BottomDatepickerField> createState() => _BottomDatepickerFieldState();
+}
+
+class _BottomDatepickerFieldState extends State<BottomDatepickerField> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => BottomDatepickerModal.show(
         context,
-        initialDate: date,
-        onSelect: onSelect,
+        initialDate: widget.date,
+        onSelect: widget.onSelect,
+        minimumDate: widget.minimumDate,
+        maximumDate: widget.maximumDate,
       ),
       child: Row(
         children: [
@@ -246,9 +152,7 @@ class BottomDatepickerField extends StatelessWidget {
             ),
           ),
           SizedBox(width: AppSizes.spaceXS8.w),
-          Text(
-            DateFormat('dd MMMM yyyy').format(date),
-          ),
+          Text(DateFormat(widget.dateFormat).format(widget.date)),
         ],
       ),
     );
