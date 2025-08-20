@@ -25,7 +25,6 @@ class AddTransactionModal extends StatefulWidget {
 
 class _AddTransactionModalState extends State<AddTransactionModal> {
   final _amountController = TextEditingController();
-  final _noteController = TextEditingController();
   final _amountFocusNode = FocusNode();
   final _noteFocusNode = FocusNode();
 
@@ -46,7 +45,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   @override
   void dispose() {
     _amountController.dispose();
-    _noteController.dispose();
     _amountFocusNode.dispose();
     _noteFocusNode.dispose();
     super.dispose();
@@ -63,7 +61,6 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
   @override
   Widget build(BuildContext context) {
-    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return BlocBuilder<TransactionCubit, TransactionState>(
       builder: (context, state) {
@@ -252,12 +249,15 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   maximumDate: DateTime.now(),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
-                                BottomNoteModal(
-                                  onTap: setState(() {
-                                    _amountFocusNode.unfocus()
-                                  }),
-
-
+                                BottomNoteField(
+                                  note: state.note,
+                                  onSelect: cubit.setNote,
+                                  onTap: () {
+                                    setState(() {
+                                      _amountFocusNode.unfocus();
+                                    });
+                                  }
+                                )
                                 // GestureDetector(
                                 //   onTap: () {
                                 //     setState(() {
@@ -534,61 +534,61 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   //   );
   // }
 
-  Future<void> _showNoteModal(
-    BuildContext context,
-    TransactionCubit cubit,
-  ) async {
-    _noteController.text = cubit.state.note;
-    await showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) {
-        return Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(AppSizes.borderSM16),
-              topRight: Radius.circular(AppSizes.borderSM16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  color: AppColors.background,
-                  child: Padding(
-                    padding: EdgeInsets.all(AppSizes.paddingM.h),
-                    child: TextField(
-                      controller: _noteController,
-                      decoration: const InputDecoration(labelText: 'Note'),
-                      maxLines: null,
-                    ),
-                  ),
-                ),
-                Container(
-                  color: AppColors.background,
-                  child: SafeArea(
-                    top: false,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: AppSizes.paddingM.w,
-                        right: AppSizes.paddingM.w,
-                      ),
-                      child: WButton(
-                        onTap: () {
-                          cubit.setNote(_noteController.text);
-                          Navigator.of(context).pop();
-                        },
-                        text: 'Save',
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+//   Future<void> _showNoteModal(
+//     BuildContext context,
+//     TransactionCubit cubit,
+//   ) async {
+//     _noteController.text = cubit.state.note;
+//     await showModalBottomSheet(
+//       context: context,
+//       isScrollControlled: true,
+//       useSafeArea: true,
+//       builder: (_) {
+//         return Padding(
+//           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+//           child: ClipRRect(
+//             borderRadius: const BorderRadius.only(
+//               topLeft: Radius.circular(AppSizes.borderSM16),
+//               topRight: Radius.circular(AppSizes.borderSM16),
+//             ),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Container(
+//                   color: AppColors.background,
+//                   child: Padding(
+//                     padding: EdgeInsets.all(AppSizes.paddingM.h),
+//                     child: TextField(
+//                       controller: _noteController,
+//                       decoration: const InputDecoration(labelText: 'Note'),
+//                       maxLines: null,
+//                     ),
+//                   ),
+//                 ),
+//                 Container(
+//                   color: AppColors.background,
+//                   child: SafeArea(
+//                     top: false,
+//                     child: Padding(
+//                       padding: EdgeInsets.only(
+//                         left: AppSizes.paddingM.w,
+//                         right: AppSizes.paddingM.w,
+//                       ),
+//                       child: WButton(
+//                         onTap: () {
+//                           cubit.setNote(_noteController.text);
+//                           Navigator.of(context).pop();
+//                         },
+//                         text: 'Save',
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
 }
