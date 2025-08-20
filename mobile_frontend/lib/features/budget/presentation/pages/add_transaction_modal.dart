@@ -6,18 +6,13 @@ import 'package:Finance/features/budget/presentation/widgets/bottom_datepicker_m
 import 'package:Finance/features/budget/presentation/widgets/category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/transaction_type_button.dart';
 import 'package:Finance/features/budget/presentation/widgets/transfer_account_item.dart';
-import 'package:Finance/features/budget/presentation/widgets/bottom_datepicker_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-import '../../../shared/presentation/widgets/app_buttons/w_tile_button.dart';
 import '../cubit/transaction_cubit.dart';
-import '../../data/model/category.dart';
-import '../../data/model/account.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
-import 'add_category_modal.dart';
 import '../../../../core/helpers/enums_helpers.dart';
 
 class AddTransactionModal extends StatefulWidget {
@@ -534,45 +529,48 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(AppSizes.borderSM16),
-            topRight: Radius.circular(AppSizes.borderSM16),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                color: AppColors.background,
-                child: Padding(
-                  padding: EdgeInsets.all(AppSizes.paddingM.h),
-                  child: TextField(
-                    controller: _noteController,
-                    decoration: const InputDecoration(labelText: 'Note'),
-                    maxLines: null,
-                  ),
-                ),
-              ),
-              Container(
-                color: AppColors.background,
-                child: SafeArea(
-                  top: false,
+        return Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(AppSizes.borderSM16),
+              topRight: Radius.circular(AppSizes.borderSM16),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  color: AppColors.background,
                   child: Padding(
-                    padding: EdgeInsets.only(
-                      left: AppSizes.paddingM.w,
-                      right: AppSizes.paddingM.w,
-                    ),
-                    child: WButton(
-                      onTap: () {
-                        cubit.setNote(_noteController.text);
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Save',
+                    padding: EdgeInsets.all(AppSizes.paddingM.h),
+                    child: TextField(
+                      controller: _noteController,
+                      decoration: const InputDecoration(labelText: 'Note'),
+                      maxLines: null,
                     ),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  color: AppColors.background,
+                  child: SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: AppSizes.paddingM.w,
+                        right: AppSizes.paddingM.w,
+                      ),
+                      child: WButton(
+                        onTap: () {
+                          cubit.setNote(_noteController.text);
+                          Navigator.of(context).pop();
+                        },
+                        text: 'Save',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
