@@ -8,10 +8,11 @@ class BottomNoteModal extends StatefulWidget {
   const BottomNoteModal({
     super.key,
     required this.initialNote,
-    required this.onSelect, required this.onTap,
+    required this.onSelect,
+    this.onTap,
   });
 
-  final String onTap;
+  final String? onTap;
   final ValueChanged<String> onSelect;
 
   final dynamic initialNote;
@@ -44,16 +45,21 @@ class BottomNoteModal extends StatefulWidget {
 
 class _BottomNoteModal extends State<BottomNoteModal> {
   late final TextEditingController _controller;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialNote);
-  }
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      setState(() {});
+    });
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -61,7 +67,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + ,
+        bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
@@ -77,6 +83,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
                 padding: EdgeInsets.all(AppSizes.paddingM.h),
                 child: TextField(
                   controller: _controller,
+                  focusNode: _focusNode,
                   decoration: const InputDecoration(labelText: 'Note'),
                   maxLines: null,
                 ),
@@ -90,6 +97,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
                   padding: EdgeInsets.only(
                     left: AppSizes.paddingM.w,
                     right: AppSizes.paddingM.w,
+                    bottom: _focusNode.hasFocus ? AppSizes.paddingM : 0,
                   ),
                   child: WButton(
                     onTap: () {
