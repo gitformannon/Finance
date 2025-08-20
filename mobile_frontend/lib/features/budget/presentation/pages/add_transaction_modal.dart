@@ -3,6 +3,7 @@ import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:Finance/features/budget/presentation/widgets/add_category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/bottom_datepicker_modal.dart';
+import 'package:Finance/features/budget/presentation/widgets/bottom_note_modal.dart';
 import 'package:Finance/features/budget/presentation/widgets/category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/transaction_type_button.dart';
 import 'package:Finance/features/budget/presentation/widgets/transfer_account_item.dart';
@@ -26,6 +27,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
   final _amountFocusNode = FocusNode();
+  final _noteFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -36,6 +38,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     _amountFocusNode.addListener(() {
       setState(() {});
     });
+    _noteFocusNode.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -43,6 +48,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     _amountController.dispose();
     _noteController.dispose();
     _amountFocusNode.dispose();
+    _noteFocusNode.dispose();
     super.dispose();
   }
 
@@ -198,7 +204,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                     child: TextField(
                                       controller: _amountController,
                                       keyboardType:
-                                          TextInputType.numberWithOptions(
+                                          const TextInputType.numberWithOptions(
                                             decimal: true,
                                           ),
                                       textAlign: TextAlign.right,
@@ -246,38 +252,44 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   maximumDate: DateTime.now(),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _amountFocusNode.unfocus();
-                                    });
-                                    _showNoteModal(context, cubit);
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.def.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(
-                                            AppSizes.borderSmall,
-                                          ),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(
-                                            AppSizes.paddingS,
-                                          ),
-                                          child: Icon(
-                                            Icons.sticky_note_2_rounded,
-                                            size: 24,
-                                            color: AppColors.textSecondary,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: AppSizes.spaceXS8.w),
-                                      Text('Note'),
-                                    ],
-                                  ),
-                                ),
+                                BottomNoteModal(
+                                  onTap: setState(() {
+                                    _amountFocusNode.unfocus()
+                                  }),
+
+
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     setState(() {
+                                //       _amountFocusNode.unfocus();
+                                //     });
+                                //     _showNoteModal(context, cubit);
+                                //   },
+                                //   child: Row(
+                                //     children: [
+                                //       Container(
+                                //         decoration: BoxDecoration(
+                                //           color: AppColors.def.withOpacity(0.2),
+                                //           borderRadius: BorderRadius.circular(
+                                //             AppSizes.borderSmall,
+                                //           ),
+                                //         ),
+                                //         child: const Padding(
+                                //           padding: EdgeInsets.all(
+                                //             AppSizes.paddingS,
+                                //           ),
+                                //           child: Icon(
+                                //             Icons.sticky_note_2_rounded,
+                                //             size: 24,
+                                //             color: AppColors.textSecondary,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       SizedBox(width: AppSizes.spaceXS8.w),
+                                //       Text('Note'),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],
@@ -397,6 +409,9 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       },
     );
   }
+
+
+
 
   // Widget _typeButton(
   //   BuildContext context,
