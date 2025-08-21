@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../data/model/transaction.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/budget_cubit.dart';
 import 'add_transaction_modal.dart';
@@ -28,7 +27,6 @@ class _BudgetPageState extends State<BudgetPage> {
         bottom: true,
         child: Column(
           children: [
-          const SizedBox(height: 12),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
@@ -164,9 +162,10 @@ class _BudgetPageState extends State<BudgetPage> {
                 ),
             ),
           ),
-        ],),
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
             context: context,
