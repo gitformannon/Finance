@@ -154,10 +154,11 @@ class BottomNoteField extends StatelessWidget {
             ),
           ),
           SizedBox(width: AppSizes.spaceXS8.w,),
-          Container(
+          Expanded(
             child: Text(
-                note.isEmpty ? 'Note' : note,
-                overflow: TextOverflow.ellipsis,
+              note.isEmpty ? 'Note' : note,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

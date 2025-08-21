@@ -243,53 +243,24 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                             SizedBox(height: AppSizes.spaceM16.h),
                             Row(
                               children: [
-                                BottomDatepickerField(
-                                  date: state.date,
-                                  onSelect: cubit.setDate,
-                                  maximumDate: DateTime.now(),
+                                Expanded(
+                                  child: BottomDatepickerField(
+                                    date: state.date,
+                                    onSelect: cubit.setDate,
+                                    maximumDate: DateTime.now(),
+                                  ),
                                 ),
                                 SizedBox(width: AppSizes.spaceXL24.w),
-                                BottomNoteField(
+                                Expanded(
+                                  child: BottomNoteField(
                                   note: state.note,
                                   onSelect: cubit.setNote,
                                   onTap: () {
                                     setState(() {
                                       _amountFocusNode.unfocus();
-                                    });
-                                  }
+                                    });}
+                                  )
                                 )
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     setState(() {
-                                //       _amountFocusNode.unfocus();
-                                //     });
-                                //     _showNoteModal(context, cubit);
-                                //   },
-                                //   child: Row(
-                                //     children: [
-                                //       Container(
-                                //         decoration: BoxDecoration(
-                                //           color: AppColors.def.withOpacity(0.2),
-                                //           borderRadius: BorderRadius.circular(
-                                //             AppSizes.borderSmall,
-                                //           ),
-                                //         ),
-                                //         child: const Padding(
-                                //           padding: EdgeInsets.all(
-                                //             AppSizes.paddingS,
-                                //           ),
-                                //           child: Icon(
-                                //             Icons.sticky_note_2_rounded,
-                                //             size: 24,
-                                //             color: AppColors.textSecondary,
-                                //           ),
-                                //         ),
-                                //       ),
-                                //       SizedBox(width: AppSizes.spaceXS8.w),
-                                //       Text('Note'),
-                                //     ],
-                                //   ),
-                                // ),
                               ],
                             ),
                           ],
