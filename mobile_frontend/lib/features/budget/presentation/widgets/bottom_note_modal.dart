@@ -9,13 +9,10 @@ class BottomNoteModal extends StatefulWidget {
     super.key,
     required this.initialNote,
     required this.onSelect,
-    this.onTap,
   });
 
-  final String? onTap;
+  final String? initialNote;
   final ValueChanged<String> onSelect;
-
-  final dynamic initialNote;
 
   static Future<void> show(
       BuildContext context, {
@@ -34,7 +31,6 @@ class BottomNoteModal extends StatefulWidget {
       builder: (_) => BottomNoteModal(
         initialNote: initialNote,
         onSelect: onSelect,
-        onTap: '',
       ),
     );
   }
@@ -55,6 +51,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
     _focusNode.addListener(() {
       setState(() {});
     });
+  }
 
   @override
   void dispose() {
@@ -140,6 +137,7 @@ class BottomNoteField extends StatelessWidget {
         );
       },
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -156,7 +154,12 @@ class BottomNoteField extends StatelessWidget {
             ),
           ),
           SizedBox(width: AppSizes.spaceXS8.w,),
-          Text(note.isEmpty ? note : 'Note'),
+          Container(
+            child: Text(
+                note.isEmpty ? 'Note' : note,
+                overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );

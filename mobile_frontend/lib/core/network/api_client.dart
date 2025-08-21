@@ -162,5 +162,4 @@ abstract class ApiClient {
   @POST(AppApi.categories)
   Future<void> createCategory(@Body() Map<String, dynamic> data);
 
-
 }
