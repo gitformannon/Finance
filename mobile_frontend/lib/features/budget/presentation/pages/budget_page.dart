@@ -20,6 +20,12 @@ class BudgetPage extends StatefulWidget {
 class _BudgetPageState extends State<BudgetPage> {
 
   @override
+  void initState() {
+    super.initState();
+    context.read<BudgetCubit>().load(DateTime.now());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -202,8 +208,8 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   Widget _buildCalendarSection() {
-    final today = DateTime(2025, 7, 20);
-    final start = today.subtract(const Duration(days: 6));
+    final selectedDate = context.watch<BudgetCubit>().state.selectedDate;
+    final start = selectedDate.subtract(const Duration(days: 6));
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -219,28 +225,33 @@ class _BudgetPageState extends State<BudgetPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: List.generate(7, (index) {
                   final date = start.add(Duration(days: index));
-                  final isToday = date.day == today.day;
-                  return Column(
-                    children: [
-                      Text(
-                        DateFormat.E().format(date),
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                      const SizedBox(height: 4),
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor:
-                            isToday ? Colors.blue : Colors.transparent,
-                        child: Text(
-                          '${date.day}',
-                          style: TextStyle(
-                            color: isToday ? Colors.white : Colors.black,
-                            fontWeight:
-                                isToday ? FontWeight.bold : FontWeight.normal,
+                  final isSelected = date.year == selectedDate.year &&
+                    date.month == selectedDate.month &&
+                    date.day == selectedDate.day;
+                  return GestureDetector(
+                    onTap: () => context.read<BudgetCubit>().load(date),
+                    child: Column(
+                      children: [
+                        Text(
+                          DateFormat.E().format(date),
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        const SizedBox(height: 4),
+                        CircleAvatar(
+                          radius: 16,
+                          backgroundColor:
+                              isSelected ? Colors.blue : Colors.transparent,
+                          child: Text(
+                            '${date.day}',
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black,
+                              fontWeight:
+                                  isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 }),
               ),
