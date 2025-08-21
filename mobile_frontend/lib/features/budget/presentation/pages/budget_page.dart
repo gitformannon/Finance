@@ -132,6 +132,7 @@ class _BudgetPageState extends State<BudgetPage> {
               child: context.watch<BudgetCubit>().state.transactions.isEmpty
                 ? Container(
                   width: double.infinity,
+                  height: 20,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
