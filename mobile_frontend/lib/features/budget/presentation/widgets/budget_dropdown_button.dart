@@ -3,7 +3,7 @@ import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class BudgetDropdownButton extends StatelessWidget {
+class BudgetDropdownButton<T> extends StatelessWidget {
   final T? value;
   final Widget? hint;
   final ValueChanged<T?> onChanged;
@@ -19,7 +19,7 @@ class BudgetDropdownButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
+    return DropdownButton<T>(
       value: value,
       hint: hint,
       menuMaxHeight: 100.h,
