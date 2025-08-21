@@ -4,6 +4,7 @@ import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:Finance/features/budget/presentation/widgets/add_category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/bottom_datepicker_modal.dart';
 import 'package:Finance/features/budget/presentation/widgets/bottom_note_modal.dart';
+import 'package:Finance/features/budget/presentation/widgets/budget_dropdown_button.dart';
 import 'package:Finance/features/budget/presentation/widgets/category_item.dart';
 import 'package:Finance/features/budget/presentation/widgets/transaction_type_button.dart';
 import 'package:Finance/features/budget/presentation/widgets/transfer_account_item.dart';
@@ -98,25 +99,10 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            DropdownButton<String>(
+                            BudgetDropdownButton<String>(
                               hint: Text(
                                 'Main',
                                 style: AppTextStyles.bodyRegular,
-                              ),
-                              menuMaxHeight: 100.h,
-                              menuWidth: double.maxFinite,
-                              alignment: Alignment.center,
-                              underline: Container(),
-                              elevation: 2,
-                              dropdownColor: AppColors.primary,
-                              focusColor: AppColors.secondary,
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(
-                                  AppSizes.borderSM16,
-                                ),
-                                bottomLeft: Radius.circular(
-                                  AppSizes.borderSM16,
-                                ),
                               ),
                               value:
                                 state.accountId.isNotEmpty
