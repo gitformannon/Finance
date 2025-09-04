@@ -78,11 +78,16 @@ class _BottomNoteModal extends State<BottomNoteModal> {
               color: AppColors.box,
               child: Padding(
                 padding: EdgeInsets.all(AppSizes.paddingM.h),
-                child: TextField(
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  decoration: const InputDecoration(labelText: 'Note'),
-                  maxLines: null,
+                child: Expanded(
+                  child: SingleChildScrollView(
+                    child: TextField(
+                      controller: _controller,
+                      focusNode: _focusNode,
+                      decoration: const InputDecoration(labelText: 'Note'),
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline
+                    ),
+                  ),
                 ),
               ),
             ),
