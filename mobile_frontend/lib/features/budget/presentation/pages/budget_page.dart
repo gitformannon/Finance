@@ -1,6 +1,8 @@
+import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/helpers/formatters_helpers.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,8 @@ import 'add_transaction_modal.dart';
 import 'add_account_modal.dart';
 import '../cubit/transaction_cubit.dart';
 import '../../../../core/di/get_it.dart';
+import '../../../budget/domain/usecase/get_accounts.dart';
+import '../../../../core/network/no_params.dart';
 
 class BudgetPage extends StatefulWidget {
   const BudgetPage({super.key});
@@ -18,17 +22,60 @@ class BudgetPage extends StatefulWidget {
 }
 
 class _BudgetPageState extends State<BudgetPage> {
+  late final PageController _weekPageController;
+  static const int _initialPage = 100000; // large center for practical infinity
+
+  int _accountsBalance = 0;
+  final NumberFormat _numFormat = NumberFormat("#,##0", "ru");
+
+  DateTime _mondayOf(DateTime date) {
+    final int weekday = date.weekday; // 1 Mon ... 7 Sun
+    return DateTime(date.year, date.month, date.day)
+        .subtract(Duration(days: weekday - 1));
+  }
+
+  // Anchor Monday to compute page indices. 2000-01-03 is a Monday.
+  final DateTime _anchorMonday = DateTime(2000, 1, 3);
+  static const int _centerPage = _initialPage;
 
   @override
   void initState() {
     super.initState();
+    final DateTime todayMonday = _mondayOf(DateTime.now());
+    final int weekDelta = todayMonday.difference(_anchorMonday).inDays ~/ 7;
+    _weekPageController = PageController(initialPage: _centerPage + weekDelta);
     context.read<BudgetCubit>().load(DateTime.now());
+    _loadTotalBalance();
+  }
+
+  Future<void> _loadTotalBalance() async {
+    final getAccounts = getItInstance<GetAccounts>();
+    final result = await getAccounts(const NoParams());
+    result.fold(
+      (_) {},
+      (accounts) {
+        final int sum = accounts.fold(0, (acc, a) => acc + a.balance);
+        if (mounted) {
+          setState(() {
+            _accountsBalance = sum;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _weekPageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
         bottom: true,
         child: Column(
@@ -37,18 +84,18 @@ class _BudgetPageState extends State<BudgetPage> {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6),
+              color: AppColors.def.withOpacity(0.2),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Container(
               width: double.infinity,
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Total balance', style: TextStyle(fontSize: 16)),
+                  const Text('Total balance', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 8),
-                  Text('0 UZS',
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  Text('${Formatters.moneyStringFormatter(_accountsBalance)} UZS',
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   SizedBox(height: 16),
                 ],
               ),
@@ -59,7 +106,7 @@ class _BudgetPageState extends State<BudgetPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
               decoration: BoxDecoration(
-                color: const Color(0xFFF3F4F6),
+                color: AppColors.def.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(
@@ -82,17 +129,17 @@ class _BudgetPageState extends State<BudgetPage> {
                               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                             ),
                             builder: (_) => const AddAccountModal(),
-                          );
+                          ).then((_) => _loadTotalBalance());
                         },
                         child: Container(
                           width: 56,
                           height: 56,
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300, style: BorderStyle.solid),
+                            border: Border.all(color: AppColors.def, style: BorderStyle.solid),
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: const Icon(Icons.add, color: Colors.grey),
+                          child: const Icon(Icons.add, color: AppColors.def),
                         ),
                       ),
                     ],
@@ -131,13 +178,12 @@ class _BudgetPageState extends State<BudgetPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: context.watch<BudgetCubit>().state.transactions.isEmpty
                 ? Container(
-                  width: double.infinity,
-                  height: 20,
+                  width: double.maxFinite,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color(0xFFCBD5E1),
+                      color: AppColors.def,
                       style: BorderStyle.solid,
                     ),
                   ),
@@ -158,7 +204,7 @@ class _BudgetPageState extends State<BudgetPage> {
                         DateFormat('dd MMM yyyy').format(tx.date),
                       ),
                       trailing: Text(
-                        '${tx.isIncome ? '+' : '-'}${tx.amount.abs()} ₽',
+                        '${tx.isIncome ? '+' : '-'}${Formatters.moneyStringFormatter(tx.amount.abs())} UZS',
                         style: TextStyle(
                           color: tx.isIncome ? Colors.green : Colors.red,
                           fontWeight: FontWeight.bold,
@@ -172,92 +218,98 @@ class _BudgetPageState extends State<BudgetPage> {
           ],
         ),
       ),
-          floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useSafeArea: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(16),
+          floatingActionButton: Builder(
+        builder: (context) => Transform.translate(
+          offset: Offset(
+            -MediaQuery.of(context).padding.right,
+            -(MediaQuery.of(context).padding.bottom + 12),
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
               ),
-            ),
-            builder: (_) => BlocProvider(
-              create: (_) => getItInstance<TransactionCubit>()
-                ..loadAccounts()
-                ..loadCategories(),
-              child: const AddTransactionModal(),
-            ),
-          );
-        },
-        backgroundColor: AppColors.accent,
-        child: const Icon(Icons.add, color: AppColors.surface),
+              builder: (_) => BlocProvider(
+                create: (_) => getItInstance<TransactionCubit>()
+                  ..loadAccounts()
+                  ..loadCategories(),
+                child: const AddTransactionModal(),
+              ),
+            ).then((_) => _loadTotalBalance());
+            },
+            backgroundColor: AppColors.accent,
+            child: const Icon(Icons.add, color: AppColors.surface),
+          ),
+        ),
       ),
-    );
-  }
-
-  Widget _buildFilterChip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
     );
   }
 
   Widget _buildCalendarSection() {
-    final selectedDate = context.watch<BudgetCubit>().state.selectedDate;
-    final start = selectedDate.subtract(const Duration(days: 6));
+    final DateTime selectedDate = context.watch<BudgetCubit>().state.selectedDate;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFF3F4F6),
+          color: AppColors.def.withOpacity(0.2),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(7, (index) {
-                  final date = start.add(Duration(days: index));
-                  final isSelected = date.year == selectedDate.year &&
-                    date.month == selectedDate.month &&
-                    date.day == selectedDate.day;
-                  return GestureDetector(
-                    onTap: () => context.read<BudgetCubit>().load(date),
-                    child: Column(
-                      children: [
-                        Text(
-                          DateFormat.E().format(date),
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        const SizedBox(height: 4),
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor:
-                              isSelected ? Colors.blue : Colors.transparent,
-                          child: Text(
-                            '${date.day}',
-                            style: TextStyle(
-                              color: isSelected ? Colors.white : Colors.black,
-                              fontWeight:
-                                  isSelected ? FontWeight.bold : FontWeight.normal,
+        child: SizedBox(
+          height: 88,
+          child: PageView.builder(
+            controller: _weekPageController,
+            physics: const PageScrollPhysics(),
+            // no itemCount for effectively infinite weeks
+            itemBuilder: (context, pageIndex) {
+              final int delta = pageIndex - _centerPage;
+              final DateTime monday = _anchorMonday.add(Duration(days: delta * 7));
+              final List<DateTime> days = List.generate(7, (i) => monday.add(Duration(days: i)));
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSizes.padding8, horizontal: AppSizes.padding8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: days.map((date) {
+                    final bool isSelected = date.year == selectedDate.year &&
+                      date.month == selectedDate.month &&
+                      date.day == selectedDate.day;
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: () => context.read<BudgetCubit>().load(date),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat.E().format(date),
+                              style: const TextStyle(color: Colors.black),
                             ),
-                          ),
+                            const SizedBox(height: 4),
+                            CircleAvatar(
+                              radius: 16,
+                              backgroundColor: isSelected ? Colors.blue : Colors.transparent,
+                              child: Text(
+                                '${date.day}',
+                                style: TextStyle(
+                                  color: isSelected ? Colors.white : Colors.black,
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                }),
-              ),
-            ),
-          ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

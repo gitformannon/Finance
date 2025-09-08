@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage> {
     return BlocBuilder<MainCubit, MainState>(
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: AppColors.transparent,
           extendBody: true,
           body: IndexedStack(
             index: state.currentIndex,

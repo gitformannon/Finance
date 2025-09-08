@@ -9,6 +9,9 @@ from api.v1.auth import router as auth_router
 from api.v1.transactions import router as transactions_router
 from api.v1.accounts import router as accounts_router
 from api.v1.categories import router as categories_router
+from services.reconcile_service import reconcile_account_balances
+from database import get_session
+import asyncio
 
 app = FastAPI(
     title="Personal Budget API",
@@ -57,3 +60,13 @@ app.include_router(categories_router)
 
 # Теперь при запуске uvicorn main:app приложение запустится на указанном хосте:порт,
 # а документация будет доступна по /docs (Swagger UI) и /redoc (ReDoc).
+
+@app.on_event("startup")
+async def run_reconcile_on_startup():
+    # Best-effort invariant check; ignores errors to not block startup
+    try:
+        async for session in get_session():
+            await reconcile_account_balances(session)
+            break
+    except Exception:
+        pass

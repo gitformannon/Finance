@@ -16,6 +16,8 @@ import 'package:math_expressions/math_expressions.dart';
 import '../cubit/transaction_cubit.dart';
 import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
 import '../../../../core/helpers/enums_helpers.dart';
+import '../../../../core/helpers/formatters_helpers.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
 class AddTransactionModal extends StatefulWidget {
   const AddTransactionModal({super.key});
@@ -28,6 +30,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   final _amountController = TextEditingController();
   final _amountFocusNode = FocusNode();
   final _noteFocusNode = FocusNode();
+  late final CurrencyTextInputFormatter _amountFormatter;
 
   @override
   void initState() {
@@ -35,6 +38,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     final cubit = context.read<TransactionCubit>();
     cubit.loadAccounts();
     cubit.loadCategories();
+    _amountFormatter = Formatters.currencyFormatter(locale: 'ru', decimalDigits: 0);
     _amountFocusNode.addListener(() {
       setState(() {});
     });
@@ -51,10 +55,11 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     super.dispose();
   }
 
-  double _evaluate(String text) {
+  double _parseAmount(String text) {
+    final digitsOnly = text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.isEmpty) return 0;
     try {
-      final exp = Parser().parse(text);
-      return exp.evaluate(EvaluationType.REAL, ContextModel()).toDouble();
+      return double.parse(digitsOnly);
     } catch (_) {
       return 0;
     }
@@ -63,7 +68,13 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
   @override
   Widget build(BuildContext context) {
 
-    return BlocBuilder<TransactionCubit, TransactionState>(
+    return BlocConsumer<TransactionCubit, TransactionState>(
+      listener: (context, state) {
+        if (state.status.isLoaded()) {
+          FocusScope.of(context).unfocus();
+          Navigator.of(context).maybePop();
+        }
+      },
       builder: (context, state) {
         final cubit = context.read<TransactionCubit>();
         return Container(
@@ -186,13 +197,12 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                                   Expanded(
                                     child: TextField(
                                       controller: _amountController,
-                                      keyboardType:
-                                          const TextInputType.numberWithOptions(
-                                            decimal: true,
-                                          ),
+                                      keyboardType: const TextInputType.numberWithOptions(
+                                        decimal: false,
+                                      ),
+                                      inputFormatters: [_amountFormatter],
                                       textAlign: TextAlign.right,
-                                      onChanged:
-                                          (v) => cubit.setAmount(_evaluate(v)),
+                                      onChanged: (v) => cubit.setAmount(_parseAmount(v)),
                                       style: const TextStyle(
                                         color: AppColors.textPrimary,
                                         fontSize: 40,
@@ -349,7 +359,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                     final cubit = context.read<TransactionCubit>();
                     return WButton(
                       onTap: () {
-                        final value = _evaluate(_amountController.text);
+                        final value = _parseAmount(_amountController.text);
                         cubit.setAmount(value);
                         cubit.submit();
                       },
@@ -366,186 +376,4 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
       },
     );
   }
-
-
-
-
-  // Widget _typeButton(
-  //   BuildContext context,
-  //   TransactionCubit cubit,
-  //   TransactionType type,
-  //   String label,
-  // ) {
-  //   final selected = cubit.state.type == type;
-  //   return Container(
-  //     child: GestureDetector(
-  //       onTap: () {
-  //         cubit.setType(type);
-  //         if (type == TransactionType.transfer) {
-  //           cubit.loadAccounts();
-  //         } else {
-  //           cubit.loadCategories();
-  //         }
-  //       },
-  //       child: Container(
-  //         padding: const EdgeInsets.symmetric(
-  //           vertical: AppSizes.paddingS,
-  //           horizontal: AppSizes.paddingM,
-  //         ),
-  //         decoration: BoxDecoration(
-  //           color: selected ? AppColors.accent : AppColors.def.withOpacity(0.2),
-  //           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-  //           border: Border.all(
-  //             color: selected ? AppColors.accent : AppColors.def,
-  //             width: 0.5,
-  //           ),
-  //         ),
-  //         alignment: Alignment.center,
-  //         child: Text(
-  //           label,
-  //           style: AppTextStyles.bodyRegular.copyWith(
-  //             color: selected ? AppColors.surface : AppColors.textSecondary,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _categoryItem(
-  //   BuildContext context,
-  //   TransactionCubit cubit,
-  //   Category cat,
-  // ) {
-  //   final selected = cubit.state.categoryId == cat.id;
-  //   return TileButton(
-  //     title: cat.name ?? 'Category',
-  //     subtitle: selected ? null : null,
-  //     icon: Icons.account_balance_wallet,
-  //     selectedIcon: Icons.account_balance_wallet,
-  //     selected: selected,
-  //     onTap: () => cubit.setCategoryId(cat.id),
-  //     height: 90.h,
-  //     color: AppColors.primary,
-  //     selectedColor: AppColors.accent,
-  //   );
-  // }
-
-  // Widget _accountItem(
-  //   BuildContext context,
-  //   TransactionCubit cubit,
-  //   Account acc,
-  // ) {
-  //   final selected = cubit.state.toAccountId == acc.id;
-  //   return TileButton(
-  //     title: acc.name ?? 'Account',
-  //     subtitle: selected ? null : null,
-  //     icon: Icons.account_balance_wallet,
-  //     selectedIcon: Icons.account_balance_wallet,
-  //     selected: selected,
-  //     onTap: () => cubit.setToAccountId(acc.id),
-  //     // If you use it in a vertical ListView, give it a bit more height:
-  //     height: 50.h,
-  //     color: AppColors.primary,
-  //     selectedColor: AppColors.accent,
-  //   );
-  // }
-
-  // Widget _addCategoryButton(BuildContext context, TransactionCubit cubit) {
-  //   final radius = BorderRadius.circular(AppSizes.borderMedium);
-  //   return Material(
-  //     color: AppColors.transparent,
-  //     child: InkWell(
-  //       borderRadius: radius,
-  //       onTap: () async {
-  //         final type = cubit.state.type;
-  //         CategoryType? categoryType;
-  //         if (type == TransactionType.income) {
-  //           categoryType = CategoryType.income;
-  //         } else if (type == TransactionType.purchase) {
-  //           categoryType = CategoryType.purchase;
-  //         }
-  //         await showModalBottomSheet(
-  //           context: context,
-  //           isScrollControlled: true,
-  //           useSafeArea: true,
-  //           shape: const RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.vertical(
-  //               top: Radius.circular(AppSizes.borderSM16),
-  //             ),
-  //           ),
-  //           builder: (_) => AddCategoryModal(type: categoryType),
-  //         );
-  //         cubit.loadCategories();
-  //       },
-  //       child: Ink(
-  //         height: 90.h,
-  //         decoration: BoxDecoration(
-  //           color: AppColors.primary,
-  //           borderRadius: radius,
-  //           border: Border.all(color: AppColors.primary, width: 0.5),
-  //         ),
-  //         child: const Center(child: Icon(Icons.add, color: AppColors.accent)),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-//   Future<void> _showNoteModal(
-//     BuildContext context,
-//     TransactionCubit cubit,
-//   ) async {
-//     _noteController.text = cubit.state.note;
-//     await showModalBottomSheet(
-//       context: context,
-//       isScrollControlled: true,
-//       useSafeArea: true,
-//       builder: (_) {
-//         return Padding(
-//           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-//           child: ClipRRect(
-//             borderRadius: const BorderRadius.only(
-//               topLeft: Radius.circular(AppSizes.borderSM16),
-//               topRight: Radius.circular(AppSizes.borderSM16),
-//             ),
-//             child: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 Container(
-//                   color: AppColors.background,
-//                   child: Padding(
-//                     padding: EdgeInsets.all(AppSizes.paddingM.h),
-//                     child: TextField(
-//                       controller: _noteController,
-//                       decoration: const InputDecoration(labelText: 'Note'),
-//                       maxLines: null,
-//                     ),
-//                   ),
-//                 ),
-//                 Container(
-//                   color: AppColors.background,
-//                   child: SafeArea(
-//                     top: false,
-//                     child: Padding(
-//                       padding: EdgeInsets.only(
-//                         left: AppSizes.paddingM.w,
-//                         right: AppSizes.paddingM.w,
-//                       ),
-//                       child: WButton(
-//                         onTap: () {
-//                           cubit.setNote(_noteController.text);
-//                           Navigator.of(context).pop();
-//                         },
-//                         text: 'Save',
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
 }

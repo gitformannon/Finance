@@ -15,17 +15,19 @@ class Formatters {
   );
 
   static CurrencyTextInputFormatter currencyFormatter({
-    String locale = 'uz',
+    String locale = 'ru',
     int decimalDigits = 0,
   }) =>
       CurrencyTextInputFormatter.currency(
         locale: locale,
         name: "",
         decimalDigits: decimalDigits,
+        // Space as thousands separator in many `ru` locales
+        turnOffGrouping: false,
       );
 
-  static String moneyStringFormatter(double amount) {
-    return currencyFormatter().formatDouble(amount);
+  static String moneyStringFormatter(num amount) {
+    return currencyFormatter().formatDouble(amount.toDouble()).trim();
   }
 
   static double dueAmountFunc({double total = 0, double preAmount = 0}) {
