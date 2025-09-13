@@ -29,6 +29,6 @@ class User(Base):
 
     # Отношения
     transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
+    goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan")
     accounts = relationship("Account", back_populates="user", cascade="all, delete-orphan")
     categories = relationship("Category", cascade="all, delete-orphan")
-

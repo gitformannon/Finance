@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, String, ForeignKey, DateTime, func
+from sqlalchemy import Column, String, ForeignKey, DateTime, func, BigInteger
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 from enum import IntEnum
@@ -39,6 +39,6 @@ class Category(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     name = Column(String(50), nullable=False)
     type = Column(IntEnumType(CategoryType), nullable=False)
+    budget = Column(BigInteger, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-

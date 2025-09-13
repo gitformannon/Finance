@@ -17,6 +17,7 @@ class AddAccountModal extends StatefulWidget {
 class _AddAccountModalState extends State<AddAccountModal> {
   final _nameController = TextEditingController();
   final _numberController = TextEditingController();
+  final _institutionController = TextEditingController();
   final _balanceController = TextEditingController();
 
   final Map<int, String> _types = const {
@@ -32,6 +33,7 @@ class _AddAccountModalState extends State<AddAccountModal> {
   void dispose() {
     _nameController.dispose();
     _numberController.dispose();
+    _institutionController.dispose();
     _balanceController.dispose();
     super.dispose();
   }
@@ -80,6 +82,12 @@ class _AddAccountModalState extends State<AddAccountModal> {
                                   controller: _numberController,
                                   decoration: const InputDecoration(labelText: 'Account number'),
                                   onChanged: cubit.setNumber,
+                                ),
+                                SizedBox(height: AppSizes.spaceM16.h),
+                                TextField(
+                                  controller: _institutionController,
+                                  decoration: const InputDecoration(labelText: 'Institution (Bank)'),
+                                  onChanged: cubit.setInstitution,
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
                                 DropdownButton<int>(

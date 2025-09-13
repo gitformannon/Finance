@@ -22,6 +22,13 @@ class TransactionRead(BaseModel):
     amount: int
     description: str | None = None
     created_at: datetime
+    account_name: str | None = None
+    category_name: str | None = None
 
     model_config = {"from_attributes": True}
 
+
+class TransactionUpdate(BaseModel):
+    # Restrict update to safer fields; amount/account changes require balance logic
+    category_id: uuid.UUID | None = None
+    note: str | None = None

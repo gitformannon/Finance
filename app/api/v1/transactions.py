@@ -1,14 +1,16 @@
 from datetime import datetime, date, timedelta
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from database import get_session
 from models.transactions import Transaction
 from models.accounts import Account
+from models.categories import Category
+from models.accounts import Account
 from models.users import User
 import services.auth_service as auth_service
-from schemas.transaction import TransactionRead, TransactionCreate
+from schemas.transaction import TransactionRead, TransactionCreate, TransactionUpdate
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
 
@@ -20,13 +22,37 @@ async def transactions_by_date(
 ):
     start = datetime.combine(date, datetime.min.time())
     end = start + timedelta(days=1)
-    stmt = select(Transaction).where(
-        Transaction.user_id == user.id,
-        Transaction.created_at >= start,
-        Transaction.created_at < end,
-    ).order_by(Transaction.created_at.desc())
-    result = await session.scalars(stmt)
-    return list(result)
+    stmt = (
+        select(
+            Transaction,
+            Account.account_name.label("account_name"),
+            Category.name.label("category_name"),
+        )
+        .join(Account, Account.id == Transaction.account_id)
+        .join(Category, Category.id == Transaction.category_id, isouter=True)
+        .where(
+            Transaction.user_id == user.id,
+            Transaction.created_at >= start,
+            Transaction.created_at < end,
+        )
+        .order_by(Transaction.created_at.desc())
+    )
+    rows = await session.execute(stmt)
+    items: list[TransactionRead] = []
+    for tx, account_name, category_name in rows.all():
+        as_dict = {
+            "id": tx.id,
+            "account_id": tx.account_id,
+            "to_account": tx.to_account,
+            "category_id": tx.category_id,
+            "amount": tx.amount,
+            "description": tx.description,
+            "created_at": tx.created_at,
+            "account_name": account_name,
+            "category_name": category_name,
+        }
+        items.append(TransactionRead(**as_dict))
+    return items
 
 
 @router.post("", response_model=TransactionRead, status_code=201)
@@ -83,3 +109,21 @@ async def create_transaction(
     await session.refresh(tx)
     return tx
 
+
+@router.put("/{tx_id}", response_model=TransactionRead)
+async def update_transaction(
+    tx_id: str,
+    data: TransactionUpdate,
+    user: User = Depends(auth_service.get_current_user_with_access),
+    session: AsyncSession = Depends(get_session),
+):
+    tx = await session.scalar(select(Transaction).where(Transaction.id == tx_id, Transaction.user_id == user.id))
+    if tx is None:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    if data.category_id is not None:
+        tx.category_id = data.category_id
+    if data.note is not None:
+        tx.description = data.note
+    await session.commit()
+    await session.refresh(tx)
+    return tx

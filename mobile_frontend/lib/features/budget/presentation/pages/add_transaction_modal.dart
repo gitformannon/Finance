@@ -270,34 +270,32 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                           ),
                           child:
                             state.type == TransactionType.transfer
-                              ? ListView.separated(
+                              ? ListView.builder(
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: state.accounts.length,
                                 itemBuilder: (c, i) {
                                   final acc = state.accounts[i];
-                                  return AccountCardButton(
-                                    iconColor: AppColors.box,
-                                    selectedIconColor: AppColors.accent,
-                                    iconBoxColor: AppColors.def.withOpacity(0.1),
-                                    selectedIconBoxColor: AppColors.surface,
-                                    titleColor: AppColors.textPrimary,
-                                    selectedTitleColor: AppColors.surface,
-                                    boxColor: AppColors.def.withOpacity(0.2),
-                                    selectedBoxColor: AppColors.accent,
-                                    boxBorderColor: AppColors.def,
-                                    selectedBoxBorderColor: AppColors.accent,
-                                    title: acc.name ?? 'Account',
-                                    subtitle: acc.number ?? '',
-                                    icon: 'assets/svg/ic_more.svg',
-                                    selected: cubit.state.toAccountId == acc.id,
-                                    onTap: () => cubit.setToAccountId(acc.id)
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: AppSizes.padding8),
+                                    child: AccountCardButton(
+                                      iconColor: AppColors.box,
+                                      selectedIconColor: AppColors.accent,
+                                      iconBoxColor: AppColors.def.withOpacity(0.1),
+                                      selectedIconBoxColor: AppColors.surface,
+                                      titleColor: AppColors.textPrimary,
+                                      selectedTitleColor: AppColors.surface,
+                                      boxColor: AppColors.def.withOpacity(0.2),
+                                      selectedBoxColor: AppColors.accent,
+                                      boxBorderColor: AppColors.def,
+                                      selectedBoxBorderColor: AppColors.accent,
+                                      title: acc.name ?? 'Account',
+                                      subtitle: acc.number ?? '',
+                                      icon: 'assets/svg/ic_more.svg',
+                                      selected: cubit.state.toAccountId == acc.id,
+                                      onTap: () => cubit.setToAccountId(acc.id)
+                                    ),
                                   );
                                 },
-                                separatorBuilder:
-                                  (c, i) => const Divider(
-                                    color: AppColors.transparent,
-                                    height: AppSizes.space3,
-                                  ),
                               )
                               : GridView.count(
                                 padding: EdgeInsets.only(

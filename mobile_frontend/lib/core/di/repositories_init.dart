@@ -25,6 +25,12 @@ import '../../features/budget/domain/usecase/get_categories.dart';
 import '../../features/budget/domain/usecase/add_account.dart';
 import '../../features/budget/domain/usecase/get_accounts.dart';
 import '../../features/budget/domain/usecase/add_category.dart';
+import '../../features/goals/data/repository/goals_repository_impl.dart';
+import '../../features/goals/domain/repository/goals_repository.dart';
+import '../../features/goals/domain/usecase/get_goals.dart';
+import '../../features/goals/domain/usecase/create_goal.dart';
+import '../../features/goals/domain/usecase/contribute_goal.dart';
+import '../../features/goals/domain/usecase/update_goal.dart';
 import '../navigation/app_pages.dart';
 import '../navigation/navigation_service.dart';
 import '../network/api_client.dart';
@@ -139,5 +145,22 @@ Future<void> repositoriesInit() async {
   );
   getItInstance.registerLazySingleton<GetCategories>(
     () => GetCategories(getItInstance<BudgetRepository>()),
+  );
+
+  // Goals
+  getItInstance.registerLazySingleton<GoalsRepository>(
+    () => GoalsRepositoryImpl(getItInstance<ApiClient>()),
+  );
+  getItInstance.registerLazySingleton<GetGoals>(
+    () => GetGoals(getItInstance<GoalsRepository>()),
+  );
+  getItInstance.registerLazySingleton<CreateGoal>(
+    () => CreateGoal(getItInstance<GoalsRepository>()),
+  );
+  getItInstance.registerLazySingleton<ContributeGoal>(
+    () => ContributeGoal(getItInstance<GoalsRepository>()),
+  );
+  getItInstance.registerLazySingleton<UpdateGoal>(
+    () => UpdateGoal(getItInstance<GoalsRepository>() as dynamic),
   );
 }

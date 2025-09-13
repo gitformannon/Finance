@@ -15,6 +15,7 @@ import '../../features/profile/data/model/totp_code_request.dart';
 import '../../features/auth/data/model/request/refresh_token_request.dart';
 import '../../features/budget/data/model/transaction.dart';
 import '../../features/budget/data/model/account.dart';
+import '../../features/goals/data/model/goal.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_routes.dart';
@@ -149,17 +150,38 @@ abstract class ApiClient {
 
   @POST(AppApi.transactions)
   Future<void> createTransaction(@Body() Map<String, dynamic> data);
+  @PUT("${AppApi.transactions}/{id}")
+  Future<void> updateTransaction(@Path("id") String id, @Body() Map<String, dynamic> data);
 
   @GET(AppApi.accounts)
   Future<List<Account>> getAccounts();
 
   @POST(AppApi.accounts)
   Future<void> createAccount(@Body() Map<String, dynamic> data);
+  @PUT("${AppApi.accounts}/{id}")
+  Future<void> updateAccount(@Path("id") String id, @Body() Map<String, dynamic> data);
 
   @GET(AppApi.categories)
   Future<List<dynamic>> getCategories(@Query('type') String type);
 
   @POST(AppApi.categories)
   Future<void> createCategory(@Body() Map<String, dynamic> data);
+  @PUT("${AppApi.categories}/{id}")
+  Future<void> updateCategory(@Path("id") String id, @Body() Map<String, dynamic> data);
+
+  // Goals
+  @GET(AppApi.goals)
+  Future<List<Goal>> getGoals();
+
+  @POST(AppApi.goals)
+  Future<void> createGoal(@Body() Map<String, dynamic> data);
+  @PUT("${AppApi.goals}/{id}")
+  Future<Goal> updateGoal(@Path("id") String id, @Body() Map<String, dynamic> data);
+
+  @POST("${AppApi.goals}/{id}/contribute")
+  Future<Goal> contributeToGoal(
+    @Path("id") String id,
+    @Body() Map<String, dynamic> data,
+  );
 
 }

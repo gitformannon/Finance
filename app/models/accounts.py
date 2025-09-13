@@ -26,6 +26,7 @@ class Account(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     account_name = Column(String(50), nullable=True)
     account_number = Column(String(20), nullable=True, unique=True)
+    institution = Column(String(100), nullable=True)
     account_type = Column(IntEnumType(AccountType), nullable=True)
     status = Column(IntEnumType(AccountStatus), default=AccountStatus.ACTIVE, nullable=False)
     balance = Column(BigInteger, nullable=False, default=0)

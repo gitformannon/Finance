@@ -386,6 +386,34 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<void> updateTransaction(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/transactions/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
   Future<List<Account>> getAccounts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -429,6 +457,34 @@ class _ApiClient implements ApiClient {
         .compose(
           _dio.options,
           '/accounts',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<void> updateAccount(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/accounts/${id}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -489,6 +545,151 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<void> updateCategory(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<void>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/categories/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<List<Goal>> getGoals() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _options = _setStreamType<List<dynamic>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/goals',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    List<Goal> _value;
+    _value = _result.data!
+        .map((dynamic i) => Goal.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return _value;
+  }
+
+  @override
+  Future<void> createGoal(Map<String, dynamic> data) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/goals',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<Goal> updateGoal(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<Goal>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/goals/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Goal _value;
+    _value = Goal.fromJson(_result.data!);
+    return _value;
+  }
+
+  @override
+  Future<Goal> contributeToGoal(
+    String id,
+    Map<String, dynamic> data,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data;
+    final _options = _setStreamType<Goal>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/goals/${id}/contribute',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Goal _value;
+    _value = Goal.fromJson(_result.data!);
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

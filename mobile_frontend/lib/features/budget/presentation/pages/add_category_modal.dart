@@ -23,10 +23,12 @@ class AddCategoryModal extends StatefulWidget {
 
 class _AddCategoryModalState extends State<AddCategoryModal> {
   final _nameController = TextEditingController();
+  final _budgetController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
+    _budgetController.dispose();
     super.dispose();
   }
 
@@ -82,6 +84,14 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                             decoration: const InputDecoration(labelText: 'Name'),
                             onChanged: cubit.setName,
                           ),
+                          SizedBox(height: AppSizes.spaceM16.h),
+                          if ((widget.type ?? cubit.state.type) == CategoryType.purchase)
+                            TextField(
+                              controller: _budgetController,
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(labelText: 'Monthly budget (UZS)'),
+                              onChanged: (v) => cubit.setBudget(int.tryParse(v)),
+                            ),
                         ],
                       ),
                     ),

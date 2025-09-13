@@ -11,6 +11,9 @@ import '../model/create_account_request.dart';
 import '../model/account.dart';
 import '../model/category.dart';
 import '../model/create_category_request.dart';
+import '../model/update_account_request.dart';
+import '../model/update_category_request.dart';
+import '../model/update_transaction_request.dart';
 
 class BudgetRepositoryImpl implements BudgetRepository {
   final ApiClient _client;
@@ -71,6 +74,36 @@ class BudgetRepositoryImpl implements BudgetRepository {
   Future<Either<Failure, void>> createCategory(CreateCategoryRequest request) async {
     try {
       await _client.createCategory(request.toJson());
+      return const Right(null);
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateAccount(UpdateAccountRequest request) async {
+    try {
+      await _client.updateAccount(request.id, request.toJson());
+      return const Right(null);
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateCategory(UpdateCategoryRequest request) async {
+    try {
+      await _client.updateCategory(request.id, request.toJson());
+      return const Right(null);
+    } catch (e) {
+      return Left(Failure(errorMessage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateTransaction(UpdateTransactionRequest request) async {
+    try {
+      await _client.updateTransaction(request.id, request.toJson());
       return const Right(null);
     } catch (e) {
       return Left(Failure(errorMessage: e.toString()));

@@ -7,6 +7,7 @@ import '../../data/model/create_account_request.dart';
 class AccountState extends Equatable {
   final String name;
   final String number;
+  final String institution;
   final int? type;
   final int balance;
   final RequestStatus status;
@@ -15,6 +16,7 @@ class AccountState extends Equatable {
   const AccountState({
     this.name = '',
     this.number = '',
+    this.institution = '',
     this.type,
     this.balance = 0,
     this.status = RequestStatus.initial,
@@ -24,6 +26,7 @@ class AccountState extends Equatable {
   AccountState copyWith({
     String? name,
     String? number,
+    String? institution,
     int? type,
     int? balance,
     RequestStatus? status,
@@ -31,6 +34,7 @@ class AccountState extends Equatable {
   }) => AccountState(
         name: name ?? this.name,
         number: number ?? this.number,
+        institution: institution ?? this.institution,
         type: type ?? this.type,
         balance: balance ?? this.balance,
         status: status ?? this.status,
@@ -38,7 +42,7 @@ class AccountState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [name, number, type, balance, status, errorMessage];
+  List<Object?> get props => [name, number, institution, type, balance, status, errorMessage];
 }
 
 class AccountCubit extends Cubit<AccountState> {
@@ -47,6 +51,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   void setName(String v) => emit(state.copyWith(name: v));
   void setNumber(String v) => emit(state.copyWith(number: v));
+  void setInstitution(String v) => emit(state.copyWith(institution: v));
   void setType(int? v) => emit(state.copyWith(type: v));
   void setBalance(int v) => emit(state.copyWith(balance: v));
 
@@ -57,6 +62,7 @@ class AccountCubit extends Cubit<AccountState> {
       accountNumber: state.number.isEmpty ? null : state.number,
       accountType: state.type,
       initialBalance: state.balance,
+      institution: state.institution.isEmpty ? null : state.institution,
     );
     final result = await _addAccount(AddAccountParams(request));
     result.fold(

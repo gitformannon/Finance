@@ -15,6 +15,7 @@ class AppApi{
   static const transactions = "/transactions";
   static const accounts = "/accounts";
   static const categories = "/categories";
+  static const goals = "/goals";
 
   // static const orderStatus = "/order-status";
   // static const regions = "/regions";

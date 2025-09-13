@@ -9,6 +9,7 @@ from api.v1.auth import router as auth_router
 from api.v1.transactions import router as transactions_router
 from api.v1.accounts import router as accounts_router
 from api.v1.categories import router as categories_router
+from api.v1.goals import router as goals_router
 from services.reconcile_service import reconcile_account_balances
 from database import get_session
 import asyncio
@@ -55,6 +56,7 @@ app.include_router(auth_router)
 app.include_router(transactions_router)
 app.include_router(accounts_router)
 app.include_router(categories_router)
+app.include_router(goals_router)
 
 
 
