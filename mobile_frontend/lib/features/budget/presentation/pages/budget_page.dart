@@ -52,6 +52,12 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
   // Categories for budget tab
   List<Category> _expenseCategories = [];
   bool _isLoadingCategories = false;
+  bool _showUnbudgeted = false; // toggle to reveal categories without budget
+  // Per-category monthly spent cache (categoryId -> amount for current month)
+  final Map<String, int> _categorySpentMonthly = {};
+  int _spentMonthYear = 0;
+  int _spentMonthMonth = 0;
+  bool _isLoadingCategorySpent = false;
   // Goals tab support
   late final GoalsCubit _goalsCubit;
   bool _goalsLoaded = false;
@@ -177,10 +183,46 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> _loadMonthlyCategorySpent(DateTime monthDate) async {
+    _isLoadingCategorySpent = true;
+    try {
+      final getTxByDate = getItInstance<GetTransactionsByDate>();
+      final DateTime firstDay = DateTime(monthDate.year, monthDate.month, 1);
+      final DateTime nextMonthFirst = DateTime(monthDate.year, monthDate.month + 1, 1);
+      final int daysInMonth = nextMonthFirst.subtract(const Duration(days: 1)).day;
+
+      final Map<String, int> sums = {};
+
+      for (int d = 0; d < daysInMonth; d++) {
+        final DateTime day = firstDay.add(Duration(days: d));
+        final result = await getTxByDate(GetTransactionsByDateParams(day));
+        result.fold((_) {}, (txs) {
+          for (final tx in txs) {
+            if (!tx.isIncome && tx.categoryId != null && tx.categoryId!.isNotEmpty) {
+              final key = tx.categoryId!;
+              final amount = tx.amount.abs().round();
+              sums.update(key, (prev) => prev + amount, ifAbsent: () => amount);
+            }
+          }
+        });
+      }
+
+      if (mounted) {
+        setState(() {
+          _categorySpentMonthly
+            ..clear()
+            ..addAll(sums);
+          _spentMonthYear = monthDate.year;
+          _spentMonthMonth = monthDate.month;
+        });
+      }
+    } finally {
+      _isLoadingCategorySpent = false;
+    }
+  }
+
   int _getCategorySpent(String categoryId) {
-    // TODO: Calculate actual spent amount for this category from transactions
-    // For now, return placeholder values
-    return 0;
+    return _categorySpentMonthly[categoryId] ?? 0;
   }
 
   int _getCategoryBudget(String categoryId) {
@@ -202,6 +244,9 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
     if ((_monthlyYear != selectedForTotals.year || _monthlyMonth != selectedForTotals.month) && !_isLoadingMonthly) {
       // Fire and forget; setState inside when done
       _loadMonthlyTotals(selectedForTotals);
+    }
+    if ((_spentMonthYear != selectedForTotals.year || _spentMonthMonth != selectedForTotals.month) && !_isLoadingCategorySpent) {
+      _loadMonthlyCategorySpent(selectedForTotals);
     }
 
     return Scaffold(
@@ -324,6 +369,12 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
               selectedIndex: _selectedTopTab,
               onSelected: (idx) {
                 setState(() => _selectedTopTab = idx);
+                if (idx == 2) {
+                  // Ensure categories are fresh whenever opening Budget tab
+    _loadExpenseCategories();
+    // Pre-compute per-category spending for current month
+    _loadMonthlyCategorySpent(DateTime.now());
+  }
                 if (idx == 3 && !_goalsLoaded) {
                   _goalsCubit.load();
                   _goalsLoaded = true;
@@ -515,36 +566,114 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
                               style: TextStyle(color: Colors.grey),
                             ),
                           )
-                        : ListView.builder(
-                            itemCount: _expenseCategories.length,
-                            itemBuilder: (context, index) {
-                              final category = _expenseCategories[index];
-                              // Calculate spent amount for this category (placeholder logic)
-                              final spent = _getCategorySpent(category.id);
-                              final budget = _getCategoryBudget(category.id);
-                              
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: _BudgetCategoryCard(
-                                  title: category.name,
-                                  spent: spent,
-                                  budget: budget,
-                                  onEdit: () async {
-                                    final changed = await showModalBottomSheet(
-                                      context: context,
-                                      useSafeArea: true,
-                                      isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
-                                      builder: (_) => EditCategoryModal(category: category),
-                                    );
-                                    if (changed == true) {
-                                      _loadExpenseCategories();
-                                    }
-                                  },
+                        : Builder(builder: (context) {
+                            final planned = _expenseCategories.where((c) => (c.budget ?? 0) > 0).toList();
+                            final unbudgeted = _expenseCategories.where((c) => (c.budget ?? 0) <= 0).toList();
+                            return ListView(
+                              children: [
+                                // Toggle header for categories with no budget (always visible)
+                                GestureDetector(
+                                  onTap: () => setState(() => _showUnbudgeted = !_showUnbudgeted),
+                                  behavior: HitTestBehavior.opaque,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.def.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Categories without budget (${unbudgeted.length})',
+                                            style: const TextStyle(fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        Icon(_showUnbudgeted ? Icons.expand_less : Icons.expand_more),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
+                                AnimatedCrossFade(
+                                  firstChild: const SizedBox.shrink(),
+                                  secondChild: Padding(
+                                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                                    child: unbudgeted.isEmpty
+                                        ? Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.box,
+                                              borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+                                              border: Border.all(color: AppColors.def.withOpacity(0.2)),
+                                            ),
+                                            child: const Text('All expense categories have a budget', style: TextStyle(color: Colors.black54)),
+                                          )
+                                        : Column(
+                                            children: unbudgeted.map((category) {
+                                              return Container(
+                                                margin: const EdgeInsets.only(bottom: 8),
+                                                padding: const EdgeInsets.all(12),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.box,
+                                                  borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+                                                  border: Border.all(color: AppColors.def.withOpacity(0.2)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(child: Text(category.name, style: const TextStyle(fontWeight: FontWeight.w600))),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        final changed = await showModalBottomSheet(
+                                                          context: context,
+                                                          useSafeArea: true,
+                                                          isScrollControlled: true,
+                                                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+                                                          builder: (_) => EditCategoryModal(category: category),
+                                                        );
+                                                        if (changed == true) {
+                                                          _loadExpenseCategories();
+                                                        }
+                                                      },
+                                                      child: const Text('Set budget'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                  ),
+                                  crossFadeState: _showUnbudgeted ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+                                  duration: const Duration(milliseconds: 200),
+                                ),
+                                const SizedBox(height: 8),
+                                // Planned budgets list (default)
+                                ...planned.map((category) {
+                                  final spent = _getCategorySpent(category.id);
+                                  final budget = _getCategoryBudget(category.id);
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 12),
+                                    child: _BudgetCategoryCard(
+                                      title: category.name,
+                                      spent: spent,
+                                      budget: budget,
+                                      onEdit: () async {
+                                        final changed = await showModalBottomSheet(
+                                          context: context,
+                                          useSafeArea: true,
+                                          isScrollControlled: true,
+                                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+                                          builder: (_) => EditCategoryModal(category: category),
+                                        );
+                                        if (changed == true) {
+                                          _loadExpenseCategories();
+                                        }
+                                      },
+                                    ),
+                                  );
+                                }),
+                              ],
+                            );
+                          }),
               ),
             ),
           ]
@@ -624,7 +753,7 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
                 builder: (_) => const AddCategoryModal(type: CategoryType.purchase),
-              );
+              ).then((_) => _loadExpenseCategories());
             } else if (_selectedTopTab == 3) {
               // Goals -> Add goal modal
               showModalBottomSheet(
@@ -1156,7 +1285,7 @@ class _AccountCardInline extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(AppSizes.paddingM),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 22,
@@ -1166,9 +1295,10 @@ class _AccountCardInline extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Text(
@@ -1177,19 +1307,6 @@ class _AccountCardInline extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: meta.chipBg,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Text(meta.label, style: TextStyle(color: meta.chipText, fontWeight: FontWeight.w600)),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '$valuePrefix${Formatters.moneyStringFormatter(valueAbs)} UZS',
-                      style: TextStyle(color: valueColor, fontWeight: FontWeight.w700),
                     ),
                     IconButton(
                       icon: const Icon(Icons.edit, size: 20),
@@ -1208,10 +1325,27 @@ class _AccountCardInline extends StatelessWidget {
                     ),
                   ],
                 ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$valuePrefix${Formatters.moneyStringFormatter(valueAbs)} UZS',
+                      style: TextStyle(color: valueColor, fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: meta.chipBg,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Text(meta.label, style: TextStyle(color: meta.chipText, fontWeight: FontWeight.w600)),
+                    ),
                     Text(acc.institution ?? '', style: const TextStyle(color: Colors.black54)),
                     if (masked.isNotEmpty) Text(masked, style: const TextStyle(color: Colors.black54)),
                   ],

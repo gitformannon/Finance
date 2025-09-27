@@ -88,7 +88,8 @@ class _AccountCard extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(AppSizes.paddingM),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 22,
@@ -102,6 +103,11 @@ class _AccountCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
+                    Text(meta.label, style: TextStyle(color: meta.chipText, fontWeight: FontWeight.w600))
+                  ],
+                ),
+                Row(
+                  children: [
                     Expanded(
                       child: Text(
                         acc.name ?? 'Account',
@@ -109,14 +115,6 @@ class _AccountCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: meta.chipBg,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Text(meta.label, style: TextStyle(color: meta.chipText, fontWeight: FontWeight.w600)),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -129,6 +127,14 @@ class _AccountCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: meta.chipBg,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Text(meta.label, style: TextStyle(color: meta.chipText, fontWeight: FontWeight.w600)),
+                    ),
                     Text(acc.institution ?? '', style: const TextStyle(color: Colors.black54)),
                     if (masked.isNotEmpty) Text(masked, style: const TextStyle(color: Colors.black54)),
                   ],

@@ -6,6 +6,7 @@ class Transaction {
   final bool isIncome;
   final String? accountName;
   final String? categoryName;
+  final String? categoryId;
 
   Transaction({
     required this.id,
@@ -15,6 +16,7 @@ class Transaction {
     this.isIncome = true,
     this.accountName,
     this.categoryName,
+    this.categoryId,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class Transaction {
       isIncome: amt >= 0,
       accountName: json['account_name'] as String?,
       categoryName: json['category_name'] as String?,
+      categoryId: json['category_id']?.toString(),
     );
   }
 }
