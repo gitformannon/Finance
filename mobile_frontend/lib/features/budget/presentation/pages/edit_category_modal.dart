@@ -5,6 +5,8 @@ import '../../../../core/helpers/enums_helpers.dart';
 import '../../data/model/category.dart' as model;
 import '../../data/model/update_category_request.dart';
 import '../../../../core/di/get_it.dart';
+import '../widgets/budget_input_field.dart';
+import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../../core/network/api_client.dart';
 
 class EditCategoryModal extends StatefulWidget {
@@ -25,7 +27,10 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.category.name);
-    _budgetController = TextEditingController(text: (widget.category.budget ?? 0) == 0 ? '' : '${widget.category.budget}');
+    _budgetController = TextEditingController(
+      text:
+          (widget.category.budget ?? 0) == 0 ? '' : '${widget.category.budget}',
+    );
     _type = widget.category.type;
   }
 
@@ -43,7 +48,10 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
         id: widget.category.id,
         name: _nameController.text.trim(),
         type: _type.value,
-        budget: _type == CategoryType.purchase ? int.tryParse(_budgetController.text.trim()) : null,
+        budget:
+            _type == CategoryType.purchase
+                ? int.tryParse(_budgetController.text.trim())
+                : null,
       );
       await getItInstance<ApiClient>().updateCategory(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);
@@ -54,40 +62,63 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.transparent,
-      body: SafeArea(
-        top: false,
+    final media = MediaQuery.of(context);
+    final viewInsets = media.viewInsets.bottom;
+    final bottomPadding =
+        viewInsets > 0 ? AppSizes.spaceM16 : media.padding.bottom;
+
+    return SafeArea(
+      top: false,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        padding: EdgeInsets.only(bottom: viewInsets),
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(AppSizes.borderSM16), topRight: Radius.circular(AppSizes.borderSM16)),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppSizes.borderSM16),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
           child: Container(
             color: AppColors.box,
             padding: const EdgeInsets.all(AppSizes.paddingM),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(children: [
-                  ChoiceChip(label: const Text('Income'), selected: _type == CategoryType.income, onSelected: (_) => setState(() => _type = CategoryType.income)),
-                  const SizedBox(width: 8),
-                  ChoiceChip(label: const Text('Purchase'), selected: _type == CategoryType.purchase, onSelected: (_) => setState(() => _type = CategoryType.purchase)),
-                ]),
+                Row(
+                  children: [
+                    ChoiceChip(
+                      label: const Text('Income'),
+                      selected: _type == CategoryType.income,
+                      onSelected:
+                          (_) => setState(() => _type = CategoryType.income),
+                    ),
+                    const SizedBox(width: 8),
+                    ChoiceChip(
+                      label: const Text('Purchase'),
+                      selected: _type == CategoryType.purchase,
+                      onSelected:
+                          (_) => setState(() => _type = CategoryType.purchase),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 12),
-                TextField(controller: _nameController, decoration: const InputDecoration(labelText: 'Name')),
+                BudgetInputField(label: 'Name', controller: _nameController),
                 const SizedBox(height: 12),
                 if (_type == CategoryType.purchase)
-                  TextField(
+                  BudgetInputField(
+                    label: 'Monthly budget (UZS)',
                     controller: _budgetController,
-                    decoration: const InputDecoration(labelText: 'Monthly budget (UZS)'),
                     keyboardType: TextInputType.number,
                   ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _saving ? null : _submit,
-                    child: _saving ? const CircularProgressIndicator() : const Text('Save'),
+                Padding(
+                  padding: EdgeInsets.only(bottom: bottomPadding),
+                  child: SaveButton(
+                    onPressed: _submit,
+                    isLoading: _saving,
+                    isDisabled: _saving,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -96,4 +127,3 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
     );
   }
 }
-

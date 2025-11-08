@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/foundation.dart';
 import 'package:retrofit/retrofit.dart';
@@ -19,7 +17,6 @@ import '../../features/goals/data/model/goal.dart';
 import '../constants/app_api.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_routes.dart';
-import '../helpers/logger_helpers.dart';
 import '../navigation/navigation_service.dart';
 import '../storage/local_data_source.dart';
 
@@ -68,14 +65,14 @@ abstract class ApiClient {
           final statusCode = error.response?.statusCode;
           final reqPath = error.requestOptions.path;
           if (statusCode == 401 &&
-              reqPath != AppApi.r_token &&
+              reqPath != AppApi.rToken &&
               reqPath != AppApi.login) {
             final refresh = dataSource.getRefreshToken();
             if (refresh.isNotEmpty) {
               try {
                 final refreshDio = Dio(BaseOptions(baseUrl: AppApi.baseUrlProd));
                 final resp = await refreshDio.post(
-                  AppApi.r_token,
+                  AppApi.rToken,
                   data: RefreshTokenRequest(refreshToken: refresh).toJson(),
                 );
                 final newData = LoginUserResponse.fromJson(
@@ -113,7 +110,7 @@ abstract class ApiClient {
   @POST(AppApi.login)
   Future<LoginUserResponse> loginUser(@Body() LoginUserRequest request);
 
-  @POST(AppApi.r_token)
+  @POST(AppApi.rToken)
   Future<LoginUserResponse> refreshToken(
       @Body() RefreshTokenRequest request,
   );
@@ -122,7 +119,7 @@ abstract class ApiClient {
   Future<ProfileResponse> getProfile();
 
   @PUT(AppApi.me)
-  Future<ProfileResponse> updateProfile(@Body() UpdateProfileRequest request);
+  Future<ProfileResponse>   updateProfile(@Body() UpdateProfileRequest request);
 
   @MultiPart()
   @POST(AppApi.profileImage)
@@ -133,16 +130,16 @@ abstract class ApiClient {
   @POST(AppApi.logout)
   Future<void> logout(@Body() LogoutRequest request);
 
-  @GET(AppApi.totp_status)
+  @GET(AppApi.totpStatus)
   Future<TotpStatusResponse> totpStatus();
 
-  @POST(AppApi.totp_enable)
+  @POST(AppApi.totpEnable)
   Future<TotpSetupResponse> enableTotp();
 
-  @POST(AppApi.totp_confirm)
+  @POST(AppApi.totpConfirm)
   Future<void> confirmTotp(@Body() TotpCodeRequest request);
 
-  @POST(AppApi.totp_disable)
+  @POST(AppApi.totpDisable)
   Future<void> disableTotp(@Body() TotpCodeRequest request);
 
   @GET(AppApi.transactions)

@@ -47,9 +47,6 @@ dev_dependencies:
   retrofit_generator: '>=8.0.0 <10.0.0' # for Dart 3.3 use ^9.0.0
   build_runner: ^2.4.9
   json_serializable: ^6.8.0
-  repo_annotation:
-    git:
-      url: https://github.com/umidshox99/repo_annotation.git
   freezed: ^2.5.2
 flutter:
   uses-material-design: true

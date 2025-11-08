@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../budget/data/model/account.dart' as model;
 import '../../data/model/update_account_request.dart';
 import '../../../../core/di/get_it.dart';
+import '../widgets/budget_dropdown_field.dart';
+import '../widgets/budget_input_field.dart';
+import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../../core/network/api_client.dart';
 
 class EditAccountModal extends StatefulWidget {
@@ -35,8 +38,12 @@ class _EditAccountModalState extends State<EditAccountModal> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.account.name ?? '');
-    _numberController = TextEditingController(text: widget.account.number ?? '');
-    _institutionController = TextEditingController(text: widget.account.institution ?? '');
+    _numberController = TextEditingController(
+      text: widget.account.number ?? '',
+    );
+    _institutionController = TextEditingController(
+      text: widget.account.institution ?? '',
+    );
     _type = widget.account.type;
   }
 
@@ -54,9 +61,15 @@ class _EditAccountModalState extends State<EditAccountModal> {
       final req = UpdateAccountRequest(
         id: widget.account.id,
         accountName: _nameController.text.trim(),
-        accountNumber: _numberController.text.trim().isEmpty ? null : _numberController.text.trim(),
+        accountNumber:
+            _numberController.text.trim().isEmpty
+                ? null
+                : _numberController.text.trim(),
         accountType: _type,
-        institution: _institutionController.text.trim().isEmpty ? null : _institutionController.text.trim(),
+        institution:
+            _institutionController.text.trim().isEmpty
+                ? null
+                : _institutionController.text.trim(),
       );
       await getItInstance<ApiClient>().updateAccount(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);
@@ -67,37 +80,62 @@ class _EditAccountModalState extends State<EditAccountModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.transparent,
-      body: SafeArea(
-        top: false,
+    final media = MediaQuery.of(context);
+    final viewInsets = media.viewInsets.bottom;
+    final bottomPadding =
+        viewInsets > 0 ? AppSizes.spaceM16 : media.padding.bottom;
+
+    return SafeArea(
+      top: false,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        padding: EdgeInsets.only(bottom: viewInsets),
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(AppSizes.borderSM16), topRight: Radius.circular(AppSizes.borderSM16)),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppSizes.borderSM16),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
           child: Container(
             color: AppColors.box,
             padding: const EdgeInsets.all(AppSizes.paddingM),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(controller: _nameController, decoration: const InputDecoration(labelText: 'Name')),
+                BudgetInputField(label: 'Name', controller: _nameController),
                 const SizedBox(height: 12),
-                TextField(controller: _numberController, decoration: const InputDecoration(labelText: 'Account number')),
+                BudgetInputField(
+                  label: 'Account number',
+                  controller: _numberController,
+                ),
                 const SizedBox(height: 12),
-                TextField(controller: _institutionController, decoration: const InputDecoration(labelText: 'Institution (Bank)')),
+                BudgetInputField(
+                  label: 'Institution (Bank)',
+                  controller: _institutionController,
+                ),
                 const SizedBox(height: 12),
-                DropdownButton<int>(
+                BudgetDropdownField<int>(
+                  label: 'Account type',
                   value: _type,
-                  hint: const Text('Account type'),
+                  hintText: 'Select account type',
                   onChanged: (v) => setState(() => _type = v),
-                  isExpanded: true,
-                  items: _types.entries.map((e) => DropdownMenuItem(value: e.key, child: Text(e.value))).toList(),
+                  items:
+                      _types.entries
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.key,
+                              child: Text(e.value),
+                            ),
+                          )
+                          .toList(),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _saving ? null : _submit,
-                    child: _saving ? const CircularProgressIndicator() : const Text('Save'),
+                Padding(
+                  padding: EdgeInsets.only(bottom: bottomPadding),
+                  child: SaveButton(
+                    onPressed: _submit,
+                    isLoading: _saving,
+                    isDisabled: _saving,
                   ),
                 ),
               ],
@@ -108,4 +146,3 @@ class _EditAccountModalState extends State<EditAccountModal> {
     );
   }
 }
-

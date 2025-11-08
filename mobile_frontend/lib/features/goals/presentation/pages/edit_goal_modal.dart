@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/get_it.dart';
 import '../../data/model/goal.dart';
+import 'package:Finance/features/shared/presentation/widgets/app_buttons/save_button.dart';
 import '../cubit/goals_cubit.dart';
 
 class EditGoalModal extends StatefulWidget {
@@ -24,8 +25,13 @@ class _EditGoalModalState extends State<EditGoalModal> {
   void initState() {
     super.initState();
     _nameCtrl = TextEditingController(text: widget.goal.name);
-    _targetCtrl = TextEditingController(text: widget.goal.targetAmount.toString());
-    _targetDate = widget.goal.targetDate != null ? DateTime.tryParse(widget.goal.targetDate!) : null;
+    _targetCtrl = TextEditingController(
+      text: widget.goal.targetAmount.toString(),
+    );
+    _targetDate =
+        widget.goal.targetDate != null
+            ? DateTime.tryParse(widget.goal.targetDate!)
+            : null;
   }
 
   @override
@@ -42,9 +48,15 @@ class _EditGoalModalState extends State<EditGoalModal> {
       final target = int.tryParse(_targetCtrl.text.trim());
       String? dateStr;
       if (_targetDate != null) {
-        dateStr = '${_targetDate!.year.toString().padLeft(4, '0')}-${_targetDate!.month.toString().padLeft(2, '0')}-${_targetDate!.day.toString().padLeft(2, '0')}';
+        dateStr =
+            '${_targetDate!.year.toString().padLeft(4, '0')}-${_targetDate!.month.toString().padLeft(2, '0')}-${_targetDate!.day.toString().padLeft(2, '0')}';
       }
-      await context.read<GoalsCubit>().update(id: widget.goal.id, name: name.isEmpty ? null : name, targetAmount: target, targetDate: dateStr);
+      await context.read<GoalsCubit>().update(
+        id: widget.goal.id,
+        name: name.isEmpty ? null : name,
+        targetAmount: target,
+        targetDate: dateStr,
+      );
       if (mounted) Navigator.pop(context, true);
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -55,43 +67,87 @@ class _EditGoalModalState extends State<EditGoalModal> {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: getItInstance<GoalsCubit>(),
-      child: Scaffold(
-        backgroundColor: AppColors.transparent,
-        body: SafeArea(
-          top: false,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(AppSizes.borderSM16), topRight: Radius.circular(AppSizes.borderSM16)),
-            child: Container(
-              color: AppColors.box,
-              padding: const EdgeInsets.all(AppSizes.paddingM),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(controller: _nameCtrl, decoration: const InputDecoration(labelText: 'Goal name')),
-                  const SizedBox(height: 12),
-                  TextField(controller: _targetCtrl, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'Target amount (UZS)')),
-                  const SizedBox(height: 12),
-                  Row(children: [
-                    Text(_targetDate == null ? 'No date' : '${_targetDate!.year}-${_targetDate!.month.toString().padLeft(2, '0')}-${_targetDate!.day.toString().padLeft(2, '0')}'),
-                    const Spacer(),
-                    TextButton(
-                      onPressed: () async {
-                        final now = DateTime.now();
-                        final picked = await showDatePicker(context: context, firstDate: DateTime(now.year - 1), lastDate: DateTime(now.year + 10), initialDate: _targetDate ?? now);
-                        if (picked != null) setState(() => _targetDate = picked);
-                      },
-                      child: const Text('Pick date'),
-                    )
-                  ]),
-                  const SizedBox(height: 16),
-                  SizedBox(width: double.infinity, child: ElevatedButton(onPressed: _saving ? null : _submit, child: _saving ? const CircularProgressIndicator() : const Text('Save')))
-                ],
+      child: Builder(
+        builder: (context) {
+          final media = MediaQuery.of(context);
+          final viewInsets = media.viewInsets.bottom;
+          final bottomPadding =
+              viewInsets > 0 ? AppSizes.spaceM16 : media.padding.bottom;
+
+          return SafeArea(
+            top: false,
+            child: AnimatedPadding(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
+              padding: EdgeInsets.only(bottom: viewInsets),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppSizes.borderSM16),
+                  topRight: Radius.circular(AppSizes.borderSM16),
+                ),
+                child: Container(
+                  color: AppColors.box,
+                  padding: const EdgeInsets.all(AppSizes.paddingM),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: _nameCtrl,
+                        decoration: const InputDecoration(
+                          labelText: 'Goal name',
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      TextField(
+                        controller: _targetCtrl,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Target amount (UZS)',
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Text(
+                            _targetDate == null
+                                ? 'No date'
+                                : '${_targetDate!.year}-${_targetDate!.month.toString().padLeft(2, '0')}-${_targetDate!.day.toString().padLeft(2, '0')}',
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () async {
+                              final now = DateTime.now();
+                              final picked = await showDatePicker(
+                                context: context,
+                                firstDate: DateTime(now.year - 1),
+                                lastDate: DateTime(now.year + 10),
+                                initialDate: _targetDate ?? now,
+                              );
+                              if (picked != null) {
+                                setState(() => _targetDate = picked);
+                              }
+                            },
+                            child: const Text('Pick date'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: bottomPadding),
+                        child: SaveButton(
+                          onPressed: _submit,
+                          isDisabled: _saving,
+                          isLoading: _saving,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
-

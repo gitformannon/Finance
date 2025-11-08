@@ -62,7 +62,7 @@ class TileButton extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: baseColor,
-                    border: Border.all(color: color.withOpacity(.35)),
+                    border: Border.all(color: color.withValues(alpha: .35)),
                   ),
                   child: Icon(selected ? icon : selectedIcon, size: 18.sp, color: selected ? color : selectedColor),
                 ),
@@ -86,7 +86,7 @@ class TileButton extends StatelessWidget {
                         style: AppTextStyles.bodyRegular.copyWith(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w700,
-                          color: selected ? AppColors.primary : AppColors.textPrimary, // Colors.white.withOpacity(.65)
+                          color: selected ? AppColors.primary : AppColors.textPrimary, // Colors.white.withValues(alpha: .65)
                           letterSpacing: -0.2,
                           height: 1.0,
                         ),
@@ -99,7 +99,7 @@ class TileButton extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.bodyRegular.copyWith(
                             fontSize: 8.sp,
-                            color: selected ? AppColors.surface : AppColors.textPrimary, // Colors.white.withOpacity(.65)
+                            color: selected ? AppColors.surface : AppColors.textPrimary, // Colors.white.withValues(alpha: .65)
                           ),
                         ),
                       ],

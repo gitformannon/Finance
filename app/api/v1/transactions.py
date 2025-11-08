@@ -1,5 +1,6 @@
-from datetime import datetime, date, timedelta
-from fastapi import APIRouter, Depends, HTTPException
+from datetime import datetime, timedelta
+import re
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -14,14 +15,54 @@ from schemas.transaction import TransactionRead, TransactionCreate, TransactionU
 
 router = APIRouter(prefix="/transactions", tags=["Transactions"])
 
+def _parse_date_range(date_text: str) -> tuple[datetime, datetime]:
+    """Return an inclusive [start, end) datetime range for the given date_text.
+
+    Supported formats:
+    - YYYY         -> whole year
+    - YYYY-MM      -> whole month
+    - YYYY-MM-DD   -> single day
+    """
+    # Year
+    if re.fullmatch(r"\d{4}", date_text):
+        y = int(date_text)
+        start = datetime(y, 1, 1)
+        end = datetime(y + 1, 1, 1)
+        return start, end
+
+    # Year-Month
+    if re.fullmatch(r"\d{4}-\d{2}", date_text):
+        y = int(date_text[0:4])
+        m = int(date_text[5:7])
+        if not 1 <= m <= 12:
+            raise ValueError("Invalid month")
+        start = datetime(y, m, 1)
+        if m == 12:
+            end = datetime(y + 1, 1, 1)
+        else:
+            end = datetime(y, m + 1, 1)
+        return start, end
+
+    # Year-Month-Day
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_text):
+        y, m, d = map(int, date_text.split("-"))
+        start = datetime(y, m, d)
+        end = start + timedelta(days=1)
+        return start, end
+
+    raise ValueError("Unsupported date format")
+
+
 @router.get("", response_model=list[TransactionRead])
 async def transactions_by_date(
-    date: date,
+    date: str = Query(..., description="Date in 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD'"),
     user: User = Depends(auth_service.get_current_user_with_access),
     session: AsyncSession = Depends(get_session),
 ):
-    start = datetime.combine(date, datetime.min.time())
-    end = start + timedelta(days=1)
+    try:
+        start, end = _parse_date_range(date)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD'.")
     stmt = (
         select(
             Transaction,

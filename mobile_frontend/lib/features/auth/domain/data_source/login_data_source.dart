@@ -55,7 +55,7 @@ class LoginDataSourceImpl implements LoginDataSource {
     try {
       final dio = Dio(BaseOptions(baseUrl: AppApi.baseUrlProd));
       final resp = await dio.post(
-        AppApi.r_token,
+        AppApi.rToken,
         data: request.toJson(),
       );
       final data = LoginUserResponse.fromJson(

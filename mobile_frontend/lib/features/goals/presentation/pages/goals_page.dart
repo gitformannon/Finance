@@ -63,6 +63,7 @@ class _GoalsPageState extends State<GoalsPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "goals_fab",
         onPressed: () async {
           await showDialog(
             context: context,
@@ -97,7 +98,7 @@ class _GoalCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.box,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.def.withOpacity(0.6)),
+        border: Border.all(color: AppColors.def.withValues(alpha: 0.6)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +198,7 @@ class _ContribButton extends StatelessWidget {
           border: Border.all(color: Colors.black12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 2,
               offset: const Offset(0, 1),
             )

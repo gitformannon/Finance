@@ -27,7 +27,10 @@ import '../../features/budget/domain/usecase/add_category.dart';
 import '../../features/budget/presentation/cubit/account_cubit.dart';
 import '../../features/budget/presentation/cubit/category_cubit.dart';
 import '../../features/budget/presentation/cubit/accounts_list_cubit.dart';
-import '../../features/budget/domain/usecase/get_accounts.dart';
+import '../../features/budget/presentation/cubit/monthly_totals_cubit.dart';
+import '../../features/budget/presentation/cubit/category_spending_cubit.dart';
+import '../../features/budget/presentation/cubit/categories_list_cubit.dart';
+import '../../features/budget/domain/usecase/get_transactions_by_query.dart';
 import '../../features/goals/presentation/cubit/goals_cubit.dart';
 import '../../features/goals/domain/usecase/get_goals.dart';
 import '../../features/goals/domain/usecase/create_goal.dart';
@@ -92,6 +95,24 @@ Future<void> cubitsInit() async {
   getItInstance.registerFactory<AccountsListCubit>(
     () => AccountsListCubit(
       getItInstance<GetAccounts>(),
+    ),
+  );
+
+  getItInstance.registerFactory<MonthlyTotalsCubit>(
+    () => MonthlyTotalsCubit(
+      getItInstance<GetTransactionsByQuery>(),
+    ),
+  );
+
+  getItInstance.registerFactory<CategorySpendingCubit>(
+    () => CategorySpendingCubit(
+      getItInstance<GetTransactionsByQuery>(),
+    ),
+  );
+
+  getItInstance.registerFactory<CategoriesListCubit>(
+    () => CategoriesListCubit(
+      getItInstance<GetCategories>(),
     ),
   );
 

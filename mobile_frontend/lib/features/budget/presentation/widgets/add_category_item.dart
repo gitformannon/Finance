@@ -27,17 +27,7 @@ class AddCategoryItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        await showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          useSafeArea: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(AppSizes.borderSM16),
-            ),
-          ),
-          builder: (_) => AddCategoryModal(type: type),
-        );
+        await AddCategoryModal.show(context, type: type);
         onCategoryAdded?.call();
       },
       child: Container(
@@ -58,7 +48,7 @@ class AddCategoryItem extends StatelessWidget {
               padding: const EdgeInsets.all(AppSizes.paddingS),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.def.withOpacity(0.2),
+                color: AppColors.def.withValues(alpha: 0.2),
               ),
               height: 28.w,
               width: 28.w,

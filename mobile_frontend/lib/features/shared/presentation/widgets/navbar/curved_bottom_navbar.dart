@@ -52,7 +52,7 @@ class CurvedBottomNavbar extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.borderCircle),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               blurRadius: 20,
               offset: const Offset(0, 20),
             )
@@ -76,7 +76,7 @@ class CurvedBottomNavbar extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient:
                       isSelected ? LinearGradient(colors: selectedGradient) : null,
-                  color: isSelected ? null : AppColors.def.withOpacity(0.2),
+                  color: isSelected ? null : AppColors.def.withValues(alpha: 0.2),
                 ),
                 child: IconTheme(
                   data: IconThemeData(

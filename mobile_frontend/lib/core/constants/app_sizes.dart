@@ -11,6 +11,8 @@ class AppSizes {
   static const double avatarSize48 = 48.0;
   static const double navbarIcon = 24.0;
   static const double buttonIcon = 70.0;
+  static const double editIcon = 70.0;
+
 
   // Button sizes
   static const double buttonHeight = 60.0;

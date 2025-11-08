@@ -5,13 +5,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:Finance/core/di/get_it.dart';
 import '../cubit/account_cubit.dart';
-import '../../../shared/presentation/widgets/app_buttons/w_button.dart';
+import '../widgets/budget_dropdown_field.dart';
+import '../widgets/budget_input_field.dart';
+import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
+import '../../../shared/presentation/widgets/bottom_sheet_models/w_bottom_widget.dart';
 
 class AddAccountModal extends StatefulWidget {
   const AddAccountModal({super.key});
 
+  static Future<T?> show<T>(BuildContext context) {
+    return _AddAccountModalSheet().show<T>(context);
+  }
+
   @override
   State<AddAccountModal> createState() => _AddAccountModalState();
+}
+
+class _AddAccountModalSheet with BaseBottomSheet {
+  Future<T?> show<T>(BuildContext context) {
+    return showModalBottomSheet<T>(
+      context: context,
+      backgroundColor: AppColors.transparent,
+      isScrollControlled: true,
+      useSafeArea: true,
+      enableDrag: true,
+      isDismissible: true,
+      builder: (context) => BlocProvider(
+        create: (_) => getItInstance<AccountCubit>(),
+        child: const AddAccountModal(),
+      ),
+    );
+  }
 }
 
 class _AddAccountModalState extends State<AddAccountModal> {
@@ -40,24 +64,42 @@ class _AddAccountModalState extends State<AddAccountModal> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getItInstance<AccountCubit>(),
-      child: BlocBuilder<AccountCubit, AccountState>(
-        builder: (context, state) {
-          final cubit = context.read<AccountCubit>();
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            child: SafeArea(
-              top: true,
-              bottom: false,
-              child: Scaffold(
-                backgroundColor: AppColors.transparent,
-                body: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(AppSizes.borderSM16),
-                    topRight: Radius.circular(AppSizes.borderSM16),
-                  ),
+    return BlocBuilder<AccountCubit, AccountState>(
+      builder: (context, state) {
+        final cubit = context.read<AccountCubit>();
+        final media = MediaQuery.of(context);
+        final viewInsets = media.viewInsets.bottom;
+        final bottomPadding =
+            viewInsets > 0 ? AppSizes.spaceM16 : media.padding.bottom;
+
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppColors.box,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(AppSizes.spaceM16),
+              topRight: Radius.circular(AppSizes.spaceM16),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Divider
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: AppSizes.spaceS12),
+                decoration: BoxDecoration(
+                  color: AppColors.def.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Expanded(
+                child: AnimatedPadding(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOutCubic,
+                  padding: EdgeInsets.only(bottom: viewInsets),
                   child: Container(
+                    width: double.infinity,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
@@ -66,33 +108,53 @@ class _AddAccountModalState extends State<AddAccountModal> {
                       ),
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
                           child: SingleChildScrollView(
-                            padding: EdgeInsets.all(AppSizes.paddingM.h),
+                            physics: const BouncingScrollPhysics(),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSizes.paddingM.w,
+                              vertical: AppSizes.spaceS12.h,
+                            ),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextField(
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: AppSizes.spaceM16.h,
+                                  ),
+                                  child: Text(
+                                    'Add account',
+                                    style: TextStyle(
+                                      fontSize: AppSizes.textSize20,
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                BudgetInputField(
+                                  label: 'Name',
                                   controller: _nameController,
-                                  decoration: const InputDecoration(labelText: 'Name'),
                                   onChanged: cubit.setName,
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
-                                TextField(
+                                BudgetInputField(
+                                  label: 'Account number',
                                   controller: _numberController,
-                                  decoration: const InputDecoration(labelText: 'Account number'),
                                   onChanged: cubit.setNumber,
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
-                                TextField(
+                                BudgetInputField(
+                                  label: 'Institution (Bank)',
                                   controller: _institutionController,
-                                  decoration: const InputDecoration(labelText: 'Institution (Bank)'),
                                   onChanged: cubit.setInstitution,
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
-                                DropdownButton<int>(
+                                BudgetDropdownField<int>(
+                                  label: 'Account type',
                                   value: state.type,
-                                  hint: const Text('Account type'),
+                                  hintText: 'Select account type',
                                   onChanged: cubit.setType,
                                   items: _types.entries
                                       .map(
@@ -104,26 +166,30 @@ class _AddAccountModalState extends State<AddAccountModal> {
                                       .toList(),
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
-                                TextField(
+                                BudgetInputField(
+                                  label: 'Initial balance',
                                   controller: _balanceController,
-                                  decoration: const InputDecoration(labelText: 'Initial balance'),
                                   keyboardType: TextInputType.number,
-                                  onChanged: (v) => cubit.setBalance(int.tryParse(v) ?? 0),
+                                  onChanged: (v) =>
+                                      cubit.setBalance(int.tryParse(v) ?? 0),
                                 ),
+                                SizedBox(height: AppSizes.spaceM16.h),
                               ],
                             ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(AppSizes.paddingM.h),
-                          child: SafeArea(
-                            top: false,
-                            child: WButton(
-                              onTap: cubit.submit,
-                              text: 'Save',
-                              isDisabled: state.name.isEmpty || state.status.isLoading(),
-                              isLoading: state.status.isLoading(),
-                            ),
+                          padding: EdgeInsets.only(
+                            left: AppSizes.paddingM.w,
+                            right: AppSizes.paddingM.w,
+                            bottom: bottomPadding,
+                            top: AppSizes.spaceS12.h,
+                          ),
+                          child: SaveButton(
+                            onPressed: cubit.submit,
+                            isDisabled:
+                                state.name.isEmpty || state.status.isLoading(),
+                            isLoading: state.status.isLoading(),
                           ),
                         ),
                       ],
@@ -131,10 +197,10 @@ class _AddAccountModalState extends State<AddAccountModal> {
                   ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

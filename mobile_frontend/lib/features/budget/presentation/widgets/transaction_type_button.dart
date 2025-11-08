@@ -59,7 +59,7 @@ class TransactionTypeButton extends StatelessWidget {
 
 
 //         decoration: BoxDecoration(
-//           color: selected ? AppColors.accent : AppColors.def.withOpacity(0.2),
+//           color: selected ? AppColors.accent : AppColors.def.withValues(alpha: 0.2),
 //           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
 //           border: Border.all(
 //             color: selected ? AppColors.accent : AppColors.def,

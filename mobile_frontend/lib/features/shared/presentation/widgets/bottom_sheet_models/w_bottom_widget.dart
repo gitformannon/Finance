@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/constants/app_colors.dart';
 
 mixin BaseBottomSheet {
-  customBottomSheet({
+  Future<T?> customBottomSheet<T>({
     required BuildContext context,
     required Widget baseWidget,
     Color background = AppColors.surface,
@@ -22,7 +22,7 @@ mixin BaseBottomSheet {
     Function? thenFunc,
     double? horizontal,
   }) {
-    showModalBottomSheet(
+    return showModalBottomSheet<T>(
       context: context,
       backgroundColor: background,
       shape: RoundedRectangleBorder(
@@ -44,10 +44,13 @@ mixin BaseBottomSheet {
             horizontal: horizontal ?? AppSizes.spaceL20.w,
             vertical: AppSizes.spaceL20.h,
           ),
-    ).then((value) => {if (thenFunc != null) thenFunc(value)});
+    ).then((value) {
+      if (thenFunc != null) thenFunc(value);
+      return value;
+    });
   }
 
-  draggableScrollBottomSheet({
+  Future<T?> draggableScrollBottomSheet<T>({
     required BuildContext context,
     required Widget baseWidget,
     EdgeInsets? contentPadding,
@@ -64,7 +67,7 @@ mixin BaseBottomSheet {
     Function? goBackFunc,
     Function? thenFunc,
   }) {
-    return showModalBottomSheet(
+    return showModalBottomSheet<T>(
       context: context,
       backgroundColor: background,
       shape: RoundedRectangleBorder(
@@ -98,6 +101,9 @@ mixin BaseBottomSheet {
               );
             },
           ),
-    ).then((value) => {if (thenFunc != null) thenFunc()});
+    ).then((value) {
+      if (thenFunc != null) thenFunc(value);
+      return value;
+    });
   }
 }

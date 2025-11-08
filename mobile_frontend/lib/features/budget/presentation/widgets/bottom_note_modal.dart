@@ -1,8 +1,10 @@
 import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
-import 'package:Finance/features/shared/presentation/widgets/app_buttons/w_button.dart';
+import 'package:Finance/features/shared/presentation/widgets/app_buttons/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'budget_input_field.dart';
 
 class BottomNoteModal extends StatefulWidget {
   const BottomNoteModal({
@@ -15,9 +17,9 @@ class BottomNoteModal extends StatefulWidget {
   final ValueChanged<String> onSelect;
 
   static Future<void> show(
-      BuildContext context, {
-        required String initialNote,
-        required ValueChanged<String> onSelect,
+    BuildContext context, {
+    required String initialNote,
+    required ValueChanged<String> onSelect,
   }) {
     return showModalBottomSheet(
       context: context,
@@ -25,13 +27,11 @@ class BottomNoteModal extends StatefulWidget {
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppSizes.borderSM16)
-        )
+          top: Radius.circular(AppSizes.borderSM16),
+        ),
       ),
-      builder: (_) => BottomNoteModal(
-        initialNote: initialNote,
-        onSelect: onSelect,
-      ),
+      builder:
+          (_) => BottomNoteModal(initialNote: initialNote, onSelect: onSelect),
     );
   }
 
@@ -62,56 +62,61 @@ class _BottomNoteModal extends State<BottomNoteModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(AppSizes.borderSM16),
-          topRight: Radius.circular(AppSizes.borderSM16)
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              color: AppColors.box,
-              child: Padding(
-                padding: EdgeInsets.all(AppSizes.paddingM.h),
-                child: Expanded(
+    final media = MediaQuery.of(context);
+    final viewInsets = media.viewInsets.bottom;
+    final bottomPadding =
+        viewInsets > 0 ? AppSizes.spaceM16.h : media.padding.bottom;
+
+    return SafeArea(
+      top: false,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        padding: EdgeInsets.only(bottom: viewInsets),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppSizes.borderSM16),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
+          child: Container(
+            color: AppColors.box,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: media.size.height * 0.6,
+                  ),
                   child: SingleChildScrollView(
-                    child: TextField(
+                    padding: EdgeInsets.all(AppSizes.paddingM.h),
+                    child: BudgetInputField(
+                      label: 'Note',
                       controller: _controller,
                       focusNode: _focusNode,
-                      decoration: const InputDecoration(labelText: 'Note'),
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
                       maxLines: null,
-                      keyboardType: TextInputType.multiline
+                      minLines: 4,
                     ),
                   ),
                 ),
-              ),
-            ),
-            Container(
-              color: AppColors.box,
-              child: SafeArea(
-                top: false,
-                child: Padding(
+                Padding(
                   padding: EdgeInsets.only(
                     left: AppSizes.paddingM.w,
                     right: AppSizes.paddingM.w,
-                    bottom: _focusNode.hasFocus ? AppSizes.paddingM : 0,
+                    bottom: bottomPadding,
+                    top: AppSizes.spaceS12.h,
                   ),
-                  child: WButton(
-                    onTap: () {
+                  child: SaveButton(
+                    onPressed: () {
                       widget.onSelect(_controller.text);
                       Navigator.of(context).pop();
                     },
-                    text: 'Save',
                   ),
                 ),
-              ),
-            )
-          ],
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -135,18 +140,14 @@ class BottomNoteField extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         onTap?.call();
-        BottomNoteModal.show(
-          context,
-          initialNote: note,
-          onSelect: onSelect,
-        );
+        BottomNoteModal.show(context, initialNote: note, onSelect: onSelect);
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors.def.withOpacity(0.2),
+              color: AppColors.def.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppSizes.borderSmall),
             ),
             child: const Padding(
@@ -158,7 +159,7 @@ class BottomNoteField extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppSizes.spaceXS8.w,),
+          SizedBox(width: AppSizes.spaceXS8.w),
           Expanded(
             child: Text(
               note.isEmpty ? 'Note' : note,

@@ -20,7 +20,8 @@ class BottomDatepickerModal extends StatefulWidget {
   final DateTime? minimumDate;
   final DateTime? maximumDate;
 
-  static Future<void> show(BuildContext context, {
+  static Future<void> show(
+    BuildContext context, {
     required DateTime initialDate,
     required ValueChanged<DateTime> onSelect,
     DateTime? minimumDate,
@@ -31,12 +32,12 @@ class BottomDatepickerModal extends StatefulWidget {
       isScrollControlled: true,
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-              top: Radius.circular(AppSizes.borderSM16)
-          )
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.borderSM16),
+        ),
       ),
-      builder: (_) =>
-          BottomDatepickerModal(
+      builder:
+          (_) => BottomDatepickerModal(
             initialDate: initialDate,
             onSelect: onSelect,
             minimumDate: minimumDate,
@@ -59,48 +60,57 @@ class _BottomDatepickerModalState extends State<BottomDatepickerModal> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(AppSizes.borderSM16),
-        topRight: Radius.circular(AppSizes.borderSM16),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: 200.h,
+    final media = MediaQuery.of(context);
+    final viewInsets = media.viewInsets.bottom;
+    final bottomPadding =
+        viewInsets > 0 ? AppSizes.spaceM16.h : media.padding.bottom;
+
+    return SafeArea(
+      top: false,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        padding: EdgeInsets.only(bottom: viewInsets),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(AppSizes.borderSM16),
+            topRight: Radius.circular(AppSizes.borderSM16),
+          ),
+          child: Container(
             color: AppColors.background,
-            child: CupertinoDatePicker(
-              initialDateTime: _tempDate,
-              minimumDate: widget.minimumDate,
-              maximumDate: widget.maximumDate,
-              mode: CupertinoDatePickerMode.date,
-              backgroundColor: AppColors.background,
-              onDateTimeChanged: (d) => setState(() => _tempDate = d),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: 200.h,
+                  child: CupertinoDatePicker(
+                    initialDateTime: _tempDate,
+                    minimumDate: widget.minimumDate,
+                    maximumDate: widget.maximumDate,
+                    mode: CupertinoDatePickerMode.date,
+                    backgroundColor: AppColors.background,
+                    onDateTimeChanged: (d) => setState(() => _tempDate = d),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: AppSizes.paddingM.w,
+                    right: AppSizes.paddingM.w,
+                    bottom: bottomPadding,
+                    top: AppSizes.spaceS12.h,
+                  ),
+                  child: WButton(
+                    onTap: () {
+                      widget.onSelect(_tempDate);
+                      Navigator.of(context).pop();
+                    },
+                    text: 'Select',
+                  ),
+                ),
+              ],
             ),
           ),
-
-          Container(
-            color: AppColors.background,
-            child: SafeArea(
-              top: false,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: AppSizes.paddingM.w,
-                  right: AppSizes.paddingM.w,
-                ),
-                child: WButton(
-                  onTap: () {
-                    widget.onSelect(_tempDate);
-                    Navigator.of(context).pop();
-                  },
-                  text: 'Select',
-                ),
-              ),
-            ),
-          ),
-
-        ],
+        ),
       ),
     );
   }
@@ -125,18 +135,19 @@ class BottomDatepickerField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => BottomDatepickerModal.show(
-        context,
-        initialDate: date,
-        onSelect: onSelect,
-        minimumDate: minimumDate,
-        maximumDate: maximumDate,
-      ),
+      onTap:
+          () => BottomDatepickerModal.show(
+            context,
+            initialDate: date,
+            onSelect: onSelect,
+            minimumDate: minimumDate,
+            maximumDate: maximumDate,
+          ),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors.def.withOpacity(0.2),
+              color: AppColors.def.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppSizes.borderSmall),
             ),
             child: const Padding(

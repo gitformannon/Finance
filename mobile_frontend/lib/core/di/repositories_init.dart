@@ -20,6 +20,7 @@ import '../../features/profile/data/repository/totp_repository_impl.dart';
 import '../../features/budget/domain/repository/budget_repository.dart';
 import '../../features/budget/data/repository/budget_repository_impl.dart';
 import '../../features/budget/domain/usecase/get_transactions_by_date.dart';
+import '../../features/budget/domain/usecase/get_transactions_by_query.dart';
 import '../../features/budget/domain/usecase/add_transaction.dart';
 import '../../features/budget/domain/usecase/get_categories.dart';
 import '../../features/budget/domain/usecase/add_account.dart';
@@ -129,6 +130,10 @@ Future<void> repositoriesInit() async {
 
   getItInstance.registerLazySingleton<GetTransactionsByDate>(
     () => GetTransactionsByDate(getItInstance<BudgetRepository>()),
+  );
+
+  getItInstance.registerLazySingleton<GetTransactionsByQuery>(
+    () => GetTransactionsByQuery(getItInstance<BudgetRepository>()),
   );
 
   getItInstance.registerLazySingleton<AddTransaction>(
