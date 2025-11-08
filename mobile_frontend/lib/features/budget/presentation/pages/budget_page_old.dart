@@ -5,8 +5,6 @@ import 'package:Finance/features/budget/presentation/pages/edit_transaction_moda
 import 'package:easy_localization/easy_localization.dart';
 import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/helpers/formatters_helpers.dart';
 
@@ -22,7 +20,6 @@ import '../cubit/transaction_cubit.dart';
 import '../../../../core/di/get_it.dart';
 import '../../../budget/domain/usecase/get_accounts.dart';
 import '../../../../core/network/no_params.dart';
-import '../../domain/usecase/get_transactions_by_date.dart';
 import '../../domain/usecase/get_transactions_by_query.dart';
 import '../../domain/usecase/get_categories.dart';
 import '../../data/model/category.dart';

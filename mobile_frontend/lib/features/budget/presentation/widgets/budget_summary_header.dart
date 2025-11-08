@@ -4,7 +4,6 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/helpers/formatters_helpers.dart';
 import '../cubit/monthly_totals_cubit.dart';
-import '../cubit/accounts_list_cubit.dart';
 import 'animated_amount.dart';
 
 class BudgetSummaryHeader extends StatelessWidget {
