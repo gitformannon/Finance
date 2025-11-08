@@ -11,6 +11,7 @@ class AddGoalCubit extends Cubit<AddGoalState> {
   void setName(String v) => emit(state.copyWith(name: v));
   void setTargetAmount(int v) => emit(state.copyWith(targetAmount: v));
   void setTargetDate(DateTime? v) => emit(state.copyWith(targetDate: v));
+  void setEmoji(String? v) => emit(state.copyWith(emoji: v));
 
   Future<void> submit() async {
     emit(state.copyWith(status: RequestStatus.loading));
@@ -20,6 +21,7 @@ class AddGoalCubit extends Cubit<AddGoalState> {
       targetDate: state.targetDate != null
           ? '${state.targetDate!.year.toString().padLeft(4, '0')}-${state.targetDate!.month.toString().padLeft(2, '0')}-${state.targetDate!.day.toString().padLeft(2, '0')}'
           : null,
+      emoji: state.emoji,
     );
     final result = await _createGoal(request);
     result.fold(

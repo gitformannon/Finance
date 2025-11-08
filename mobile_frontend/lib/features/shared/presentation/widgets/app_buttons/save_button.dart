@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/app_colors.dart';
 import '../../../../../core/constants/app_sizes.dart';
 import 'w_button.dart';
 
@@ -45,7 +46,7 @@ class SaveButton extends StatelessWidget {
       height: height ?? AppSizes.buttonHeight,
       margin: margin,
       padding: padding,
-      backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+      backgroundColor: backgroundColor ?? AppColors.transparent,
       textStyle: textStyle,
       borderRadius: borderRadius ?? AppSizes.borderLarge,
       hasError: hasError,

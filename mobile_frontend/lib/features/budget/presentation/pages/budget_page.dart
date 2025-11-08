@@ -34,7 +34,6 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
   static const int _centerPage = _initialPage;
 
   int _selectedTopTab = 0; // 0: History, 1: Accounts, 2: Budget, 3: Goals
-  int _accountsBalance = 0;
 
   // Anchor Monday to compute page indices. 2000-01-03 is a Monday.
   final DateTime _anchorMonday = DateTime(2000, 1, 3);
@@ -45,6 +44,10 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
   late final CategorySpendingCubit _categorySpendingCubit;
   late final CategoriesListCubit _categoriesListCubit;
   late final GoalsCubit _goalsCubit;
+  
+  // Track last loaded dates to avoid redundant calls
+  DateTime? _lastMonthlyTotalsDate;
+  DateTime? _lastCategorySpendingDate;
 
   DateTime _mondayOf(DateTime date) {
     final int weekday = date.weekday; // 1 Mon ... 7 Sun
@@ -67,24 +70,13 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
     _goalsCubit = getItInstance<GoalsCubit>();
 
     // Load initial data
-    context.read<BudgetCubit>().load(DateTime.now());
-    _monthlyTotalsCubit.loadMonthlyTotals(DateTime.now());
+    final now = DateTime.now();
+    context.read<BudgetCubit>().load(now);
+    _monthlyTotalsCubit.loadMonthlyTotals(now);
+    _lastMonthlyTotalsDate = now;
     _categoriesListCubit.loadExpenseCategories();
     
-    // Listen to accounts changes to update balance
-    _accountsListCubit.stream.listen((_) => _updateTotalBalance());
-  }
-
-  void _updateTotalBalance() {
-    final accounts = _accountsListCubit.state.accounts;
-    if (accounts.isNotEmpty) {
-      final sum = accounts.fold(0, (acc, a) => acc + a.balance);
-      if (sum != _accountsBalance && mounted) {
-        setState(() {
-          _accountsBalance = sum;
-        });
-      }
-    }
+    // Balance is now handled reactively via BlocBuilder in BudgetSummaryHeader
   }
 
   @override
@@ -100,20 +92,22 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // Sync monthly totals with selected date
+    // Sync monthly totals with selected date (only if date changed)
     final DateTime selectedDate = context.watch<BudgetCubit>().state.selectedDate;
-    _monthlyTotalsCubit.loadMonthlyTotals(selectedDate);
-    _categorySpendingCubit.loadMonthlyCategorySpent(selectedDate);
-
-    // Sync accounts balance
-    final accountsState = _accountsListCubit.state;
-    if (accountsState.accounts.isNotEmpty) {
-      final sum = accountsState.accounts.fold(0, (acc, a) => acc + a.balance);
-      if (sum != _accountsBalance) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) setState(() => _accountsBalance = sum);
-        });
-      }
+    
+    // Only load if date changed to avoid redundant calls
+    if (_lastMonthlyTotalsDate == null || 
+        _lastMonthlyTotalsDate!.year != selectedDate.year || 
+        _lastMonthlyTotalsDate!.month != selectedDate.month) {
+      _monthlyTotalsCubit.loadMonthlyTotals(selectedDate);
+      _lastMonthlyTotalsDate = selectedDate;
+    }
+    
+    if (_lastCategorySpendingDate == null || 
+        _lastCategorySpendingDate!.year != selectedDate.year || 
+        _lastCategorySpendingDate!.month != selectedDate.month) {
+      _categorySpendingCubit.loadMonthlyCategorySpent(selectedDate);
+      _lastCategorySpendingDate = selectedDate;
     }
 
     return Scaffold(
@@ -124,9 +118,12 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
         child: Column(
           children: [
             // Summary header
-            BlocProvider.value(
-              value: _monthlyTotalsCubit,
-              child: BudgetSummaryHeader(accountsBalance: _accountsBalance),
+            MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: _monthlyTotalsCubit),
+                BlocProvider.value(value: _accountsListCubit),
+              ],
+              child: BudgetSummaryHeader(),
             ),
             const SizedBox(height: 12),
             // Tab selector
@@ -140,7 +137,9 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
                   if (idx == 2) {
                     // Ensure categories are fresh when opening Budget tab
                     _categoriesListCubit.loadExpenseCategories();
-                    _categorySpendingCubit.loadMonthlyCategorySpent(DateTime.now());
+                    final selectedDate = context.read<BudgetCubit>().state.selectedDate;
+                    _categorySpendingCubit.loadMonthlyCategorySpent(selectedDate);
+                    _lastCategorySpendingDate = selectedDate;
                   }
                   if (idx == 3) {
                     _goalsCubit.load();
@@ -227,14 +226,12 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
           ),
         ).then((_) {
           _accountsListCubit.load();
-          _updateTotalBalance();
         });
         break;
       case 1:
         // Accounts -> Add account
         AddAccountModal.show(context).then((_) {
           _accountsListCubit.load();
-          _updateTotalBalance();
         });
         break;
       case 2:

@@ -1,3 +1,4 @@
+import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,8 @@ class TransactionTypeButton extends StatelessWidget {
   final Color selectedTitleColor;
   final Color boxColor;
   final Color selectedBoxColor;
-  final Color boxBorderColor;
-  final Color selectedBoxBorderColor;
+  final Color? boxBorderColor;
+  final Color? selectedBoxBorderColor;
   final bool selected;
   final VoidCallback onTap;
 
@@ -19,8 +20,8 @@ class TransactionTypeButton extends StatelessWidget {
     required this.selectedTitleColor,
     required this.boxColor,
     required this.selectedBoxColor,
-    required this.boxBorderColor,
-    required this.selectedBoxBorderColor,
+    this.boxBorderColor,
+    this.selectedBoxBorderColor,
     required this.selected,
     required this.onTap,
     super.key
@@ -39,7 +40,9 @@ class TransactionTypeButton extends StatelessWidget {
           color: selected ? selectedBoxColor : boxColor,
           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
           border: Border.all(
-            color: selected ? selectedBoxBorderColor : boxBorderColor,
+            color: selected
+                ? (selectedBoxBorderColor ?? AppColors.def)
+                : (boxBorderColor ?? AppColors.def),
             width: 0.5
           )
         ),
@@ -54,26 +57,3 @@ class TransactionTypeButton extends StatelessWidget {
     );
   }
 }
-
-
-
-
-//         decoration: BoxDecoration(
-//           color: selected ? AppColors.accent : AppColors.def.withValues(alpha: 0.2),
-//           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-//           border: Border.all(
-//             color: selected ? AppColors.accent : AppColors.def,
-//             width: 0.5,
-//           ),
-//         ),
-//         alignment: Alignment.center,
-//         child: Text(
-//           label,
-//           style: AppTextStyles.bodyRegular.copyWith(
-//             color: selected ? AppColors.surface : AppColors.textSecondary,
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }

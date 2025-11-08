@@ -37,9 +37,9 @@ class GoalsCubit extends Cubit<GoalsState> {
     );
   }
 
-  Future<void> create(String name, int targetAmount, {String? targetDate, int initialAmount = 0}) async {
+  Future<void> create(String name, int targetAmount, {String? targetDate, int initialAmount = 0, String? emoji}) async {
     emit(state.copyWith(loading: true, error: null));
-    final res = await _createGoal(CreateGoalRequest(name: name, targetAmount: targetAmount, targetDate: targetDate, initialAmount: initialAmount));
+    final res = await _createGoal(CreateGoalRequest(name: name, targetAmount: targetAmount, targetDate: targetDate, initialAmount: initialAmount, emoji: emoji));
     await res.fold((l) async {
       emit(state.copyWith(loading: false, error: l.errorMessage));
     }, (_) async {
@@ -59,9 +59,9 @@ class GoalsCubit extends Cubit<GoalsState> {
     });
   }
 
-  Future<void> update({required String id, String? name, int? targetAmount, String? targetDate}) async {
+  Future<void> update({required String id, String? name, int? targetAmount, String? targetDate, String? emoji}) async {
     if (_updateGoal == null) return;
-    final res = await _updateGoal!(UpdateGoalRequest(id: id, name: name, targetAmount: targetAmount, targetDate: targetDate));
+    final res = await _updateGoal!(UpdateGoalRequest(id: id, name: name, targetAmount: targetAmount, targetDate: targetDate, emoji: emoji));
     res.fold((l) => null, (updated) {
       final idx = state.goals.indexWhere((g) => g.id == id);
       if (idx >= 0) {

@@ -12,7 +12,8 @@ part of 'login_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$LoginState {
@@ -32,16 +33,17 @@ mixin _$LoginState {
 /// @nodoc
 abstract class $LoginStateCopyWith<$Res> {
   factory $LoginStateCopyWith(
-          LoginState value, $Res Function(LoginState) then) =
-      _$LoginStateCopyWithImpl<$Res, LoginState>;
+    LoginState value,
+    $Res Function(LoginState) then,
+  ) = _$LoginStateCopyWithImpl<$Res, LoginState>;
   @useResult
-  $Res call(
-      {RequestStatus? status,
-      LoginUserResponse? data,
-      String? errorMessage,
-      bool phoneError,
-      bool passwordError});
-
+  $Res call({
+    RequestStatus? status,
+    LoginUserResponse? data,
+    String? errorMessage,
+    bool phoneError,
+    bool passwordError,
+  });
 }
 
 /// @nodoc
@@ -65,51 +67,55 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? phoneError = null,
     Object? passwordError = null,
   }) {
-    return _then(_value.copyWith(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as RequestStatus?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as LoginUserResponse?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneError: null == phoneError
-          ? _value.phoneError
-          : phoneError // ignore: cast_nullable_to_non_nullable
-              as bool,
-      passwordError: null == passwordError
-          ? _value.passwordError
-          : passwordError // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            status:
+                freezed == status
+                    ? _value.status
+                    : status // ignore: cast_nullable_to_non_nullable
+                        as RequestStatus?,
+            data:
+                freezed == data
+                    ? _value.data
+                    : data // ignore: cast_nullable_to_non_nullable
+                        as LoginUserResponse?,
+            errorMessage:
+                freezed == errorMessage
+                    ? _value.errorMessage
+                    : errorMessage // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phoneError:
+                null == phoneError
+                    ? _value.phoneError
+                    : phoneError // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            passwordError:
+                null == passwordError
+                    ? _value.passwordError
+                    : passwordError // ignore: cast_nullable_to_non_nullable
+                        as bool,
+          )
+          as $Val,
+    );
   }
-
-  /// Create a copy of LoginState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 abstract class _$$LoginStateImplCopyWith<$Res>
     implements $LoginStateCopyWith<$Res> {
   factory _$$LoginStateImplCopyWith(
-          _$LoginStateImpl value, $Res Function(_$LoginStateImpl) then) =
-      __$$LoginStateImplCopyWithImpl<$Res>;
+    _$LoginStateImpl value,
+    $Res Function(_$LoginStateImpl) then,
+  ) = __$$LoginStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {RequestStatus? status,
-      LoginUserResponse? data,
-      String? errorMessage,
-      bool phoneError,
-      bool passwordError});
-
-  @override
-  dynamic get data;
+  $Res call({
+    RequestStatus? status,
+    LoginUserResponse? data,
+    String? errorMessage,
+    bool phoneError,
+    bool passwordError,
+  });
 }
 
 /// @nodoc
@@ -117,11 +123,9 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     extends _$LoginStateCopyWithImpl<$Res, _$LoginStateImpl>
     implements _$$LoginStateImplCopyWith<$Res> {
   __$$LoginStateImplCopyWithImpl(
-      _$LoginStateImpl _value, $Res Function(_$LoginStateImpl) _then)
-      : super(_value, _then);
-
-  @override
-  dynamic get data => _value.data;
+    _$LoginStateImpl _value,
+    $Res Function(_$LoginStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
@@ -134,40 +138,48 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? phoneError = null,
     Object? passwordError = null,
   }) {
-    return _then(_$LoginStateImpl(
-      status: freezed == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as RequestStatus?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as LoginUserResponse?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneError: null == phoneError
-          ? _value.phoneError
-          : phoneError // ignore: cast_nullable_to_non_nullable
-              as bool,
-      passwordError: null == passwordError
-          ? _value.passwordError
-          : passwordError // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    return _then(
+      _$LoginStateImpl(
+        status:
+            freezed == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                    as RequestStatus?,
+        data:
+            freezed == data
+                ? _value.data
+                : data // ignore: cast_nullable_to_non_nullable
+                    as LoginUserResponse?,
+        errorMessage:
+            freezed == errorMessage
+                ? _value.errorMessage
+                : errorMessage // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phoneError:
+            null == phoneError
+                ? _value.phoneError
+                : phoneError // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        passwordError:
+            null == passwordError
+                ? _value.passwordError
+                : passwordError // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$LoginStateImpl implements _LoginState {
-  const _$LoginStateImpl(
-      {this.status,
-      this.data,
-      this.errorMessage = "",
-      this.phoneError = false,
-      this.passwordError = false});
+  const _$LoginStateImpl({
+    this.status,
+    this.data,
+    this.errorMessage = "",
+    this.phoneError = false,
+    this.passwordError = false,
+  });
 
   @override
   final RequestStatus? status;
@@ -205,7 +217,13 @@ class _$LoginStateImpl implements _LoginState {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, status, data, errorMessage, phoneError, passwordError);
+    runtimeType,
+    status,
+    data,
+    errorMessage,
+    phoneError,
+    passwordError,
+  );
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
@@ -217,12 +235,13 @@ class _$LoginStateImpl implements _LoginState {
 }
 
 abstract class _LoginState implements LoginState {
-  const factory _LoginState(
-      {final RequestStatus? status,
-      final LoginUserResponse? data,
-      final String? errorMessage,
-      final bool phoneError,
-      final bool passwordError}) = _$LoginStateImpl;
+  const factory _LoginState({
+    final RequestStatus? status,
+    final LoginUserResponse? data,
+    final String? errorMessage,
+    final bool phoneError,
+    final bool passwordError,
+  }) = _$LoginStateImpl;
 
   @override
   RequestStatus? get status;

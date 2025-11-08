@@ -4,6 +4,7 @@ class UpdateAccountRequest {
   final String? accountNumber;
   final int? accountType;
   final String? institution;
+  final String? emoji;
 
   UpdateAccountRequest({
     required this.id,
@@ -11,6 +12,7 @@ class UpdateAccountRequest {
     this.accountNumber,
     this.accountType,
     this.institution,
+    this.emoji,
   });
 
   Map<String, dynamic> toJson() => {
@@ -18,6 +20,7 @@ class UpdateAccountRequest {
         'account_number': accountNumber,
         'account_type': accountType,
         'institution': institution,
+        'emoji': emoji,
       }..removeWhere((k, v) => v == null);
 }
 

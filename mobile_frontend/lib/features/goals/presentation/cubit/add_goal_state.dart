@@ -9,6 +9,7 @@ class AddGoalState with _$AddGoalState {
     @Default('') String name,
     @Default(0) int targetAmount,
     DateTime? targetDate,
+    String? emoji,
     @Default(RequestStatus.initial) RequestStatus status,
     String? errorMessage,
   }) = _AddGoalState;

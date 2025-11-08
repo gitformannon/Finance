@@ -8,6 +8,7 @@ import '../widgets/budget_dropdown_field.dart';
 import '../widgets/budget_input_field.dart';
 import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class EditAccountModal extends StatefulWidget {
   final model.Account account;
@@ -22,6 +23,7 @@ class _EditAccountModalState extends State<EditAccountModal> {
   late final TextEditingController _numberController;
   late final TextEditingController _institutionController;
   int? _type;
+  String? _emoji;
   bool _saving = false;
 
   final Map<int, String> _types = const {
@@ -44,6 +46,7 @@ class _EditAccountModalState extends State<EditAccountModal> {
       text: widget.account.institution ?? '',
     );
     _type = widget.account.type;
+    _emoji = widget.account.emoji;
   }
 
   @override
@@ -69,6 +72,7 @@ class _EditAccountModalState extends State<EditAccountModal> {
             _institutionController.text.trim().isEmpty
                 ? null
                 : _institutionController.text.trim(),
+        emoji: _emoji,
       );
       await getItInstance<ApiClient>().updateAccount(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);
@@ -101,7 +105,21 @@ class _EditAccountModalState extends State<EditAccountModal> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                BudgetInputField(label: 'Name', controller: _nameController),
+                Row(
+                  children: [
+                    Expanded(
+                      child: BudgetInputField(label: 'Name', controller: _nameController),
+                    ),
+                    const SizedBox(width: AppSizes.spaceM16),
+                    EmojiPickerButton(
+                      selectedEmoji: _emoji,
+                      onEmojiSelected: (emoji) {
+                        setState(() => _emoji = emoji);
+                      },
+                      size: 48,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 12),
                 BudgetInputField(
                   label: 'Account number',

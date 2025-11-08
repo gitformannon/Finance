@@ -8,6 +8,7 @@ import '../../../../core/di/get_it.dart';
 import '../widgets/budget_input_field.dart';
 import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class EditCategoryModal extends StatefulWidget {
   final model.Category category;
@@ -21,6 +22,7 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
   late final TextEditingController _nameController;
   late final TextEditingController _budgetController;
   late CategoryType _type;
+  String? _emoji;
   bool _saving = false;
 
   @override
@@ -32,6 +34,7 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
           (widget.category.budget ?? 0) == 0 ? '' : '${widget.category.budget}',
     );
     _type = widget.category.type;
+    _emoji = widget.category.emoji;
   }
 
   @override
@@ -52,6 +55,7 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
             _type == CategoryType.purchase
                 ? int.tryParse(_budgetController.text.trim())
                 : null,
+        emoji: _emoji,
       );
       await getItInstance<ApiClient>().updateCategory(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);
@@ -102,7 +106,21 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                BudgetInputField(label: 'Name', controller: _nameController),
+                Row(
+                  children: [
+                    Expanded(
+                      child: BudgetInputField(label: 'Name', controller: _nameController),
+                    ),
+                    const SizedBox(width: AppSizes.spaceM16),
+                    EmojiPickerButton(
+                      selectedEmoji: _emoji,
+                      onEmojiSelected: (emoji) {
+                        setState(() => _emoji = emoji);
+                      },
+                      size: 48,
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 12),
                 if (_type == CategoryType.purchase)
                   BudgetInputField(

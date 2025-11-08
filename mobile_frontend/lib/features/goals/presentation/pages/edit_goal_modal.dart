@@ -6,6 +6,7 @@ import '../../../../core/di/get_it.dart';
 import '../../data/model/goal.dart';
 import 'package:Finance/features/shared/presentation/widgets/app_buttons/save_button.dart';
 import '../cubit/goals_cubit.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class EditGoalModal extends StatefulWidget {
   final Goal goal;
@@ -19,6 +20,7 @@ class _EditGoalModalState extends State<EditGoalModal> {
   late final TextEditingController _nameCtrl;
   late final TextEditingController _targetCtrl;
   DateTime? _targetDate;
+  String? _emoji;
   bool _saving = false;
 
   @override
@@ -32,6 +34,7 @@ class _EditGoalModalState extends State<EditGoalModal> {
         widget.goal.targetDate != null
             ? DateTime.tryParse(widget.goal.targetDate!)
             : null;
+    _emoji = widget.goal.emoji;
   }
 
   @override
@@ -56,6 +59,7 @@ class _EditGoalModalState extends State<EditGoalModal> {
         name: name.isEmpty ? null : name,
         targetAmount: target,
         targetDate: dateStr,
+        emoji: _emoji,
       );
       if (mounted) Navigator.pop(context, true);
     } finally {
@@ -91,11 +95,25 @@ class _EditGoalModalState extends State<EditGoalModal> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextField(
-                        controller: _nameCtrl,
-                        decoration: const InputDecoration(
-                          labelText: 'Goal name',
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _nameCtrl,
+                              decoration: const InputDecoration(
+                                labelText: 'Goal name',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSizes.spaceM16),
+                          EmojiPickerButton(
+                            selectedEmoji: _emoji,
+                            onEmojiSelected: (emoji) {
+                              setState(() => _emoji = emoji);
+                            },
+                            size: 48,
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       TextField(

@@ -12,7 +12,8 @@ part of 'main_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$MainState {
@@ -47,15 +48,17 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? currentIndex = null,
-  }) {
-    return _then(_value.copyWith(
-      currentIndex: null == currentIndex
-          ? _value.currentIndex
-          : currentIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  $Res call({Object? currentIndex = null}) {
+    return _then(
+      _value.copyWith(
+            currentIndex:
+                null == currentIndex
+                    ? _value.currentIndex
+                    : currentIndex // ignore: cast_nullable_to_non_nullable
+                        as int,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -63,8 +66,9 @@ class _$MainStateCopyWithImpl<$Res, $Val extends MainState>
 abstract class _$$MainStateImplCopyWith<$Res>
     implements $MainStateCopyWith<$Res> {
   factory _$$MainStateImplCopyWith(
-          _$MainStateImpl value, $Res Function(_$MainStateImpl) then) =
-      __$$MainStateImplCopyWithImpl<$Res>;
+    _$MainStateImpl value,
+    $Res Function(_$MainStateImpl) then,
+  ) = __$$MainStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int currentIndex});
@@ -75,22 +79,24 @@ class __$$MainStateImplCopyWithImpl<$Res>
     extends _$MainStateCopyWithImpl<$Res, _$MainStateImpl>
     implements _$$MainStateImplCopyWith<$Res> {
   __$$MainStateImplCopyWithImpl(
-      _$MainStateImpl _value, $Res Function(_$MainStateImpl) _then)
-      : super(_value, _then);
+    _$MainStateImpl _value,
+    $Res Function(_$MainStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of MainState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? currentIndex = null,
-  }) {
-    return _then(_$MainStateImpl(
-      currentIndex: null == currentIndex
-          ? _value.currentIndex
-          : currentIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+  $Res call({Object? currentIndex = null}) {
+    return _then(
+      _$MainStateImpl(
+        currentIndex:
+            null == currentIndex
+                ? _value.currentIndex
+                : currentIndex // ignore: cast_nullable_to_non_nullable
+                    as int,
+      ),
+    );
   }
 }
 

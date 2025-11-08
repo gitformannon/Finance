@@ -85,11 +85,37 @@ class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit(this._addTransaction, this._getCategories, this._getAccounts)
       : super(TransactionState(date: DateTime.now()));
 
-  void setType(TransactionType type) => emit(state.copyWith(type: type));
+  /// Parse amount from formatted currency string
+  static double parseAmount(String text) {
+    final digitsOnly = text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.isEmpty) return 0;
+    try {
+      return double.parse(digitsOnly);
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  void setType(TransactionType type) {
+    emit(state.copyWith(type: type));
+    // Automatically reload categories/accounts when type changes
+    if (type == TransactionType.transfer) {
+      loadAccounts();
+    } else {
+      loadCategories();
+    }
+  }
+
   void setAccountId(String id) => emit(state.copyWith(accountId: id));
   void setToAccountId(String id) => emit(state.copyWith(toAccountId: id));
   void setCategoryId(String id) => emit(state.copyWith(categoryId: id));
   void setAmount(double value) => emit(state.copyWith(amount: value));
+  
+  /// Set amount from formatted currency string
+  void setAmountFromString(String formattedText) {
+    setAmount(parseAmount(formattedText));
+  }
+  
   void setDate(DateTime date) => emit(state.copyWith(date: date));
   void setNote(String note) => emit(state.copyWith(note: note));
 

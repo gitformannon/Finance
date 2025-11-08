@@ -9,6 +9,7 @@ import '../widgets/budget_dropdown_field.dart';
 import '../widgets/budget_input_field.dart';
 import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../shared/presentation/widgets/bottom_sheet_models/w_bottom_widget.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class AddAccountModal extends StatefulWidget {
   const AddAccountModal({super.key});
@@ -133,10 +134,22 @@ class _AddAccountModalState extends State<AddAccountModal> {
                                     ),
                                   ),
                                 ),
-                                BudgetInputField(
-                                  label: 'Name',
-                                  controller: _nameController,
-                                  onChanged: cubit.setName,
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: BudgetInputField(
+                                        label: 'Name',
+                                        controller: _nameController,
+                                        onChanged: cubit.setName,
+                                      ),
+                                    ),
+                                    SizedBox(width: AppSizes.spaceM16.w),
+                                    EmojiPickerButton(
+                                      selectedEmoji: state.emoji,
+                                      onEmojiSelected: cubit.setEmoji,
+                                      size: 48,
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
                                 BudgetInputField(

@@ -4,48 +4,50 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/helpers/formatters_helpers.dart';
 import '../cubit/monthly_totals_cubit.dart';
+import '../cubit/accounts_list_cubit.dart';
 import 'animated_amount.dart';
 
 class BudgetSummaryHeader extends StatelessWidget {
-  final int accountsBalance;
-
-  const BudgetSummaryHeader({
-    super.key,
-    required this.accountsBalance,
-  });
+  const BudgetSummaryHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.box,
-            AppColors.box,
-          ],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+    return BlocBuilder<AccountsListCubit, AccountsListState>(
+      builder: (context, accountsState) {
+        final accountsBalance = accountsState.accounts.isEmpty
+            ? 0
+            : accountsState.accounts.fold(0, (acc, a) => acc + a.balance);
+        
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.box,
+                AppColors.box,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Container(
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Total balance', style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 8),
-            Text('${Formatters.moneyStringFormatter(accountsBalance)} UZS',
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Total balance', style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 8),
+                Text('${Formatters.moneyStringFormatter(accountsBalance)} UZS',
+                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             BlocBuilder<MonthlyTotalsCubit, MonthlyTotalsState>(
               builder: (context, state) {
@@ -140,6 +142,8 @@ class BudgetSummaryHeader extends StatelessWidget {
           ],
         ),
       ),
+        );
+      },
     );
   }
 }

@@ -5,6 +5,7 @@ class Account {
   final int? type;
   final int balance;
   final String? institution;
+  final String? emoji;
 
   Account({
     required this.id,
@@ -13,6 +14,7 @@ class Account {
     this.type,
     required this.balance,
     this.institution,
+    this.emoji,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class Account {
           : int.tryParse(json['account_type']?.toString() ?? ''),
       balance: (json['balance'] as num? ?? 0).toInt(),
       institution: json['institution'] as String?,
+      emoji: json['emoji'] as String?,
     );
   }
 }

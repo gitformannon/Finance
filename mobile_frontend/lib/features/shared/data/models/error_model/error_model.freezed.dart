@@ -12,7 +12,8 @@ part of 'error_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 ErrorModel _$ErrorModelFromJson(Map<String, dynamic> json) {
   return _ErrorModel.fromJson(json);
@@ -37,8 +38,9 @@ mixin _$ErrorModel {
 /// @nodoc
 abstract class $ErrorModelCopyWith<$Res> {
   factory $ErrorModelCopyWith(
-          ErrorModel value, $Res Function(ErrorModel) then) =
-      _$ErrorModelCopyWithImpl<$Res, ErrorModel>;
+    ErrorModel value,
+    $Res Function(ErrorModel) then,
+  ) = _$ErrorModelCopyWithImpl<$Res, ErrorModel>;
   @useResult
   $Res call({String message, String error, int statusCode});
 }
@@ -62,20 +64,26 @@ class _$ErrorModelCopyWithImpl<$Res, $Val extends ErrorModel>
     Object? error = null,
     Object? statusCode = null,
   }) {
-    return _then(_value.copyWith(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-      statusCode: null == statusCode
-          ? _value.statusCode
-          : statusCode // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            message:
+                null == message
+                    ? _value.message
+                    : message // ignore: cast_nullable_to_non_nullable
+                        as String,
+            error:
+                null == error
+                    ? _value.error
+                    : error // ignore: cast_nullable_to_non_nullable
+                        as String,
+            statusCode:
+                null == statusCode
+                    ? _value.statusCode
+                    : statusCode // ignore: cast_nullable_to_non_nullable
+                        as int,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -83,8 +91,9 @@ class _$ErrorModelCopyWithImpl<$Res, $Val extends ErrorModel>
 abstract class _$$ErrorModelImplCopyWith<$Res>
     implements $ErrorModelCopyWith<$Res> {
   factory _$$ErrorModelImplCopyWith(
-          _$ErrorModelImpl value, $Res Function(_$ErrorModelImpl) then) =
-      __$$ErrorModelImplCopyWithImpl<$Res>;
+    _$ErrorModelImpl value,
+    $Res Function(_$ErrorModelImpl) then,
+  ) = __$$ErrorModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String message, String error, int statusCode});
@@ -95,8 +104,9 @@ class __$$ErrorModelImplCopyWithImpl<$Res>
     extends _$ErrorModelCopyWithImpl<$Res, _$ErrorModelImpl>
     implements _$$ErrorModelImplCopyWith<$Res> {
   __$$ErrorModelImplCopyWithImpl(
-      _$ErrorModelImpl _value, $Res Function(_$ErrorModelImpl) _then)
-      : super(_value, _then);
+    _$ErrorModelImpl _value,
+    $Res Function(_$ErrorModelImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of ErrorModel
   /// with the given fields replaced by the non-null parameter values.
@@ -107,28 +117,36 @@ class __$$ErrorModelImplCopyWithImpl<$Res>
     Object? error = null,
     Object? statusCode = null,
   }) {
-    return _then(_$ErrorModelImpl(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-      statusCode: null == statusCode
-          ? _value.statusCode
-          : statusCode // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+    return _then(
+      _$ErrorModelImpl(
+        message:
+            null == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                    as String,
+        error:
+            null == error
+                ? _value.error
+                : error // ignore: cast_nullable_to_non_nullable
+                    as String,
+        statusCode:
+            null == statusCode
+                ? _value.statusCode
+                : statusCode // ignore: cast_nullable_to_non_nullable
+                    as int,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$ErrorModelImpl implements _ErrorModel {
-  const _$ErrorModelImpl(
-      {this.message = "", this.error = "", this.statusCode = 400});
+  const _$ErrorModelImpl({
+    this.message = "",
+    this.error = "",
+    this.statusCode = 400,
+  });
 
   factory _$ErrorModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ErrorModelImplFromJson(json);
@@ -173,17 +191,16 @@ class _$ErrorModelImpl implements _ErrorModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ErrorModelImplToJson(
-      this,
-    );
+    return _$$ErrorModelImplToJson(this);
   }
 }
 
 abstract class _ErrorModel implements ErrorModel {
-  const factory _ErrorModel(
-      {final String message,
-      final String error,
-      final int statusCode}) = _$ErrorModelImpl;
+  const factory _ErrorModel({
+    final String message,
+    final String error,
+    final int statusCode,
+  }) = _$ErrorModelImpl;
 
   factory _ErrorModel.fromJson(Map<String, dynamic> json) =
       _$ErrorModelImpl.fromJson;

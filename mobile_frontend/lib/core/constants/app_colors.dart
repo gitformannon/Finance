@@ -7,7 +7,7 @@ class AppColors {
   static const Color secondary = Color(0xFFA2F7A1);
   static const Color accent = Color(0xFF3E7C76);
   static const Color background = Color(0xFFFFFFFF); // Changed to white
-//  static const Color pageBackground = Color(0xFF030213);
+  static const Color pageBackground2 = Color(0xFF030213);
   static const Color pageBackground = Color(0xFFCBCED4);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color textPrimary = Color(0xFF131313);

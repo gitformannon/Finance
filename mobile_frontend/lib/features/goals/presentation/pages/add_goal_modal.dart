@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/di/get_it.dart';
 import '../../presentation/cubit/goals_cubit.dart';
 import 'package:Finance/features/shared/presentation/widgets/bottom_sheet_models/w_bottom_widget.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class AddGoalModal extends StatefulWidget {
   const AddGoalModal({super.key});
@@ -38,6 +39,7 @@ class _AddGoalModalState extends State<AddGoalModal> {
   final _nameCtrl = TextEditingController();
   final _targetCtrl = TextEditingController();
   DateTime? _targetDate;
+  String? _selectedEmoji;
 
   @override
   void dispose() {
@@ -87,11 +89,25 @@ class _AddGoalModalState extends State<AddGoalModal> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextField(
-                        controller: _nameCtrl,
-                        decoration: const InputDecoration(
-                          labelText: 'Goal name',
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: _nameCtrl,
+                              decoration: const InputDecoration(
+                                labelText: 'Goal name',
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          EmojiPickerButton(
+                            selectedEmoji: _selectedEmoji,
+                            onEmojiSelected: (emoji) {
+                              setState(() => _selectedEmoji = emoji);
+                            },
+                            size: 48,
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       TextField(
@@ -146,6 +162,7 @@ class _AddGoalModalState extends State<AddGoalModal> {
                                           name,
                                           target,
                                           targetDate: dateStr,
+                                          emoji: _selectedEmoji,
                                         );
                                     if (context.mounted) Navigator.pop(context);
                                   }

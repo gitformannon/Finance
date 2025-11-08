@@ -11,6 +11,7 @@ import '../widgets/budget_input_field.dart';
 import '../../../../core/helpers/enums_helpers.dart';
 import '../../../shared/presentation/widgets/app_buttons/save_button.dart';
 import '../../../shared/presentation/widgets/bottom_sheet_models/w_bottom_widget.dart';
+import '../../../../core/widgets/emoji_picker/emoji_picker_button.dart';
 
 class AddCategoryModal extends StatefulWidget {
   final CategoryType? type;
@@ -148,10 +149,22 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                                 ),
                                 SizedBox(height: AppSizes.spaceM16.h),
                               ],
-                              BudgetInputField(
-                                label: 'Name',
-                                controller: _nameController,
-                                onChanged: cubit.setName,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: BudgetInputField(
+                                      label: 'Name',
+                                      controller: _nameController,
+                                      onChanged: cubit.setName,
+                                    ),
+                                  ),
+                                  SizedBox(width: AppSizes.spaceM16.w),
+                                  EmojiPickerButton(
+                                    selectedEmoji: state.emoji,
+                                    onEmojiSelected: cubit.setEmoji,
+                                    size: 48,
+                                  ),
+                                ],
                               ),
                               SizedBox(height: AppSizes.spaceM16.h),
                               if ((widget.type ?? cubit.state.type) ==
