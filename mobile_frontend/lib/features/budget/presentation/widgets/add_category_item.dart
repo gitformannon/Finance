@@ -23,7 +23,6 @@ class AddCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(AppSizes.borderMedium);
 
     return GestureDetector(
       onTap: () async {

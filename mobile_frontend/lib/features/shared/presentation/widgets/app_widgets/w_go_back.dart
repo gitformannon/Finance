@@ -2,7 +2,6 @@ import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/locale_keys.dart';
 import 'app_widgets.dart';
 
 class WGoBack extends StatelessWidget {
