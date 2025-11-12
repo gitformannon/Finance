@@ -196,13 +196,6 @@ class _ContribButton extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.black12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
-              blurRadius: 2,
-              offset: const Offset(0, 1),
-            )
-          ],
         ),
         child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
       ),

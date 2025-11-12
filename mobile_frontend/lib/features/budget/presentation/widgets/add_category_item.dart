@@ -47,7 +47,7 @@ class AddCategoryItem extends StatelessWidget {
               padding: const EdgeInsets.all(AppSizes.paddingS),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.def.withValues(alpha: 0.2),
+                color: AppColors.box,
               ),
               height: 28.w,
               width: 28.w,

@@ -46,7 +46,7 @@ class _EditAccountModalState extends State<EditAccountModal> {
       text: widget.account.institution ?? '',
     );
     _type = widget.account.type;
-    _emoji = widget.account.emoji;
+    _emoji = widget.account.emoji_path;
   }
 
   @override
@@ -72,7 +72,7 @@ class _EditAccountModalState extends State<EditAccountModal> {
             _institutionController.text.trim().isEmpty
                 ? null
                 : _institutionController.text.trim(),
-        emoji: _emoji,
+        emoji_path: _emoji,
       );
       await getItInstance<ApiClient>().updateAccount(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);

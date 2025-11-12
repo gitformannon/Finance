@@ -14,6 +14,7 @@ class Goal(Base):
     target_amount = Column(BigInteger, nullable=False)
     current_amount = Column(BigInteger, nullable=False, default=0)
     target_date = Column(Date, nullable=True)
+    emoji_path = Column(String(255), nullable=True)  # Path to emoji SVG file in assets
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 

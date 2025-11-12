@@ -160,8 +160,8 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
                                   ),
                                   SizedBox(width: AppSizes.spaceM16.w),
                                   EmojiPickerButton(
-                                    selectedEmoji: state.emoji,
-                                    onEmojiSelected: cubit.setEmoji,
+                                    selectedEmoji: state.emoji_path,
+                                    onEmojiSelected: cubit.setEmojiPath,
                                     size: 48,
                                   ),
                                 ],
@@ -225,15 +225,6 @@ class _AddCategoryModalState extends State<AddCategoryModal> {
             bottom: BorderSide(color: AppColors.def, width: 0.5),
           ),
           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
-          boxShadow: [
-            BoxShadow(
-              color: !selected ? AppColors.transparent : AppColors.primary,
-              blurRadius: !selected ? 0 : 5,
-              spreadRadius: !selected ? 0.1 : 0,
-              blurStyle: BlurStyle.outer,
-              offset: const Offset(0, 0),
-            ),
-          ],
         ),
         alignment: Alignment.center,
         child: Text(label, style: AppTextStyles.bodyRegular),

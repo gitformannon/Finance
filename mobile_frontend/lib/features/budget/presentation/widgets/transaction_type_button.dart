@@ -41,9 +41,9 @@ class TransactionTypeButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.borderMedium),
           border: Border.all(
             color: selected
-                ? (selectedBoxBorderColor ?? AppColors.def)
+                ? (selectedBoxBorderColor ?? AppColors.primary)
                 : (boxBorderColor ?? AppColors.def),
-            width: 0.5
+            width: 1
           )
         ),
         child: Text(

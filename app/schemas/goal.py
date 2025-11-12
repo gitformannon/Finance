@@ -8,6 +8,7 @@ class GoalCreate(BaseModel):
     target_amount: int
     target_date: date | None = None
     initial_amount: int = 0
+    emoji_path: str | None = None
 
 
 class GoalRead(BaseModel):
@@ -16,6 +17,7 @@ class GoalRead(BaseModel):
     target_amount: int
     current_amount: int
     target_date: date | None = None
+    emoji_path: str | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -28,3 +30,4 @@ class GoalUpdate(BaseModel):
     name: str | None = None
     target_amount: int | None = None
     target_date: date | None = None
+    emoji_path: str | None = None

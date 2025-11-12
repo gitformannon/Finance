@@ -77,25 +77,10 @@ class _AccountCardInline extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: Container(
           padding: const EdgeInsets.all(AppSizes.padding16),
-          width: double.maxFinite,
           decoration: BoxDecoration(
+            color: AppColors.box,
             borderRadius: BorderRadius.circular(AppSizes.borderSM16),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.background,
-                AppColors.background,
-              ],
-            ),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-              ),
-            ],
+            border: Border.all(color: AppColors.def, width: 1.0)
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -108,7 +93,7 @@ class _AccountCardInline extends StatelessWidget {
                     child: CircleAvatar(
                         radius: 24,
                         backgroundColor: meta.bg,
-                        child: Icon(meta.icon, color: Colors.white),
+                        child: _buildAccountIcon(acc.emoji_path, meta.icon),
                     ),
                   ),
                   Column(
@@ -211,5 +196,22 @@ _TypeMeta _typeMeta(int type) {
     default:
       return _TypeMeta('Other', Icons.account_balance, Colors.grey, Colors.grey.shade200, Colors.grey.shade800);
   }
+}
+
+/// Builds the account icon widget, using emoji if available, otherwise default icon
+Widget _buildAccountIcon(String? emojiPath, IconData defaultIcon) {
+  if (emojiPath != null && emojiPath.isNotEmpty) {
+    return Image.asset(
+      emojiPath,
+      width: 36,
+      height: 36,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        // Fallback to default icon if emoji fails to load
+        return Icon(defaultIcon, color: Colors.white);
+      },
+    );
+  }
+  return Icon(defaultIcon, color: Colors.white);
 }
 

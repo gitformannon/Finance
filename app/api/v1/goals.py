@@ -40,6 +40,7 @@ async def create_goal(
         target_amount=int(data.target_amount),
         current_amount=int(data.initial_amount),
         target_date=data.target_date,
+        emoji_path=data.emoji_path,
     )
     session.add(goal)
     await session.commit()
@@ -91,6 +92,8 @@ async def update_goal(
             goal.current_amount = goal.target_amount
     if data.target_date is not None:
         goal.target_date = data.target_date
+    if data.emoji_path is not None:
+        goal.emoji_path = data.emoji_path
     await session.commit()
     await session.refresh(goal)
     return goal

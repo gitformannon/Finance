@@ -94,7 +94,7 @@ class _AccountCard extends StatelessWidget {
           CircleAvatar(
             radius: 22,
             backgroundColor: meta.bg,
-            child: Icon(meta.icon, color: Colors.white),
+            child: _buildAccountIcon(acc.emoji_path, meta.icon),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -172,4 +172,21 @@ _TypeMeta _typeMeta(int type) {
     default:
       return _TypeMeta('Other', Icons.account_balance, Colors.grey, Colors.grey.shade200, Colors.grey.shade800);
   }
+}
+
+/// Builds the account icon widget, using emoji if available, otherwise default icon
+Widget _buildAccountIcon(String? emojiPath, IconData defaultIcon) {
+  if (emojiPath != null && emojiPath.isNotEmpty) {
+    return Image.asset(
+      emojiPath,
+      width: 32,
+      height: 32,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        // Fallback to default icon if emoji fails to load
+        return Icon(defaultIcon, color: Colors.white);
+      },
+    );
+  }
+  return Icon(defaultIcon, color: Colors.white);
 }

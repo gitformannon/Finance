@@ -4,7 +4,7 @@ class CreateAccountRequest {
   final int? accountType;
   final int initialBalance;
   final String? institution;
-  final String? emoji;
+  final String? emoji_path;
 
   CreateAccountRequest({
     this.accountName,
@@ -12,7 +12,7 @@ class CreateAccountRequest {
     this.accountType,
     this.initialBalance = 0,
     this.institution,
-    this.emoji,
+    this.emoji_path,
   });
 
   Map<String, dynamic> toJson() => {
@@ -21,6 +21,6 @@ class CreateAccountRequest {
       'account_type': accountType,
       'initial_balance': initialBalance,
       'institution': institution,
-      'emoji': emoji,
+      'emoji_path': emoji_path,
       }..removeWhere((key, value) => value == null);
 }

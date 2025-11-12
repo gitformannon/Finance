@@ -13,7 +13,7 @@ Goal _$GoalFromJson(Map<String, dynamic> json) => Goal(
   currentAmount: (json['current_amount'] as num).toInt(),
   createdAt: json['created_at'] as String,
   targetDate: json['target_date'] as String?,
-  emoji: json['emoji'] as String?,
+  emoji_path: json['emoji_path'] as String?,
 );
 
 Map<String, dynamic> _$GoalToJson(Goal instance) => <String, dynamic>{
@@ -23,5 +23,5 @@ Map<String, dynamic> _$GoalToJson(Goal instance) => <String, dynamic>{
   'current_amount': instance.currentAmount,
   'target_date': instance.targetDate,
   'created_at': instance.createdAt,
-  'emoji': instance.emoji,
+  'emoji_path': instance.emoji_path,
 };

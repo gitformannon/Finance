@@ -17,6 +17,8 @@ class SaveButton extends StatelessWidget {
     this.margin,
     this.padding,
     this.backgroundColor,
+    this.enabledBackgroundColor,
+    this.disabledBackgroundColor,
     this.textStyle,
     this.borderRadius,
     this.hasError = false,
@@ -31,6 +33,8 @@ class SaveButton extends StatelessWidget {
   final EdgeInsets? margin;
   final EdgeInsets? padding;
   final Color? backgroundColor;
+  final Color? enabledBackgroundColor;
+  final Color? disabledBackgroundColor;
   final TextStyle? textStyle;
   final double? borderRadius;
   final bool hasError;
@@ -46,7 +50,8 @@ class SaveButton extends StatelessWidget {
       height: height ?? AppSizes.buttonHeight,
       margin: margin,
       padding: padding,
-      backgroundColor: backgroundColor ?? AppColors.transparent,
+      backgroundColor: backgroundColor ?? enabledBackgroundColor ?? AppColors.primary,
+      disabledBackgroundColor: disabledBackgroundColor,
       textStyle: textStyle,
       borderRadius: borderRadius ?? AppSizes.borderLarge,
       hasError: hasError,

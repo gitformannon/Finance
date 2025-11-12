@@ -97,18 +97,28 @@ class TransactionCubit extends Cubit<TransactionState> {
   }
 
   void setType(TransactionType type) {
-    emit(state.copyWith(type: type));
-    // Automatically reload categories/accounts when type changes
+    // Clear the opposite selection when switching types
     if (type == TransactionType.transfer) {
+      // Switching to transfer: clear category selection
+      emit(state.copyWith(type: type, categoryId: ''));
       loadAccounts();
     } else {
+      // Switching to income/purchase: clear transfer account selection
+      emit(state.copyWith(type: type, toAccountId: ''));
       loadCategories();
     }
   }
 
   void setAccountId(String id) => emit(state.copyWith(accountId: id));
-  void setToAccountId(String id) => emit(state.copyWith(toAccountId: id));
-  void setCategoryId(String id) => emit(state.copyWith(categoryId: id));
+  void setToAccountId(String id) {
+    // When selecting a transfer account, clear category selection
+    emit(state.copyWith(toAccountId: id, categoryId: ''));
+  }
+  
+  void setCategoryId(String id) {
+    // When selecting a category, clear transfer account selection
+    emit(state.copyWith(categoryId: id, toAccountId: ''));
+  }
   void setAmount(double value) => emit(state.copyWith(amount: value));
   
   /// Set amount from formatted currency string

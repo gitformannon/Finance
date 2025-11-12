@@ -14,7 +14,8 @@ class Goal {
   final String? targetDate; // ISO date
   @JsonKey(name: 'created_at')
   final String createdAt; // ISO datetime
-  final String? emoji;
+  @JsonKey(name: 'emoji_path')
+  final String? emoji_path;
 
   const Goal({
     required this.id,
@@ -23,7 +24,7 @@ class Goal {
     required this.currentAmount,
     required this.createdAt,
     this.targetDate,
-    this.emoji,
+    this.emoji_path,
   });
 
   factory Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);

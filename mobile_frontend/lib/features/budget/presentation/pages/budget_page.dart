@@ -111,7 +111,7 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.pageBackground,
+      backgroundColor: AppColors.background,
       extendBody: true,
       body: SafeArea(
         bottom: false,

@@ -32,6 +32,7 @@ class Account(Base):
     balance = Column(BigInteger, nullable=False, default=0)
     initial_balance = Column(Integer, nullable=False, default=0)
     limit = Column(BigInteger, nullable=True)  # лимит для кредитных карт
+    emoji_path = Column(String(255), nullable=True)  # Path to emoji SVG file in assets
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 

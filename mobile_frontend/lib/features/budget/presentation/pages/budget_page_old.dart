@@ -260,13 +260,6 @@ class _BudgetPageState extends State<BudgetPage> with TickerProviderStateMixin {
                   AppColors.def.withValues(alpha: 0.10),
                 ],
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
             ),
             child: Container(
               width: double.infinity,
@@ -1158,13 +1151,6 @@ class _BudgetCategoryCard extends StatelessWidget {
             AppColors.def.withValues(alpha: 0.04),
           ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
-          ),
-        ],
         border: Border.all(color: AppColors.def.withValues(alpha: 0.25)),
       ),
       child: Column(

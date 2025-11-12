@@ -41,6 +41,7 @@ class _TopSegmentedBarState extends State<TopSegmentedBar> {
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+        border: Border.all(color: AppColors.def, width: 1.0)
       ),
       padding: const EdgeInsets.all(AppSizes.paddingS),
       child: SizedBox(

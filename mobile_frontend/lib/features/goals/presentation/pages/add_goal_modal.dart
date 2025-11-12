@@ -162,7 +162,7 @@ class _AddGoalModalState extends State<AddGoalModal> {
                                           name,
                                           target,
                                           targetDate: dateStr,
-                                          emoji: _selectedEmoji,
+                                          emoji_path: _selectedEmoji,
                                         );
                                     if (context.mounted) Navigator.pop(context);
                                   }

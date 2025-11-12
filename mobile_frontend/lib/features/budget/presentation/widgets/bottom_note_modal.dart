@@ -69,6 +69,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
 
     return SafeArea(
       top: false,
+      bottom: false,
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOutCubic,
@@ -83,6 +84,16 @@ class _BottomNoteModal extends State<BottomNoteModal> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Handle bar
+                Container(
+                  width: 60,
+                  height: 5,
+                  margin: const EdgeInsets.symmetric(vertical: AppSizes.spaceS12),
+                  decoration: BoxDecoration(
+                    color: AppColors.def.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     maxHeight: media.size.height * 0.6,
@@ -112,6 +123,7 @@ class _BottomNoteModal extends State<BottomNoteModal> {
                       widget.onSelect(_controller.text);
                       Navigator.of(context).pop();
                     },
+                    text: 'Add note',
                   ),
                 ),
               ],
@@ -147,8 +159,9 @@ class BottomNoteField extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors.def.withValues(alpha: 0.2),
+              color: AppColors.box,
               borderRadius: BorderRadius.circular(AppSizes.borderSmall),
+              border: Border.all(color: AppColors.def, width: 1.0)
             ),
             child: const Padding(
               padding: EdgeInsets.all(AppSizes.paddingS),

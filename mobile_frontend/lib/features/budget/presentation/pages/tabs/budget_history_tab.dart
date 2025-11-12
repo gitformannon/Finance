@@ -43,7 +43,7 @@ class _BudgetHistoryTabState extends State<BudgetHistoryTab> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textWhite
+                        color: AppColors.textSecondary
                       ),
                     ),
                   )
@@ -54,7 +54,7 @@ class _BudgetHistoryTabState extends State<BudgetHistoryTab> {
                   Container(
                     child: Text('Date: ${DateFormat('d MMMM y').format(context.watch<BudgetCubit>().state.selectedDate)}',
                       style: TextStyle(
-                        color: AppColors.textWhite
+                        color: AppColors.textSecondary
                       ),
                     ),
                   )
@@ -125,8 +125,9 @@ class _BudgetHistoryTabState extends State<BudgetHistoryTab> {
                     key: ValueKey('tx-${tx.id ?? ''}-${index}'),
                     margin: const EdgeInsets.only(bottom: AppSizes.padding8),
                     decoration: BoxDecoration(
+                      color: AppColors.box,
                       borderRadius: BorderRadius.circular(AppSizes.borderSM16),
-                      color: AppColors.box
+                      border: Border.all(color: AppColors.def, width: 1.0)
                     ),
                     child: ListTile(
                       title: Text(tx.categoryName ?? tx.title),
@@ -158,8 +159,10 @@ class _BudgetHistoryTabState extends State<BudgetHistoryTab> {
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.box,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+          border: Border.all(color: AppColors.def, width: 1.0)
         ),
+
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -34,7 +34,7 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
           (widget.category.budget ?? 0) == 0 ? '' : '${widget.category.budget}',
     );
     _type = widget.category.type;
-    _emoji = widget.category.emoji;
+    _emoji = widget.category.emoji_path;
   }
 
   @override
@@ -55,7 +55,7 @@ class _EditCategoryModalState extends State<EditCategoryModal> {
             _type == CategoryType.purchase
                 ? int.tryParse(_budgetController.text.trim())
                 : null,
-        emoji: _emoji,
+        emoji_path: _emoji,
       );
       await getItInstance<ApiClient>().updateCategory(req.id, req.toJson());
       if (mounted) Navigator.pop(context, true);

@@ -145,8 +145,8 @@ class _AddAccountModalState extends State<AddAccountModal> {
                                     ),
                                     SizedBox(width: AppSizes.spaceM16.w),
                                     EmojiPickerButton(
-                                      selectedEmoji: state.emoji,
-                                      onEmojiSelected: cubit.setEmoji,
+                                      selectedEmoji: state.emoji_path,
+                                      onEmojiSelected: cubit.setEmojiPath,
                                       size: 48,
                                     ),
                                   ],

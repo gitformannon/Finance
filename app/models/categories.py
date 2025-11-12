@@ -40,5 +40,6 @@ class Category(Base):
     name = Column(String(50), nullable=False)
     type = Column(IntEnumType(CategoryType), nullable=False)
     budget = Column(BigInteger, nullable=True)
+    emoji_path = Column(String(255), nullable=True)  # Path to emoji SVG file in assets
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)

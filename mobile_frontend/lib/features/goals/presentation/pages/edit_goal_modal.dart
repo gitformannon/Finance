@@ -34,7 +34,7 @@ class _EditGoalModalState extends State<EditGoalModal> {
         widget.goal.targetDate != null
             ? DateTime.tryParse(widget.goal.targetDate!)
             : null;
-    _emoji = widget.goal.emoji;
+    _emoji = widget.goal.emoji_path;
   }
 
   @override
@@ -59,7 +59,7 @@ class _EditGoalModalState extends State<EditGoalModal> {
         name: name.isEmpty ? null : name,
         targetAmount: target,
         targetDate: dateStr,
-        emoji: _emoji,
+        emoji_path: _emoji,
       );
       if (mounted) Navigator.pop(context, true);
     } finally {

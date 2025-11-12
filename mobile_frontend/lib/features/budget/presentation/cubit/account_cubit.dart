@@ -10,7 +10,7 @@ class AccountState extends Equatable {
   final String institution;
   final int? type;
   final int balance;
-  final String? emoji;
+  final String? emoji_path;
   final RequestStatus status;
   final String errorMessage;
 
@@ -20,7 +20,7 @@ class AccountState extends Equatable {
     this.institution = '',
     this.type,
     this.balance = 0,
-    this.emoji,
+    this.emoji_path,
     this.status = RequestStatus.initial,
     this.errorMessage = '',
   });
@@ -31,7 +31,7 @@ class AccountState extends Equatable {
     String? institution,
     int? type,
     int? balance,
-    String? emoji,
+    String? emoji_path,
     RequestStatus? status,
     String? errorMessage,
   }) => AccountState(
@@ -40,13 +40,13 @@ class AccountState extends Equatable {
         institution: institution ?? this.institution,
         type: type ?? this.type,
         balance: balance ?? this.balance,
-        emoji: emoji ?? this.emoji,
+        emoji_path: emoji_path ?? this.emoji_path,
         status: status ?? this.status,
         errorMessage: errorMessage ?? this.errorMessage,
       );
 
   @override
-  List<Object?> get props => [name, number, institution, type, balance, emoji, status, errorMessage];
+  List<Object?> get props => [name, number, institution, type, balance, emoji_path, status, errorMessage];
 }
 
 class AccountCubit extends Cubit<AccountState> {
@@ -58,7 +58,7 @@ class AccountCubit extends Cubit<AccountState> {
   void setInstitution(String v) => emit(state.copyWith(institution: v));
   void setType(int? v) => emit(state.copyWith(type: v));
   void setBalance(int v) => emit(state.copyWith(balance: v));
-  void setEmoji(String? v) => emit(state.copyWith(emoji: v));
+  void setEmojiPath(String? v) => emit(state.copyWith(emoji_path: v));
 
   Future<void> submit() async {
     emit(state.copyWith(status: RequestStatus.loading));
@@ -68,7 +68,7 @@ class AccountCubit extends Cubit<AccountState> {
       accountType: state.type,
       initialBalance: state.balance,
       institution: state.institution.isEmpty ? null : state.institution,
-      emoji: state.emoji,
+      emoji_path: state.emoji_path,
     );
     final result = await _addAccount(AddAccountParams(request));
     result.fold(

@@ -1,0 +1,14 @@
+EMOJI_SVG_ISSUE.md
+README
+README.md
+analysis_options.yaml
+android
+assets
+build
+ios
+ios_backup_20251005214753
+lib
+mobile_frontend.iml
+pubspec.lock
+pubspec.yaml
+test

@@ -90,6 +90,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
 
         return SafeArea(
           top: false,
+          bottom: false,
           child: AnimatedPadding(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOutCubic,
@@ -101,71 +102,91 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
               ),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: AppColors.pageBackground
+                  color: AppColors.background
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSizes.paddingM.w,
-                          vertical: AppSizes.spaceS12.h,
+                    // Main content
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Sticky section at the top
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSizes.paddingM.w,
+                            vertical: AppSizes.spaceS12.h,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (hasError)
+                                TransactionErrorBanner(errorMessage: state.errorMessage),
+                              TransactionAccountDropdown(state: state, cubit: cubit),
+                              SizedBox(height: AppSizes.spaceM16.h),
+                              TransactionTypeSelector(state: state, cubit: cubit),
+                              TransactionAmountInput(
+                                cubit: cubit,
+                                isFocused: _isAmountFocused,
+                                controller: _amountController,
+                                focusNode: _amountFocusNode,
+                                isUpdatingController: _isUpdatingController,
+                              ),
+                              SizedBox(height: AppSizes.spaceM16.h),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: BottomDatepickerField(
+                                      date: state.date,
+                                      onSelect: cubit.setDate,
+                                      maximumDate: DateTime.now(),
+                                    ),
+                                  ),
+                                  SizedBox(width: AppSizes.spaceXL24.w),
+                                  Expanded(
+                                    child: BottomNoteField(
+                                      note: state.note,
+                                      onSelect: cubit.setNote,
+                                      onTap: _amountFocusNode.unfocus,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (hasError)
-                              TransactionErrorBanner(errorMessage: state.errorMessage),
-                            TransactionAccountDropdown(state: state, cubit: cubit),
-                            SizedBox(height: AppSizes.spaceM16.h),
-                            TransactionTypeSelector(state: state, cubit: cubit),
-                            SizedBox(height: AppSizes.spaceM16.h),
-                            TransactionAmountInput(
-                              cubit: cubit,
-                              isFocused: _isAmountFocused,
-                              controller: _amountController,
-                              focusNode: _amountFocusNode,
-                              isUpdatingController: _isUpdatingController,
+                        // Scrollable section
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: EdgeInsets.only(
+                              left: AppSizes.paddingM.w,
+                              right: AppSizes.paddingM.w,
+                              top: AppSizes.spaceS12.h,
                             ),
-                            SizedBox(height: AppSizes.spaceM16.h),
-                            Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: BottomDatepickerField(
-                                    date: state.date,
-                                    onSelect: cubit.setDate,
-                                    maximumDate: DateTime.now(),
-                                  ),
-                                ),
-                                SizedBox(width: AppSizes.spaceXL24.w),
-                                Expanded(
-                                  child: BottomNoteField(
-                                    note: state.note,
-                                    onSelect: cubit.setNote,
-                                    onTap: _amountFocusNode.unfocus,
-                                  ),
-                                ),
+                                if (state.type == TransactionType.transfer)
+                                  TransactionTransferAccountsList(cubit: cubit, state: state)
+                                else
+                                  TransactionCategoryGrid(cubit: cubit, state: state),
+                                SizedBox(height: AppSizes.spaceXL24.h),
                               ],
                             ),
-                            SizedBox(height: AppSizes.spaceXL24.h),
-                            if (state.type == TransactionType.transfer)
-                              TransactionTransferAccountsList(cubit: cubit, state: state)
-                            else
-                              TransactionCategoryGrid(cubit: cubit, state: state),
-                            SizedBox(height: AppSizes.spaceXL24.h),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: AppSizes.paddingM.w,
-                        right: AppSizes.paddingM.w,
-                        bottom: bottomPadding,
-                        top: AppSizes.spaceS12.h,
-                      ),
+                    // Save button overlaying the content
+                    // Button is enabled when:
+                    // - Account is selected
+                    // - Amount > 0
+                    // - For transfer: transfer account is selected
+                    // - For income/purchase: category is selected
+                    Positioned(
+                      left: AppSizes.paddingM.w,
+                      right: AppSizes.paddingM.w,
+                      bottom: bottomPadding,
                       child: SaveButton(
                         onPressed: () {
                           // Ensure amount is synced before submit
@@ -174,6 +195,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
                         },
                         isDisabled: !state.isValid || state.status.isLoading(),
                         isLoading: state.status.isLoading(),
+                        disabledBackgroundColor: AppColors.def,
                       ),
                     ),
                   ],

@@ -20,7 +20,7 @@ mixin _$AddGoalState {
   String get name => throw _privateConstructorUsedError;
   int get targetAmount => throw _privateConstructorUsedError;
   DateTime? get targetDate => throw _privateConstructorUsedError;
-  String? get emoji => throw _privateConstructorUsedError;
+  String? get emoji_path => throw _privateConstructorUsedError;
   RequestStatus get status => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -42,7 +42,7 @@ abstract class $AddGoalStateCopyWith<$Res> {
     String name,
     int targetAmount,
     DateTime? targetDate,
-    String? emoji,
+    String? emoji_path,
     RequestStatus status,
     String? errorMessage,
   });
@@ -66,7 +66,7 @@ class _$AddGoalStateCopyWithImpl<$Res, $Val extends AddGoalState>
     Object? name = null,
     Object? targetAmount = null,
     Object? targetDate = freezed,
-    Object? emoji = freezed,
+    Object? emoji_path = freezed,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
@@ -87,10 +87,10 @@ class _$AddGoalStateCopyWithImpl<$Res, $Val extends AddGoalState>
                     ? _value.targetDate
                     : targetDate // ignore: cast_nullable_to_non_nullable
                         as DateTime?,
-            emoji:
-                freezed == emoji
-                    ? _value.emoji
-                    : emoji // ignore: cast_nullable_to_non_nullable
+            emoji_path:
+                freezed == emoji_path
+                    ? _value.emoji_path
+                    : emoji_path // ignore: cast_nullable_to_non_nullable
                         as String?,
             status:
                 null == status
@@ -121,7 +121,7 @@ abstract class _$$AddGoalStateImplCopyWith<$Res>
     String name,
     int targetAmount,
     DateTime? targetDate,
-    String? emoji,
+    String? emoji_path,
     RequestStatus status,
     String? errorMessage,
   });
@@ -144,7 +144,7 @@ class __$$AddGoalStateImplCopyWithImpl<$Res>
     Object? name = null,
     Object? targetAmount = null,
     Object? targetDate = freezed,
-    Object? emoji = freezed,
+    Object? emoji_path = freezed,
     Object? status = null,
     Object? errorMessage = freezed,
   }) {
@@ -165,10 +165,10 @@ class __$$AddGoalStateImplCopyWithImpl<$Res>
                 ? _value.targetDate
                 : targetDate // ignore: cast_nullable_to_non_nullable
                     as DateTime?,
-        emoji:
-            freezed == emoji
-                ? _value.emoji
-                : emoji // ignore: cast_nullable_to_non_nullable
+        emoji_path:
+            freezed == emoji_path
+                ? _value.emoji_path
+                : emoji_path // ignore: cast_nullable_to_non_nullable
                     as String?,
         status:
             null == status
@@ -192,7 +192,7 @@ class _$AddGoalStateImpl implements _AddGoalState {
     this.name = '',
     this.targetAmount = 0,
     this.targetDate,
-    this.emoji,
+    this.emoji_path,
     this.status = RequestStatus.initial,
     this.errorMessage,
   });
@@ -206,7 +206,7 @@ class _$AddGoalStateImpl implements _AddGoalState {
   @override
   final DateTime? targetDate;
   @override
-  final String? emoji;
+  final String? emoji_path;
   @override
   @JsonKey()
   final RequestStatus status;
@@ -215,7 +215,7 @@ class _$AddGoalStateImpl implements _AddGoalState {
 
   @override
   String toString() {
-    return 'AddGoalState(name: $name, targetAmount: $targetAmount, targetDate: $targetDate, emoji: $emoji, status: $status, errorMessage: $errorMessage)';
+    return 'AddGoalState(name: $name, targetAmount: $targetAmount, targetDate: $targetDate, emoji_path: $emoji_path, status: $status, errorMessage: $errorMessage)';
   }
 
   @override
@@ -228,7 +228,8 @@ class _$AddGoalStateImpl implements _AddGoalState {
                 other.targetAmount == targetAmount) &&
             (identical(other.targetDate, targetDate) ||
                 other.targetDate == targetDate) &&
-            (identical(other.emoji, emoji) || other.emoji == emoji) &&
+            (identical(other.emoji_path, emoji_path) ||
+                other.emoji_path == emoji_path) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
@@ -240,7 +241,7 @@ class _$AddGoalStateImpl implements _AddGoalState {
     name,
     targetAmount,
     targetDate,
-    emoji,
+    emoji_path,
     status,
     errorMessage,
   );
@@ -259,7 +260,7 @@ abstract class _AddGoalState implements AddGoalState {
     final String name,
     final int targetAmount,
     final DateTime? targetDate,
-    final String? emoji,
+    final String? emoji_path,
     final RequestStatus status,
     final String? errorMessage,
   }) = _$AddGoalStateImpl;
@@ -271,7 +272,7 @@ abstract class _AddGoalState implements AddGoalState {
   @override
   DateTime? get targetDate;
   @override
-  String? get emoji;
+  String? get emoji_path;
   @override
   RequestStatus get status;
   @override

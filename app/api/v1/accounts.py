@@ -34,6 +34,7 @@ async def create_account(
         balance=data.initial_balance,
         initial_balance=data.initial_balance,
         institution=data.institution,
+        emoji_path=data.emoji_path,
     )
     session.add(acc)
     await session.commit()
@@ -59,6 +60,8 @@ async def update_account(
         acc.account_type = data.account_type
     if data.institution is not None:
         acc.institution = data.institution
+    if data.emoji_path is not None:
+        acc.emoji_path = data.emoji_path
     await session.commit()
     await session.refresh(acc)
     return acc

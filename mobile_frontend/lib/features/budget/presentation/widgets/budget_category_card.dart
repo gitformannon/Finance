@@ -28,23 +28,9 @@ class BudgetCategoryCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
+          color: AppColors.box,
           borderRadius: BorderRadius.circular(AppSizes.borderSM16),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.background,
-              AppColors.background,
-            ],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-          border: Border.all(color: AppColors.def.withValues(alpha: 0.25)),
+          border: Border.all(color: AppColors.def, width: 1.0)
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

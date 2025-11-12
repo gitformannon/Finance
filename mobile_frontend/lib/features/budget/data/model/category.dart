@@ -5,9 +5,9 @@ class Category {
   final String name;
   final CategoryType type;
   final int? budget;
-  final String? emoji;
+  final String? emoji_path;
 
-  Category({required this.id, required this.name, required this.type, this.budget, this.emoji});
+  Category({required this.id, required this.name, required this.type, this.budget, this.emoji_path});
 
   factory Category.fromJson(Map<String, dynamic> json) {
     final dynamic rawType = json['type'];
@@ -31,7 +31,7 @@ class Category {
       name: json['name'] as String? ?? '',
       type: type,
       budget: (json['budget'] as num?)?.toInt(),
-      emoji: json['emoji'] as String?,
+      emoji_path: json['emoji_path'] as String?,
     );
   }
 }

@@ -24,6 +24,7 @@ class WButton extends StatelessWidget {
   final double? scaleValue;
   final List<BoxShadow>? shadow;
   final Color? backgroundColor;
+  final Color? disabledBackgroundColor;
   final bool hasError;
   final bool hasNextIcon;
   final bool hasPreviousIcon;
@@ -50,6 +51,7 @@ class WButton extends StatelessWidget {
     this.scaleValue,
     this.shadow,
     this.backgroundColor,
+    this.disabledBackgroundColor,
     this.nextIcon,
     this.prevIcon,
     super.key,
@@ -71,9 +73,8 @@ class WButton extends StatelessWidget {
         padding: padding ?? EdgeInsets.zero,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color:
-            isDisabled
-              ? AppColors.box
+          color: isDisabled
+              ? (disabledBackgroundColor ?? (backgroundColor == null ? AppColors.def : backgroundColor))
               : (backgroundColor ?? Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(borderRadius),
           border: hasError ? Border.all(color: AppColors.error) : border,

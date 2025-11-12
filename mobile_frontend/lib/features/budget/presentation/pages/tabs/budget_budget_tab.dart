@@ -58,8 +58,9 @@ class _BudgetBudgetTabState extends State<BudgetBudgetTab> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
-                      color: AppColors.def.withValues(alpha: 0.1),
+                      color: AppColors.box,
                       borderRadius: BorderRadius.circular(AppSizes.borderSM16),
+                      border: Border.all(color: AppColors.def, width: 1.0)
                     ),
                     child: Row(
                       children: [
@@ -84,7 +85,7 @@ class _BudgetBudgetTabState extends State<BudgetBudgetTab> {
                             decoration: BoxDecoration(
                               color: AppColors.box,
                               borderRadius: BorderRadius.circular(AppSizes.borderSM16),
-                              border: Border.all(color: AppColors.def.withValues(alpha: 0.2)),
+                              border: Border.all(color: AppColors.def, width: 1.0)
                             ),
                             child: const Text('All expense categories have a budget', style: TextStyle(color: Colors.black54)),
                           )
@@ -97,7 +98,7 @@ class _BudgetBudgetTabState extends State<BudgetBudgetTab> {
                                 decoration: BoxDecoration(
                                   color: AppColors.box,
                                   borderRadius: BorderRadius.circular(AppSizes.borderSM16),
-                                  border: Border.all(color: AppColors.def.withValues(alpha: 0.2)),
+                                  border: Border.all(color: AppColors.def, width: 1.0)
                                 ),
                                 child: Row(
                                   children: [

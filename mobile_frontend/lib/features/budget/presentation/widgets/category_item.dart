@@ -1,3 +1,4 @@
+import 'package:Finance/core/constants/app_colors.dart';
 import 'package:Finance/core/constants/app_sizes.dart';
 import 'package:Finance/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ class CategoryItem extends StatelessWidget {
   final String icon;
   final Color iconColor;
   final Color? selectedIconColor;
+  final Color? iconBoxBorderColor;
+  final Color? selectedIconBoxBorderColor;
+  final double? iconBoxBorderWidth;
   final String title;
   final Color? titleColor;
   final Color? selectedTitleColor;
@@ -22,6 +26,8 @@ class CategoryItem extends StatelessWidget {
   final Color selectedBoxBorderColor;
   final Color? iconBoxColor;
   final Color? selectedIconBoxColor;
+  final String? emoji;
+  final String? defaultEmoji;
 
   const CategoryItem({
     required this.boxColor,
@@ -29,6 +35,9 @@ class CategoryItem extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     this.selectedIconColor,
+    this.iconBoxBorderColor,
+    this.selectedIconBoxBorderColor,
+    this.iconBoxBorderWidth,
     this.onTap,
     this.selected = false,
     required this.title,
@@ -41,6 +50,8 @@ class CategoryItem extends StatelessWidget {
     required this.selectedBoxBorderColor,
     this.iconBoxColor,
     this.selectedIconBoxColor,
+    this.emoji,
+    this.defaultEmoji,
     super.key,
   });
 
@@ -68,19 +79,43 @@ class CategoryItem extends StatelessWidget {
                 Container(
                   height: 48.w,
                   width: 48.w,
-
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: selected
                         ? selectedIconBoxColor
                         : (iconBoxColor ?? selectedIconBoxColor),
-
+                    border: Border.all(
+                      color: selected
+                        ? (selectedIconBoxBorderColor ?? iconBoxBorderColor ?? AppColors.transparent)
+                        : (iconBoxBorderColor ?? AppColors.transparent),
+                      width: iconBoxBorderWidth ?? 0,
+                    )
                   ),
-                  child: SvgPicture.asset(
-                    icon,
-                    color: selected
-                        ? (selectedIconColor ?? iconColor)
-                        : iconColor,
+                  child: Center(
+                    child: (emoji ?? defaultEmoji) != null
+                        ? Image.asset(
+                            emoji ?? defaultEmoji!,
+                            width: 24.w,
+                            height: 24.w,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              // Fallback to icon if emoji fails to load
+                              return SvgPicture.asset(
+                                icon,
+                                color: selected
+                                    ? (selectedIconColor ?? iconColor)
+                                    : iconColor,
+                                width: 24.w,
+                                height: 24.w,
+                              );
+                            },
+                          )
+                        : SvgPicture.asset(
+                            icon,
+                            color: selected
+                                ? (selectedIconColor ?? iconColor)
+                                : iconColor,
+                          ),
                   ),
                 ),
               ],

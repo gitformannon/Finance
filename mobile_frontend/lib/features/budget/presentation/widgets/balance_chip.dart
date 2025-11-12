@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_sizes.dart';
 import '../../../../core/helpers/formatters_helpers.dart';
 
 class BalanceChip extends StatefulWidget {
@@ -33,8 +34,9 @@ class _BalanceChipState extends State<BalanceChip> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AppColors.box
+        color: AppColors.box,
+        borderRadius: BorderRadius.circular(AppSizes.borderMedium),
+        border: Border.all(color: AppColors.def, width: 1.0),
       ),
       child: TweenAnimationBuilder<double>(
         tween: Tween<double>(begin: _previousValue.toDouble(), end: widget.value.toDouble()),

@@ -35,6 +35,7 @@ async def create_category(
         name=data.name,
         type=data.type,
         budget=data.budget,
+        emoji_path=data.emoji_path,
     )
     session.add(cat)
     await session.commit()
@@ -58,6 +59,8 @@ async def update_category(
         cat.type = data.type
     if data.budget is not None:
         cat.budget = data.budget
+    if data.emoji_path is not None:
+        cat.emoji_path = data.emoji_path
     await session.commit()
     await session.refresh(cat)
     return cat
